@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación de Procesos SAP S/4HANA - Grupo Portland</title>
+    <!-- Importar fuentes e iconos -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --sap-blue: #008FD3;
+            --sap-dark-blue: #003366;
+            --portland-blue: #0b2b5c; 
+            --accent-green: #6bae47; 
+            --light-gray: #f4f4f4;
+            --disabled-gray: #b0b0b0;
+            --text-color: #333;
+            --card-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            --card-hover: 0 10px 20px rgba(0,0,0,0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            color: var(--text-color);
+            line-height: 1.5;
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-img {
+            height: 45px;
+            object-fit: contain;
+        }
+
+        .sap-logo {
+            height: 35px;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            position: relative;
+            height: 350px;
+            /* Se usa un degradado sobre la imagen para mejorar legibilidad del texto */
+            background-image: linear-gradient(rgba(11, 43, 92, 0.85), rgba(11, 43, 92, 0.65)), url('Imagenes/Hero_banner_small.png'); 
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            animation: fadeIn 1.2s ease;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .project-logo-hero {
+            height: 200px;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.95);
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        /* --- Main Content --- */
+        .container {
+            max-width: 1400px; /* Ancho amplio para que quepan las 5 tarjetas */
+            margin: 40px auto;
+            padding: 0 30px;
+        }
+
+        .phase-section {
+            margin-bottom: 60px;
+        }
+
+        .phase-title {
+            color: var(--portland-blue);
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            padding-bottom: 8px;
+            border-bottom: 3px solid var(--accent-green);
+            display: inline-block;
+        }
+
+        /* --- GRID SYSTEM (La clave para 5 por línea) --- */
+        .process-grid {
+            display: grid;
+            /* Exactamente 5 columnas de igual tamaño */
+            grid-template-columns: repeat(5, 1fr); 
+            gap: 30px; /* Espacio entre tarjetas */
+            align-items: stretch; /* Estira las tarjetas para que tengan la misma altura */
+        }
+
+        /* --- Step Card --- */
+        .step-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px 15px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            border-top: 5px solid var(--sap-blue);
+            
+            /* Flexbox interno para distribuir contenido verticalmente */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%; 
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-hover);
+        }
+
+        /* Flechas Automáticas entre tarjetas */
+        .step-card::after {
+            content: "\f061"; /* Código unicode flecha FontAwesome */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            right: -22px; /* Posición en el hueco entre tarjetas */
+            top: 45%;
+            color: #ccc;
+            font-size: 1.2rem;
+            z-index: 1;
+        }
+
+        /* Eliminar flecha del último elemento de la fila */
+        .step-card:last-child::after {
+            display: none;
+        }
+        
+        /* En la fase 2, el 4to elemento es el último, quitar su flecha también si no hay 5to */
+        .process-grid:has(.step-card:nth-last-child(1):nth-child(4)) .step-card:nth-child(4)::after {
+             display: none; /* Soporte navegadores modernos */
+        }
+
+        /* --- Card Content --- */
+        .icon-box {
+            font-size: 2.2rem;
+            color: var(--portland-blue);
+            margin-bottom: 15px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 15px;
+            color: #333;
+            min-height: 3rem; /* Altura mínima para títulos de 2 líneas */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-action {
+            margin-top: auto; /* Empuja el botón al fondo */
+            width: 100%;
+        }
+
+        /* --- Buttons --- */
+        .btn-manual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--sap-dark-blue);
+            color: white;
+            padding: 12px 8px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            min-height: 65px;
+        }
+
+        .btn-manual:hover {
+            background-color: var(--sap-blue);
+        }
+
+        .btn-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .btn-code {
+            font-size: 1rem;
+            font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        /* Estilo Deshabilitado */
+        .btn-disabled {
+            background-color: #e0e0e0 !important;
+            color: #888 !important;
+            cursor: not-allowed;
+            pointer-events: none;
+            box-shadow: none;
+        }
+        
+        .btn-disabled .btn-code {
+            background: rgba(0,0,0,0.05);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--portland-blue);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* --- Responsive Design --- */
+        /* Ajuste para pantallas medianas (Tablets) */
+        @media (max-width: 1200px) {
+            .process-grid {
+                grid-template-columns: repeat(3, 1fr); /* Bajar a 3 columnas */
+                gap: 20px;
+            }
+            .step-card::after {
+                display: none; /* Ocultar flechas en layout no lineal */
+            }
+        }
+
+        /* Ajuste para móviles */
+        @media (max-width: 768px) {
+            .process-grid {
+                grid-template-columns: 1fr; /* 1 columna */
+            }
+            .hero {
+                height: 300px;
+            }
+            header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .logo-container {
+                margin-bottom: 5px;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <img src="Imagenes/Logo_Portland.png" alt="Grupo Portland" class="logo-img">
+        </div>
+        <img src="Imagenes/Logo_SAP.jpeg" alt="SAP" class="logo-img sap-logo">
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <img src="Imagenes/Logo_Proyecto.png" alt="Proyecto SAP S4" class="project-logo-hero">
+        <div class="hero-content">
+            <h1>Manuales de Usuario SAP S/4HANA</h1>
+            <p>Acceso centralizado a la documentación operativa estándar para el Grupo Portland.</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+
+        <!-- FASE 1: Aprovisionamiento -->
+        <div class="phase-section">
+            <h2 class="phase-title">Fase de Aprovisionamiento</h2>
+            
+            <!-- Grid de 5 Columnas -->
+            <div class="process-grid">
+                
+                <!-- Paso 1 -->
+                <div class="step-card">
+                    <div class="icon-box"><i class="fa-solid fa-ship"></i></div>
+                    <div class="step-title">Compra y Costeo <br> (Comercial) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="ME21N">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">ME21N</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Paso 2 -->
+                <div class="step-card">
+                    <div class="icon-box"><i class="fa-solid fa-file-signature"></i></div>
+                    <div class="step-title">Aprobación <br> (Gerencia) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="ME29N">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">ME29N</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Paso 3 -->
+                <div class="step-card">
+                    <div class="icon-box"><i class="fa-solid fa-warehouse"></i></div>
+                    <div class="step-title">Recepción de Mercancía <br> (Logística) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="MIGO">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">MIGO</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Paso 4 -->
+                <div class="step-card">
+                    <div class="icon-box"><i class="fa-solid fa-magnifying-glass-dollar"></i></div>
+                    <div class="step-title">Verificación/Contabilización de Factura <br> (Contabilidad) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="MIRO">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">MIRO</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Paso 5 -->
+                <div class="step-card">
+                    <div class="icon-box"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                    <div class="step-title">Pago a Proveedores <br> (Tesorería) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="F110">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">F110</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- FASE 2: Ventas -->
+        <div class="phase-section">
+            <h2 class="phase-title">Fase Venta y Distribución </h2>
+            
+            <div class="process-grid">
+                
+                <!-- Paso 1 -->
+                <div class="step-card" style="border-top-color: var(--accent-green);">
+                    <div class="icon-box"><i class="fa-solid fa-file-contract"></i></div>
+                    <div class="step-title">Pedido de Venta <br> (Comercial) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="VA01">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">VA01</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Paso 2 -->
+                <div class="step-card" style="border-top-color: var(--accent-green);">
+                    <div class="icon-box"><i class="fa-solid fa-truck-fast"></i></div>
+                    <div class="step-title">Despacho y Entrega <br> (Logística) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="VL01N">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">VL01N</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Paso 3 -->
+                <div class="step-card" style="border-top-color: var(--accent-green);">
+                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
+                    <div class="step-title">Facturación <br> (Credito) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="VF01">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">VF01</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Paso 4 -->
+                <div class="step-card" style="border-top-color: var(--accent-green);">
+                    <div class="icon-box"><i class="fa-solid fa-building-columns"></i></div>
+                    <div class="step-title">Cobro <br> (Cobranzas)</div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="F-28">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">F-28</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- El espacio 5 queda vacío automáticamente para mantener la estructura de grilla -->
+
+            </div>
+        </div>
+
+
+        <!-- FASE 3: Datos Maestros -->
+        <div class="phase-section">
+            <h2 class="phase-title">Mantenimiento de Datos Maestros</h2>
+            
+            <div class="process-grid">
+                
+                <!-- Paso 1 -->
+                <div class="step-card" style="border-top-color: var(--accent-green);">
+                    <div class="icon-box"><i class="fa-solid fa-file-contract"></i></div>
+                    <div class="step-title">Creación Socio de Negocio Tipo Proveedor <br> (TI) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="BP1">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">BP</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Paso 1 -->
+                <div class="step-card" style="border-top-color: var(--accent-green);">
+                    <div class="icon-box"><i class="fa-solid fa-file-contract"></i></div>
+                    <div class="step-title">Creación Socio de Negocio Tipo Cliente <br> (TI) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="BP2">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">BP</span>
+                        </a>
+                    </div>
+                </div>
+
+                
+                <!-- El espacio 5 queda vacío automáticamente para mantener la estructura de grilla -->
+
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Grupo Portland. Todos los derechos reservados.</p>
+        <p>Proyecto SAP S/4HANA</p>
+    </footer>
+
+    <!-- SCRIPT DE FUNCIONALIDAD -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- CONFIGURACIÓN DE ESTADO DE MANUALES ---
+            // Cambia 'existe: true' a 'false' para deshabilitar botones.
+            const configuracionManuales = {
+                "ME21N": { archivo: "manuales/Manual de Usuario- Creación de Pedido de Compra (ME21N)_v2.pdf", existe: true },
+                "ME29N": { archivo: "manuales/MANUAL DE USUARIO - APROBACIÓN DE DOCUMENTOS (ME29N).pdf", existe: true },
+                "MIGO":  { archivo: "manuales/Manual de Usuario-Registro de Entrada de Mercancías (MIGO).pdf", existe: true }, // Ejemplo: Pendiente
+                "MIRO":  { archivo: "manuales/MANUAL DE USUARIO - REGISTRO DE FACTURAS (MIRO).pdf", existe: true },
+                "F110":  { archivo: "manuales/MANUAL DE USUARIO - PAGOS A PROVEEDORES.pdf", existe: true },
+                
+                "VA01":  { archivo: "manuales/MANUAL DE USUARIO - PEDIDO DE VENTA (VA01).pdf", existe: true },
+                "VL01N": { archivo: "manuales/MANUAL DE USUARIO - EXPEDICIÓN DE SALIDA DE MERCADERÍA (VL01N).pdf", existe: true },
+                "VF01":  { archivo: "manuales/MANUAL DE USUARIO - EMISIÓN DE FACTURA DE CLIENTE (VF01).pdf", existe: true }, // Ejemplo: Pendiente
+                "F-28":  { archivo: "manuales/MANUAL DE USUARIO - CONTABILIZAR PAGOS DE CLIENTES (F-28).pdf", existe: true },
+                "BP1":  { archivo: "manuales/MANUAL DE USUARIO - Creación de Business Partner (BP) – Rol  Proveedor.pdf", existe: true },
+                "BP2":  { archivo: "manuales/MANUAL DE USUARIO - Creacion de Business Partner (BP) – ROL Cliente.pdf", existe: true }
+            };
+
+            const botones = document.querySelectorAll('.btn-manual');
+
+            botones.forEach(boton => {
+                const codigo = boton.getAttribute('data-manual');
+                const config = configuracionManuales[codigo];
+
+                if (config) {
+                    if (config.existe) {
+                        boton.href = config.archivo;
+                        boton.target = "_blank";
+                        boton.title = "Abrir documento PDF";
+                    } else {
+                        boton.classList.add('btn-disabled');
+                        boton.href = "javascript:void(0)";
+                        boton.removeAttribute('target');
+                        boton.title = "Documentación en proceso";
+                        
+                        // Modificar visualmente el botón si está deshabilitado
+                        const iconSpan = boton.querySelector('.btn-text');
+                        if(iconSpan) iconSpan.innerHTML = '<i class="fa-solid fa-lock"></i> Pendiente';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
