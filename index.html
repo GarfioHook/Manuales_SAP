@@ -332,7 +332,7 @@
 
         <!-- FASE 1: Aprovisionamiento -->
         <div class="phase-section">
-            <h2 class="phase-title">Fase de Aprovisionamiento</h2>
+            <h2 class="phase-title">Proceso de Aprovisionamiento</h2>
             
             <!-- Grid de 5 Columnas -->
             <div class="process-grid">
@@ -387,7 +387,7 @@
 
                 <!-- Paso 5 -->
                 <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                    <div class="icon-box"><i class="fa-solid fa-money-bill-transfer"></i></div>
                     <div class="step-title">Pago a Proveedores <br> (Tesorería) </div>
                     <div class="step-action">
                         <a href="#" class="btn-manual" data-manual="F110">
@@ -402,7 +402,7 @@
 
         <!-- FASE 2: Ventas -->
         <div class="phase-section">
-            <h2 class="phase-title">Fase Venta y Distribución </h2>
+            <h2 class="phase-title">Proceso de Venta y Distribución </h2>
             
             <div class="process-grid">
                 
@@ -462,13 +462,56 @@
 
         <!-- FASE 3: Datos Maestros -->
         <div class="phase-section">
-            <h2 class="phase-title">Mantenimiento de Datos Maestros</h2>
+            <h2 class="phase-title">Otros Procesos Clave</h2>
             
             <div class="process-grid">
-                
-                <!-- Paso 1 -->
+            
+                <!-- Paso 3.1 -->
+                <div class="step-card">
+                    <div class="icon-box"><i class="fa-solid fa-industry"></i></div>
+                    <div class="step-title">Maquila <br> (Logística) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="MAQ">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">ME21N</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Paso 3.2 -->
+                <div class="step-card">
+                    <div class="icon-box"><i class="fa-solid fa-warehouse"></i></div>
+                    <div class="step-title">Inventario <br> (Logística/Contabilidad) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="INV">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">MI04</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Paso 3.3 -->
+                <div class="step-card">
+                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
+                    <div class="step-title">Registro de Facturas Manuales<br> (Contabilidad/Tesorería) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="FB60">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">FB60</span>
+                        </a>
+                    </div>
+                </div>       
+                    <div class="step-card">
+                    <div class="icon-box"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                    <div class="step-title">Pago Manual a Proveedores <br> (Tesorería) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="F-51">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">F-51</span>
+                        </a>
+                    </div>
+                </div>             
+                <!-- Paso 3.2 -->
                 <div class="step-card" style="border-top-color: var(--accent-green);">
-                    <div class="icon-box"><i class="fa-solid fa-file-contract"></i></div>
+                    <div class="icon-box"><i class="fa-solid fa-user-tie"></i></div>
                     <div class="step-title">Creación Socio de Negocio Tipo Proveedor <br> (TI) </div>
                     <div class="step-action">
                         <a href="#" class="btn-manual" data-manual="BP1">
@@ -477,9 +520,9 @@
                         </a>
                     </div>
                 </div>
-                <!-- Paso 1 -->
+                <!-- Paso 3.3 -->
                 <div class="step-card" style="border-top-color: var(--accent-green);">
-                    <div class="icon-box"><i class="fa-solid fa-file-contract"></i></div>
+                    <div class="icon-box"><i class="fa-solid fa-users"></i></div>
                     <div class="step-title">Creación Socio de Negocio Tipo Cliente <br> (TI) </div>
                     <div class="step-action">
                         <a href="#" class="btn-manual" data-manual="BP2">
@@ -488,7 +531,28 @@
                         </a>
                     </div>
                 </div>
-
+                <!-- Paso 3.3 -->
+                <div class="step-card" style="border-top-color: var(--accent-green);">
+                    <div class="icon-box"><i class="fa-solid fa-credit-card"></i></div>
+                    <div class="step-title">Gestión de Crédito <br> (Credito) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="BP3">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">BP</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Paso 3.3 -->
+                <div class="step-card" style="border-top-color: var(--accent-green);">
+                    <div class="icon-box"><i class="fa-solid fa-cubes"></i></div>
+                    <div class="step-title">Gestión de Materiales <br> (TI) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="MM01">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">MM01</span>
+                        </a>
+                    </div>
+                </div>                
                 
                 <!-- El espacio 5 queda vacío automáticamente para mantener la estructura de grilla -->
 
@@ -511,6 +575,7 @@
                 "ME21N": { archivo: "Manuales/Manual de Usuario- Creación de Pedido de Compra (ME21N)_v2.pdf", existe: true },
                 "ME29N": { archivo: "Manuales/MANUAL_DE_USUARIO - LIBERACIÓN DE PEDIDOS DE COMPRA (ME29N).pdf", existe: true },
                 "MIGO":  { archivo: "Manuales/Manual de Usuario-Registro de Entrada de Mercancías (MIGO).pdf", existe: true }, // Ejemplo: Pendiente
+                "MAQ":  { archivo: "Manuales/MANUAL DE USUARIO - PROCESO DE MAQUILA (SUBCONTRATACIÓN) (ME21N).pdf", existe: true }, // Ejemplo: Pendiente                
                 "MIRO":  { archivo: "Manuales/MANUAL DE USUARIO - REGISTRO DE FACTURAS (MIRO).pdf", existe: true },
                 "F110":  { archivo: "Manuales/MANUAL DE USUARIO - PAGOS A PROVEEDORES.pdf", existe: true },
                 
@@ -519,7 +584,12 @@
                 "VF01":  { archivo: "Manuales/MANUAL DE USUARIO - EMISIÓN DE FACTURA DE CLIENTE (VF01).pdf", existe: true }, // Ejemplo: Pendiente
                 "F-28":  { archivo: "Manuales/MANUAL DE USUARIO - CONTABILIZAR PAGOS DE CLIENTES (F-28).pdf", existe: true },
                 "BP1":  { archivo: "Manuales/MANUAL DE USUARIO - Creación de Business Partner (BP) – Rol  Proveedor.pdf", existe: true },
-                "BP2":  { archivo: "Manuales/MANUAL DE USUARIO - Creacion de Business Partner (BP) – ROL Cliente.pdf", existe: true }
+                "BP2":  { archivo: "Manuales/MANUAL DE USUARIO - Creacion de Business Partner (BP) – ROL Cliente.pdf", existe: true },
+                "BP3":  { archivo: "Manuales/MANUAL DE USUARIO - GESTIÓN DE CRÉDITO DEL INTERLOCUTOR COMERCIAL (BP).pdf", existe: true },                
+                "INV":  { archivo: "Manuales/MANUAL DE USUARIO - GESTIÓN Y TOMA DE INVENTARIO FÍSICO.pdf", existe: true },   
+                "MM01":  { archivo: "Manuales/MANUAL_DE_USUARIO - GESTIÓN Y CREACIÓN DE MATERIALES (MM01).pdf", existe: true },  
+                "FB60":  { archivo: "Manuales/MANUAL DE USUARIO - REGISTRO DE FACTURAS MANUALES Y ANÁLISIS DE CUENTAS POR PAGAR.pdf", existe: true }, 
+                "F-51":  { archivo: "Manuales/MANUAL DE USUARIO - EJECUCIÓN DE PAGO MANUAL A PROVEEDORES (F-51).pdf", existe: true },                                
             };
 
             const botones = document.querySelectorAll('.btn-manual');
