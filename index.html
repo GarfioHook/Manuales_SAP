@@ -7,6 +7,9 @@
     <!-- Importar fuentes e iconos -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Librería para exportar a PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
         :root {
@@ -272,7 +275,38 @@
             font-size: 0.9rem;
             opacity: 0.8;
         }
+/* Estenedor del Chat Flotante */
+    #floatingChat {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform: translateY(30px) scale(0.95);
+        opacity: 0;
+        pointer-events: none;
+        position: fixed; bottom: 100px; right: 24px; z-index: 50;
+    }
+    #floatingChat.active {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .chat-window { height: 650px; width: 480px; max-width: 95vw; }
+    
+    /* Estilos de las burbujas y contenido renderizado */
+    .chat-bubble-content h3 { font-size: 1.1rem; font-weight: 700; color: #0f172a; border-left: 4px solid #3b82f6; padding-left: 8px; margin: 1rem 0 0.5rem; }
+    .chat-bubble-content code { background: #f1f5f9; padding: 2px 5px; border-radius: 4px; font-family: monospace; color: #2563eb; }
+    
+    /* Animación de escritura */
+    .typing-dot { width: 6px; height: 6px; background: #3b82f6; border-radius: 50%; display: inline-block; animation: typing 1.4s infinite ease-in-out; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing { 0%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-5px); } }
 
+    /* Animación del botón circular */
+    .pulse-animation { animation: pulse 2s infinite; }
+    @keyframes pulse {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
+        70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+    }
         /* --- Responsive Design --- */
         /* Ajuste para pantallas medianas (Tablets) */
         @media (max-width: 1200px) {
@@ -558,6 +592,40 @@
 
             </div>
         </div>
+
+    <div id="floatingChat">
+    <div class="chat-window bg-white rounded-[2.5rem] shadow-2xl border border-slate-200 flex flex-col overflow-hidden">
+        <div class="bg-[#003366] p-5 text-white flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-11 h-11 bg-blue-500 rounded-full flex items-center justify-center"><i class="fas fa-robot"></i></div>
+                <div><h4 class="font-bold text-sm">IA Portland Assistant</h4></div>
+            </div>
+            <div class="flex space-x-1">
+                <button onclick="clearChat()" class="p-2 hover:bg-white/10 rounded-xl"><i class="fas fa-eraser text-xs"></i></button>
+                <button onclick="toggleChat()" class="p-2 hover:bg-white/10 rounded-xl"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+
+        <div id="chatBox" class="flex-grow overflow-y-auto p-6 space-y-6 bg-slate-50/50" style="height: 400px;"></div>
+
+        <div id="typingIndicator" class="hidden px-6 py-2">
+            <div class="flex space-x-2 bg-white border p-2.5 w-20 justify-center rounded-full"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>
+        </div>
+
+        <div class="p-4 bg-white border-t">
+            <form id="chatForm" class="flex items-center space-x-3">
+                <input type="text" id="userInput" placeholder="Escribe tu consulta..." class="flex-grow p-4 bg-slate-100 rounded-[1.5rem] focus:outline-none text-sm">
+                <button type="submit" class="bg-[#003366] text-white w-12 h-12 rounded-2xl hover:bg-blue-800 transition-all"><i class="fas fa-paper-plane"></i></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<button id="chatToggleBtn" onclick="toggleChat()" class="fixed bottom-6 right-6 w-16 h-16 bg-[#003366] text-white rounded-full shadow-2xl flex items-center justify-center z-50 pulse-animation">
+    <i class="fas fa-comment-dots text-2xl" id="toggleIcon"></i>
+</button>
+
+
     </div>
     <!-- Footer -->
     <footer>
@@ -617,5 +685,231 @@
             });
         });
     </script>
+
+    <script>
+        const openRouterKey = "REPLACE_ME_WITH_API_KEY"; 
+        const modelID = "nex-agi/deepseek-v3.1-nex-n1:free";
+        const manualURL = "https://garfiohook.github.io/Manuales_SAP/Manuales/Manual_de_Usuario_Consolidado.pdf";
+        const supportEmail = "gsalinas@pjportland.cl";
+
+        const systemPrompt = `
+        Eres el asistente inteligente oficial de SAP S/4HANA para el Grupo Portland.
+        TU ÚNICA FUENTE DE VERDAD ES EL MANUAL: ${manualURL}
+
+        REGLAS DE RESPUESTA:
+        1. Responde basándote EXCLUSIVAMENTE en el "Manual de Usuario - Consolidado".
+        2. Si la información no está en el manual, responde exactamente: "No tengo la información requerida a partir de los manuales del proyecto. Por favor, contacta al equipo del proyecto."
+        3. Formatea tu respuesta con títulos marcados con ###, listas con viñetas y negritas para transacciones.
+        4. Sé extremadamente organizado y profesional.
+        `;
+
+        const chatBox = document.getElementById('chatBox');
+        const chatForm = document.getElementById('chatForm');
+        const userInput = document.getElementById('userInput');
+        const typingIndicator = document.getElementById('typingIndicator');
+        const floatingChat = document.getElementById('floatingChat');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const chatToggleBtn = document.getElementById('chatToggleBtn');
+
+        let isChatOpen = false;
+        let conversationHistory = [];
+
+        // --- RENDERIZADO MEJORADO ---
+        function cleanRender(text) {
+            let html = text
+                .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+                .replace(/^## (.*$)/gm, '<h3>$1</h3>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/`(.*?)`/g, '<code>$1</code>')
+                .replace(/^\s*[-*+]\s+(.*)/gm, '<li>$1</li>')
+                .replace(/(<li>.*<\/li>)+/gs, (match) => `<ul class="list-disc ml-5 my-3">${match}</ul>`)
+                .replace(/^\s*\d+\.\s+(.*)/gm, '<li>$1</li>')
+                .replace(/(<li>.*<\/li>)+/gs, (match) => match.includes('list-disc') ? match : `<ol class="list-decimal ml-5 my-3">${match}</ol>`)
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>');
+
+            return `<div class="chat-bubble-content">${html}</div>`;
+        }
+
+        // --- PERSISTENCIA ---
+        function saveSession() {
+            sessionStorage.setItem('portland_chat_session', JSON.stringify(conversationHistory));
+        }
+
+        function loadSession() {
+            const saved = sessionStorage.getItem('portland_chat_session');
+            if (saved) {
+                conversationHistory = JSON.parse(saved);
+                renderHistory();
+            } else {
+                conversationHistory = [{ role: "system", content: systemPrompt }];
+                addMessage("¡Hola! Soy el asistente de SAP Portland. Tengo acceso al Manual Consolidado para ayudarte con tus procesos.", 'assistant', false);
+            }
+        }
+
+        function renderHistory() {
+            chatBox.innerHTML = '';
+            conversationHistory.forEach(msg => {
+                if (msg.role !== 'system') {
+                    addMessage(msg.content, msg.role, false);
+                }
+            });
+        }
+
+        function toggleChat() {
+            isChatOpen = !isChatOpen;
+            if (isChatOpen) {
+                floatingChat.classList.add('active');
+                toggleIcon.className = "fas fa-chevron-down text-2xl";
+                chatToggleBtn.classList.remove('pulse-animation');
+                setTimeout(() => userInput.focus(), 400);
+            } else {
+                floatingChat.classList.remove('active');
+                toggleIcon.className = "fas fa-comment-dots text-2xl";
+                chatToggleBtn.classList.add('pulse-animation');
+            }
+        }
+
+        function addMessage(text, role, save = true) {
+            const wrapper = document.createElement('div');
+            wrapper.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} group w-full mb-2`;
+            
+            const isFallback = text.includes("No tengo la información requerida a partir de los manuales del proyecto");
+
+            const bubble = document.createElement('div');
+            bubble.className = `relative p-4 rounded-3xl text-sm shadow-sm transition-all max-w-[90%] ${
+                role === 'user' 
+                ? 'bg-blue-600 text-white rounded-tr-none' 
+                : 'bg-white border border-slate-200 text-slate-700 rounded-tl-none'
+            }`;
+
+            if (role === 'assistant') {
+                bubble.innerHTML = `
+                    <div class="mb-1">${cleanRender(text)}</div>
+                    ${!isFallback ? `
+                    <button onclick="exportSinglePDF(this)" class="absolute -right-10 top-2 opacity-0 group-hover:opacity-100 text-slate-400 hover:text-blue-600 p-2 transition-all" title="Exportar a PDF">
+                        <i class="fas fa-file-pdf"></i>
+                    </button>` : ''}
+                    ${isFallback ? `
+                    <div class="mt-4 pt-4 border-t border-slate-100">
+                        <p class="text-[11px] font-bold text-slate-500 mb-3 uppercase tracking-wider">Escalar consulta por Correo</p>
+                        <input type="text" id="ticketName" placeholder="Tu nombre y apellido..." class="w-full p-3 mb-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-1 focus:ring-blue-400 outline-none">
+                        <button onclick="triggerEmailEscalation(this)" class="w-full bg-blue-600 text-white py-3 rounded-xl text-xs font-bold hover:bg-blue-700 shadow-md">
+                            Enviar mail al Equipo SAP
+                        </button>
+                    </div>
+                    ` : ''}
+                `;
+            } else {
+                bubble.textContent = text;
+            }
+
+            wrapper.appendChild(bubble);
+            chatBox.appendChild(wrapper);
+
+            if (save && role !== 'system') {
+                conversationHistory.push({ role, content: text });
+                saveSession();
+            }
+
+            // Scroll Inteligente
+            if (role === 'user') {
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } else {
+                wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        async function callOpenRouter() {
+            const url = "https://openrouter.ai/api/v1/chat/completions";
+            const payload = {
+                model: modelID,
+                messages: conversationHistory,
+                temperature: 0.1
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${openRouterKey}`,
+                        'HTTP-Referer': window.location.origin,
+                        'X-Title': 'Portland SAP Assistant'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                return data.choices?.[0]?.message?.content || "Error en respuesta.";
+            } catch (e) {
+                return "Error de red con el asistente de IA.";
+            }
+        }
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            addMessage(text, 'user');
+            userInput.value = '';
+            typingIndicator.classList.remove('hidden');
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            const response = await callOpenRouter();
+            typingIndicator.classList.add('hidden');
+            addMessage(response, 'assistant');
+        });
+
+        function triggerEmailEscalation(btn) {
+            const nameInput = btn.parentElement.querySelector('#ticketName');
+            const userName = nameInput.value.trim();
+            if (!userName) { nameInput.classList.add('border-red-500'); return; }
+
+            const userQuestion = conversationHistory[conversationHistory.length - 2].content;
+            const subject = encodeURIComponent("SOPORTE SAP PORTLAND: Duda no resuelta por Manual");
+            const body = encodeURIComponent(`Equipo de Proyecto,\n\nSe requiere soporte para el siguiente caso:\n\nUsuario: ${userName}\nConsulta: ${userQuestion}\n\nNota: Consulta generada desde el Portal de Capacitación.`);
+            
+            window.location.href = `mailto:${supportEmail}?subject=${subject}&body=${body}`;
+            btn.parentElement.innerHTML = '<p class="text-blue-600 font-bold text-center py-2 text-xs"><i class="fas fa-check-circle mr-2"></i> Mail preparado con éxito.</p>';
+        }
+
+        async function exportSinglePDF(btn) {
+            const content = btn.parentElement.querySelector('.chat-bubble-content').innerHTML;
+            const element = document.createElement('div');
+            element.className = "p-12";
+            element.innerHTML = `
+                <div style="border-bottom: 2px solid #003366; padding-bottom: 15px; margin-bottom: 30px; display: flex; justify-content: space-between;">
+                    <span style="font-weight: 800; color: #003366; font-family: sans-serif;">GRUPO PORTLAND - SAP S/4HANA</span>
+                    <span style="font-size: 10px; color: #666;">${new Date().toLocaleDateString()}</span>
+                </div>
+                <div style="font-family: sans-serif; line-height: 1.6;">${content}</div>
+                <div style="margin-top: 50px; border-top: 1px solid #eee; padding-top: 15px; text-align: center; font-size: 9px; color: #999;">
+                    Documento generado por Asistente IA Portland | Referencia: Manual de Usuario Consolidado
+                </div>
+            `;
+            
+            html2pdf().set({
+                margin: 10,
+                filename: 'Guia_Proceso_Portland.pdf',
+                html2canvas: { scale: 3 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).from(element).save();
+        }
+
+        function clearChat() {
+            if(confirm("¿Estás seguro de que deseas borrar todo el historial de esta sesión?")) {
+                sessionStorage.removeItem('portland_chat_session');
+                conversationHistory = [{ role: "system", content: systemPrompt }];
+                chatBox.innerHTML = '';
+                addMessage("Historial borrado. Estoy listo para una nueva consulta.", 'assistant', false);
+            }
+        }
+
+        // Inicialización
+        window.onload = loadSession;
+</script>
+
 </body>
 </html>
