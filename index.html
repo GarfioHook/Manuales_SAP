@@ -708,8 +708,8 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 1.  **Verificación (MM03):** Buscar existencia previa por descripción o grupo de artículos (F4) -> Evita duplicados.
 2.  **Definición de Tipo (MM01):** Seleccionar HAWA (Mercadería) o DIEN (Servicio) -> Define lógica de comportamiento.
 3.  **Selección de Vistas:** Elegir Datos Básicos, Ventas (1 y 2), Compras, Almacenamiento y Contabilidad 1 -> Habilitación de campos.
-4.  **Niveles Organizativos:** Ingresar Centro 2000 (Portland Perú) y Almacén correspondiente -> Delimitación geográfica.
-5.  **Configuración Contable:** Asignar Clase de Valoración (ej. NACIONAL) y Control de Precio -> Enlace financiero.
+4.  **Niveles Organizativos:** Ingresar Centro y Almacén correspondiente -> Delimitación geográfica.
+5.  **Configuración Contable:** Asignar Clase de Valoración Aplicable y Control de Precio -> Enlace financiero.
 
 > ⚠️ **REGLA CRÍTICA:** La Unidad de Medida Base (ej. KG, UN) es inmutable una vez que el material tiene movimientos de stock. Validar con precisión antes de grabar.
 
@@ -720,9 +720,9 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 **Pasos del Proceso:**
 1.  **Creación Inicial:** Seleccionar "Organización" e ingresar Razón Social, Dirección y Ciudad -> Identificación básica.
 2.  **Datos Fiscales:** En pestaña "Identificador", ingresar NIF/RUC/NIT -> El sistema valida duplicidad y formato.
-3.  **Extensión Financiera (Rol FLCU00 / FLVN00):** Clic en "Sociedad" -> Ingresar Cuenta Asociada (11030001 para Clientes / 210201001 para Proveedores) -> Enlace con Balance General.
-4.  **Extensión Comercial (Rol FLCU01 - Cliente):** Clic en "Comercial" -> Definir Área de Ventas (Org. 3000, Canal 10, Sector 10) y Funciones de Interlocutor -> Habilita ventas.
-5.  **Extensión Logística (Rol FLVN01 - Proveedor):** Clic en "Compras" -> Definir Org. Compras 2000 y Moneda del pedido -> Habilita órdenes de compra.
+3.  **Extensión Financiera (Rol FLCU00 / FLVN00):** Clic en "Sociedad" -> Ingresar Cuenta Asociada para Clientes o Proveedores -> Enlace con Balance General.
+4.  **Extensión Comercial (Rol FLCU01 - Cliente):** Clic en "Comercial" -> Definir Área de Ventas (Org, Canal, Sector) y Funciones de Interlocutor -> Habilita ventas.
+5.  **Extensión Logística (Rol FLVN01 - Proveedor):** Clic en "Compras" -> Definir Org. Compras y Moneda del pedido -> Habilita órdenes de compra.
 
 # II. CICLO DE COMPRAS Y SUMINISTRO (PROCURE-TO-PAY)
 
@@ -735,12 +735,13 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 *   **Ejemplo de Condiciones de Precio (Z):** **ZFLE** (Flete), **ZSEG** (Seguro), **ZAGA** (Aduana), **ZTNA** (Transporte local).
 
 **Pasos del Proceso:**
-1.  **Cabecera:** Elegir Clase de Pedido (ej. **ZIMP**) e ingresar Proveedor -> Inicio de documento.
-2.  **Datos Org:** Ingresar Org. Compras 2000, Grupo Compras P01 y Sociedad 2000 -> Estructura legal.
-3.  **Posiciones:** Detallar Material, Cantidad, Precio y Centro -> Carga de líneas.
-4.  **Pestaña Entrega:** Seleccionar la Clase de Valoración correcta (ej. **DIST_LO_GE**) -> ⚠️ **REGLA CRÍTICA:** No omitir este paso para evitar promediar costos de operaciones distintas.
-5.  **Pestaña Condiciones:** Cargar códigos Z (ZFLE, ZSEG, etc.) y montos adicionales -> El sistema calcula el Precio Efectivo de ingreso.
-6.  **Grabar:** Presionar "Verificar" e ícono de "Grabar" -> Genera número de OC.
+1.  **Cabecera:** Elegir Clase de Pedido (ej. **ZIMP** para Importacion para Distribución Local }) e ingresar Proveedor -> Inicio de documento.
+2.  **Datos Org:** Ingresar Org. Compras, Grupo Compras y Sociedad -> Estructura legal.
+3.  **Incoterms:** Ingresar Condicion de Incoterms y puerto de embarque aplicable al pedido -> Estructura de costos
+4.  **Posiciones:** Detallar Material, Cantidad, Precio y Centro -> Carga de líneas.
+5.  **Pestaña Entrega:** Seleccionar la Clase de Valoración correcta (ej. **DIST_LO_GE** para Distribucion Local General) -> ⚠️ **REGLA CRÍTICA:** No omitir este paso para evitar promediar costos de operaciones distintas.
+6.  **Pestaña Condiciones:** Cargar códigos de Condiciones de Precio Aplicables si es un pedido de Importación (Ej. ZFLE, ZSEG, etc.) y montos adicionales -> El sistema calcula el Precio Efectivo de ingreso.
+7.  **Grabar:** Presionar "Verificar" e ícono de "Grabar" -> Genera número de OC.
 
 ## [TX: MIGO] Registro de Entrada de Mercancías
 *   **Módulo:** MM
@@ -750,7 +751,7 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 1.  **Acceso:** Seleccionar "Entrada de mercancías" y referencia "Pedido" -> Ingresar N° de OC.
 2.  **Cabecera:** Validar Clase de Movimiento **101** y ajustar Fecha de Contabilización a la fecha real de recepción física -> Garantiza realidad operativa.
 3.  **Referencia:** Ingresar número de "Nota de Entrega" o Guía del proveedor -> Trazabilidad documental.
-4.  **Posición:** En pestañas inferiores, verificar Cantidad, Almacén (ej. TRALSA) y marcar checkbox "Posición OK" -> Conformidad de línea.
+4.  **Posición:** En pestañas inferiores, verificar Cantidad, Almacén y marcar checkbox "Posición OK" -> Conformidad de línea.
 5.  **Contabilizar:** Clic en "Contabilizar" -> Genera Documento de Material y aumenta stock.
 
 # III. CICLO DE VENTAS Y DISTRIBUCIÓN (ORDER-TO-CASH)
@@ -760,11 +761,11 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 *   **Contexto Portland:** Contrato formal que reserva inventario y valida riesgo.
 
 **Pasos del Proceso:**
-1.  **Inicio:** Clase de Pedido **Z01D**, Org. Ventas 3000, Canal 10, Sector 10 -> Contexto filial.
-2.  **Cabecera:** Ingresar Cliente y Referencia (OC física del cliente) -> Datos de contrato.
-3.  **Posiciones:** Ingresar Material y Cantidad -> El sistema realiza Verificación de Disponibilidad (ATP).
-4.  **Precios:** Validar condición **PR00** y verificar Margen de Cobertura -> ⚠️ **REGLA CRÍTICA:** El margen debe ser positivo para proceder.
-5.  **Control de Crédito:** Al grabar, si el valor excede el límite (**UKM000**), el pedido se guarda con Bloqueo de Crédito -> Requiere liberación por el Responsable de Crédito.
+1.  **Inicio:** Clase de Pedido (ej. **Z01D** para Distribución Local), Org. Ventas , Canal, Sector -> Contexto filial.
+2.  **Cabecera:** Ingresar Cliente y Referencia (Según OC física del cliente) -> Datos de contrato.
+3.  **Posiciones:** Ingresar Material y Cantidad -> El sistema realiza Verificación de Disponibilidad.
+4.  **Precios:** Ingresar/Validar condición de Precio Base **PR00** y verificar Margen de Cobertura -> ⚠️ **REGLA CRÍTICA:** Márgen debe cumplir las politicas comerciales.
+5.  **Control de Crédito:** Al grabar, si el valor excede el límite, el pedido se guarda con Bloqueo de Crédito -> Requiere liberación por el Responsable de Crédito.
 
 ## [TX: VL01N / VL02N] Expedición (Salida de Mercancía)
 *   **Módulo:** Logística (LE-SD)
@@ -781,7 +782,7 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 # IV. FINANZAS Y CONTROL DE INVENTARIO
 
 ## [TX: MIRO] Registro de Factura Logística (Acreedores)
-> ⚠️ **REGLA CRÍTICA:** NUNCA utilizar **FB60** para facturas que tengan una Orden de Compra relacionada. Esto dejaría la provisión EM/RF abierta.
+> ⚠️ **REGLA CRÍTICA:** NUNCA utilizar **FB60** para facturas que tengan una Orden de Compra relacionada. Esto dejaría la provisión EM/RF abierta. Usar MIRO en esos casos.
 
 1.  **Cabecera:** Ingresar Fecha, Referencia (N° Factura física) e Importe Total.
 2.  **Referencia:** Ingresar N° de OC -> El sistema cruza Pedido-Recepción-Factura.
@@ -805,6 +806,47 @@ REGLAS DE ORO:
 3. Si el manual menciona una "Regla Crítica", "Advertencia" o "Nota de Grupo Portland", resáltala usando bloques de aviso o prefijos claros (EJ: ⚠️ REGLA CRÍTICA).
 4. Para instrucciones, usa siempre listas numeradas de "Acción -> Resultado".
 5. Mantén un tono profesional, preciso y orientado a la normativa del Grupo.
+6. Si el usuario consulta sobre un proceso de compra, debes cruzar la información de las 3 tablas a continuacion (Tipo de Pedido + Clase de Valoración + Condiciones) para dar una respuesta integral.
+
+---
+### 1. MATRIZ DE TIPOS DE NEGOCIO Y PEDIDOS
+Dependiendo del negocio, el usuario DEBE usar estos tipos de pedido:
+- **Nacional [ZNAC]:** Compras locales para stock.
+- **Distribución Local [ZIMP]:** Importación para stock.
+- **Despacho Directo [ZDIR]:** Importación calzada, sin stock, entrega en cliente. Portland paga todo.
+- **Trading Terceros [ZTRA]:** Importación calzada. Cliente paga internación y transporte.
+- **Trading Filiales [ZTRF]:** Abastecimiento a filiales (Perú/Colombia).
+- **Maquila [ZMAQ]:** Transformación (BOM) o reempaque.
+- **Indent [ZIND]:** Servicios logísticos/Comex. Mercadería de terceros.
+- **Servicios [ZSER]:** Gastos de servicios (Transporte, consultoría).
+- **Insumos [ZINS]:** Embalajes, combustible. Imputación directa a centro de costo.
+
+### 2. MATRIZ DE CLASES DE VALORACIÓN
+Es crítico seleccionar la valoración correcta según el negocio:
+- **Distribución Local:** DIST_LO_GE, DIST_LO_LQ, DIST_LO_SO o DIST_LO_RC.
+- **Despacho Directo:** DIRECTO_GE, DIRECTO_LQ, DIRECTO_SO o DIRECTO_RC.
+- **Nacional / Insumos:** NACIONAL.
+- **Maquila:** PRODUCCION.
+- **Trading Terceros/Filiales:** TRADING.
+- **Indent:** SIN VALOR.
+
+### 3. MATRIZ DE CONDICIONES DE PRECIO (COMPRAS)
+Al definir la valoración, se deben aplicar estas condiciones en la pestaña de 'Condiciones' del pedido:
+- **Básicas:** PB00/PBXX (Mercadería), ZFLE (Flete Int.), ZSEG/ZSE2 (Seguro).
+- **Gastos Aduana/Puerto:** - **ZAGA:** Agencia Aduana (Perú: 0.25% CIF / Col: 0.30% CFR).
+    - **ZCDI:** Gastos Operativos/Despacho en puerto.
+    - **ZTHC:** Gastos de manipulación (THC).
+    - **ZTNA:** Transporte Nacional (Puerto a Bodega).
+    - **ZUYD/ZCDA:** Gastos SEREMI/Autoridad Sanitaria.
+- **Otros:** ZCAN (Canje BL), ZGAT (Gate in/out), ZGGR (Graneles/Surveyer), ZCOM (Comodato).
+
+---
+
+### INSTRUCCIONES DE INTERACCIÓN:
+1. **Validación Proactiva:** Si el usuario dice "Voy a hacer un pedido ZDIR", respóndele: "Para Despacho Directo (ZDIR), recuerda usar clases de valoración tipo DIRECTO_XX y no olvides cargar las condiciones de importación (ZFLE, ZSEG, ZAGA, etc.)".
+2. **Contexto Regional:** Si menciona Perú o Colombia, utiliza las homologaciones específicas (ej: para ZAGA en Colombia, indicar 'Comisión SIA').
+3. **Formato:** Usa tablas Markdown para comparar datos si el usuario tiene dudas entre dos tipos de pedido.
+4. **Restricción:** No permitas mezclar tipos de pedido con valoraciones que no correspondan (ej: ZNAC con valoración TRADING es un error).
 
 `;
 
