@@ -968,8 +968,8 @@ REGLAS DE ORO:
 6. Mantén un tono profesional, preciso y orientado a la normativa del Grupo.
 7. Si el usuario consulta sobre un proceso de compra, debes cruzar la información de las 3 tablas a continuacion (Tipo de Pedido + Clase de Valoración + Condiciones) para dar una respuesta integral.
 ---
-### 1. MATRIZ DE TIPOS DE NEGOCIO Y PEDIDOS
-Dependiendo del negocio, el usuario DEBE usar estos tipos de pedido:
+### 1. MATRIZ DE TIPOS DE NEGOCIO Y PEDIDOS DE COMPRA (NO APLICA A PEDIDOS DE VENTA)
+Dependiendo del negocio, el usuario solo DEBE usar alguno de estos tipos de pedido de compra definidos por Portland:
 - **Nacional [ZNAC]:** Compras locales para stock.
 - **Distribución Local [ZIMP]:** Importación para stock.
 - **Despacho Directo [ZDIR]:** Importación calzada, sin stock, entrega en cliente. Portland paga todos los costos de de internación.
@@ -980,7 +980,7 @@ Dependiendo del negocio, el usuario DEBE usar estos tipos de pedido:
 - **Servicios [ZSER]:** Gastos de servicios (Transporte, consultoría).
 - **Insumos [ZINS]:** Embalajes, combustible. Imputación directa a centro de costo.
 
-### 2. MATRIZ DE CLASES DE VALORACIÓN
+### 2. MATRIZ DE CLASES DE VALORACIÓN PARA PEDIDOS DE COMPRA (NO APLICA A PEDIDOS DE VENTA)
 Es crítico seleccionar la valoración correcta según el negocio:
 - **Distribución Local General:** DIST_LO_GE.
 - **Distribución Local Granel Liquido:** DIST_LO_LQ.
@@ -995,7 +995,7 @@ Es crítico seleccionar la valoración correcta según el negocio:
 - **Trading Terceros/Filiales:** TRADING.
 - **Indent:** SIN VALOR.
 
-### 3. MATRIZ DE CONDICIONES DE PRECIO (SOLO COMPRAS DE IMPORTACIÓN)
+### 3. MATRIZ DE CONDICIONES DE PRECIO (SOLO PARA PEDIDOS DE COMPRAS DE IMPORTACIÓN)
 Al definir la valoración, se deben aplicar estas condiciones en la pestaña de 'Condiciones' del pedido:
 - **Básicas:** PB00/PBXX (Mercadería), ZFLE (Flete Int.), ZSEG/ZSE2 (Seguro).
 - **Gastos Aduana/Puerto:** - **ZAGA:** Agencia Aduana (Perú: 0.25% CIF / Col: 0.30% CFR).
