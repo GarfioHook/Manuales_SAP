@@ -308,6 +308,19 @@
         70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
         100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
     }
+#chatLabel {
+    pointer-events: none; /* Evita que interfiera con clics */
+    box-shadow: -4px 4px 10px rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Estado cuando el chat está abierto (ocultar etiqueta) */
+#chatLabel.hidden-label {
+    opacity: 0;
+    transform: translateX(20px);
+    pointer-events: none;
+}
+    
     /* Estilos para tablas dentro del chat */
 .chat-bubble-content table {
     width: 100%;
@@ -652,10 +665,14 @@
     </div>
 </div>
 
-<button id="chatToggleBtn" onclick="toggleChat()" class="fixed bottom-6 right-6 w-16 h-16 bg-[#003366] text-white rounded-full shadow-2xl flex items-center justify-center z-50 pulse-animation">
-    <i class="fas fa-comment-dots text-2xl" id="toggleIcon"></i>
-</button>
-
+<div id="chatButtonContainer" class="fixed bottom-6 right-6 flex items-center z-50">
+    <span id="chatLabel" class="bg-[#003366] text-white px-4 py-2 rounded-l-full mr-[-20px] pr-8 shadow-lg text-sm font-medium transition-all duration-300 transform translate-x-0 opacity-100">
+        Pregúntale al Asistente
+    </span>
+    <button id="chatToggleBtn" onclick="toggleChat()" class="w-16 h-16 bg-[#003366] text-white rounded-full shadow-2xl flex items-center justify-center pulse-animation relative z-10">
+        <i class="fas fa-comment-dots text-2xl" id="toggleIcon"></i>
+    </button>
+</div>
 
     </div>
     <!-- Footer -->
@@ -936,15 +953,21 @@ Al definir la valoración, se deben aplicar estas condiciones en la pestaña de 
 
         function toggleChat() {
             isChatOpen = !isChatOpen;
+            const chat = document.getElementById('floatingChat');
+            const icon = document.getElementById('toggleIcon');
+            const btn = document.getElementById('chatToggleBtn');
+            const label = document.getElementById('chatLabel'); // Nueva referencia
+
             if (isChatOpen) {
-                floatingChat.classList.add('active');
-                toggleIcon.className = "fas fa-chevron-down text-2xl";
-                chatToggleBtn.classList.remove('pulse-animation');
-                setTimeout(() => userInput.focus(), 400);
+                chat.classList.add('active');
+                label.classList.add('hidden-label'); // Oculta el texto
+                icon.className = "fas fa-chevron-down text-2xl";
+                btn.classList.remove('pulse-animation');
             } else {
-                floatingChat.classList.remove('active');
-                toggleIcon.className = "fas fa-comment-dots text-2xl";
-                chatToggleBtn.classList.add('pulse-animation');
+                chat.classList.remove('active');
+                label.classList.remove('hidden-label'); // Muestra el texto
+                icon.className = "fas fa-comment-dots text-2xl";
+                btn.classList.add('pulse-animation');
             }
         }
 
