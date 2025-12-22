@@ -10,6 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Librería para exportar a PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     
     <style>
         :root {
@@ -307,6 +308,36 @@
         70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
         100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
     }
+    /* Estilos para tablas dentro del chat */
+.chat-bubble-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 0.85rem;
+    background: white;
+}
+
+.chat-bubble-content th {
+    background-color: #f1f5f9;
+    color: #003366;
+    font-weight: 700;
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.chat-bubble-content td {
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.chat-bubble-content tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+/* Ajuste para que la tabla no se corte en móviles */
+.chat-bubble-content {
+    overflow-x: auto;
+}
         /* --- Responsive Design --- */
         /* Ajuste para pantallas medianas (Tablets) */
         @media (max-width: 1200px) {
@@ -917,55 +948,36 @@ Al definir la valoración, se deben aplicar estas condiciones en la pestaña de 
             }
         }
 
-        function addMessage(text, role, save = true) {
-            const wrapper = document.createElement('div');
-            wrapper.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} group w-full mb-2`;
-            
-            const isFallback = text.includes("No tengo la información requerida a partir de los manuales del proyecto");
+    function addMessage(text, role, save = true) {
+        const chatBox = document.getElementById('chatBox');
+        const wrapper = document.createElement('div');
+        wrapper.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} mb-4 animate-fade-in`;
 
-            const bubble = document.createElement('div');
-            bubble.className = `relative p-4 rounded-3xl text-sm shadow-sm transition-all max-w-[90%] ${
-                role === 'user' 
-                ? 'bg-blue-600 text-white rounded-tr-none' 
-                : 'bg-white border border-slate-200 text-slate-700 rounded-tl-none'
-            }`;
+        const bubble = document.createElement('div');
+        bubble.className = `p-4 rounded-2xl max-w-[85%] shadow-sm ${
+            role === 'user' 
+            ? 'bg-[#003366] text-white rounded-tr-none' 
+            : 'bg-white border border-gray-200 text-gray-800 rounded-tl-none chat-bubble-content'
+        }`;
 
-            if (role === 'assistant') {
-                bubble.innerHTML = `
-                    <div class="mb-1">${cleanRender(text)}</div>
-                    ${!isFallback ? `
-                    <button onclick="exportSinglePDF(this)" class="absolute -right-10 top-2 opacity-0 group-hover:opacity-100 text-slate-400 hover:text-blue-600 p-2 transition-all" title="Exportar a PDF">
-                        <i class="fas fa-file-pdf"></i>
-                    </button>` : ''}
-                    ${isFallback ? `
-                    <div class="mt-4 pt-4 border-t border-slate-100">
-                        <p class="text-[11px] font-bold text-slate-500 mb-3 uppercase tracking-wider">Escalar consulta por Correo</p>
-                        <input type="text" id="ticketName" placeholder="Tu nombre y apellido..." class="w-full p-3 mb-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-1 focus:ring-blue-400 outline-none">
-                        <button onclick="triggerEmailEscalation(this)" class="w-full bg-blue-600 text-white py-3 rounded-xl text-xs font-bold hover:bg-blue-700 shadow-md">
-                            Enviar mail al Equipo SAP
-                        </button>
-                    </div>
-                    ` : ''}
-                `;
-            } else {
-                bubble.textContent = text;
-            }
-
-            wrapper.appendChild(bubble);
-            chatBox.appendChild(wrapper);
-
-            if (save && role !== 'system') {
-                conversationHistory.push({ role, content: text });
-                saveSession();
-            }
-
-            // Scroll Inteligente
-            if (role === 'user') {
-                chatBox.scrollTop = chatBox.scrollHeight;
-            } else {
-                wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+        // --- CAMBIO CLAVE AQUÍ ---
+        if (role === 'assistant') {
+            // Usamos marked.parse para convertir el Markdown (tablas) en HTML
+            bubble.innerHTML = marked.parse(text);
+        } else {
+            bubble.textContent = text;
         }
+        // -------------------------
+
+        wrapper.appendChild(bubble);
+        chatBox.appendChild(wrapper);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        if (save) {
+            conversationHistory.push({ role, content: text });
+            sessionStorage.setItem('portland_chat_session', JSON.stringify(conversationHistory));
+        }
+    }
 
         async function callOpenRouter() {
             const url = "https://openrouter.ai/api/v1/chat/completions";
