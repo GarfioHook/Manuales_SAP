@@ -861,7 +861,7 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 *   **Objetivo:** Definir propiedades logísticas, comerciales y contables de productos/servicios.
 *   **Contexto Portland:** Función centralizada solicitada por usuario final y ejecutada por Equipo Central de Datos Maestros.
 
-**Pasos del Proceso:**
+**5 Pasos del Proceso:**
 1.  **Verificación (MM03):** Buscar existencia previa por descripción o grupo de artículos (F4) -> Evita duplicados.
 2.  **Definición de Tipo (MM01):** Seleccionar HAWA (Mercadería) o DIEN (Servicio) -> Define lógica de comportamiento.
 3.  **Selección de Vistas:** Elegir Datos Básicos, Ventas (1 y 2), Compras, Almacenamiento y Contabilidad 1 -> Habilitación de campos.
@@ -874,7 +874,7 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 *   **Módulo:** Cross (FI/SD/MM)
 *   **Objetivo:** Crear y extender capacidades de Clientes y Proveedores.
 
-**Pasos del Proceso:**
+**5 Pasos del Proceso:**
 1.  **Creación Inicial:** Seleccionar "Organización" e ingresar Razón Social, Dirección y Ciudad -> Identificación básica.
 2.  **Datos Fiscales:** En pestaña "Identificador", ingresar NIF/RUC/NIT -> El sistema valida duplicidad y formato.
 3.  **Extensión Financiera (Rol FLCU00 / FLVN00):** Clic en "Sociedad" -> Ingresar Cuenta Asociada para Clientes o Proveedores -> Enlace con Balance General.
@@ -891,10 +891,10 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 *   **Ejemplo de Clases de Valoración:** **DIST_LO_GE** (Importado), **NACIONAL** (Local), **PRODUCCION** (Maquila).
 *   **Ejemplo de Condiciones de Precio (Z):** **ZFLE** (Flete), **ZSEG** (Seguro), **ZAGA** (Aduana), **ZTNA** (Transporte local).
 
-**Pasos del Proceso:**
+** 7 Pasos del Proceso:**
 1.  **Cabecera:** Elegir Clase de Pedido (ej. **ZIMP** para Importacion para Distribución Local }) e ingresar Proveedor -> Inicio de documento.
 2.  **Datos Org:** Ingresar Org. Compras, Grupo Compras y Sociedad -> Estructura legal.
-3.  **Incoterms:** En pedidos de Importacion siempre se debe Ingresar la Condicion de Incoterms y puerto de embarque aplicable al pedido -> Estructura de costos.
+3.  **Incoterms:** (SOLO IMPORTACION) Ingresar la Condicion de Incoterms y puerto de embarque aplicable al pedido -> Define Estructura de costos.
 4.  **Posiciones:** Detallar Material, Cantidad, Precio y Centro -> Carga de líneas.
 5.  **Pestaña Entrega:** Seleccionar la Clase de Valoración correcta (ej. **DIST_LO_GE** para Distribucion Local General) -> ⚠️ **REGLA CRÍTICA:** No omitir este paso para evitar promediar costos de operaciones distintas.
 6.  **Pestaña Condiciones:** Cargar códigos de Condiciones de Precio Aplicables si es un pedido de Importación (Ej. ZFLE, ZSEG, etc.) y montos adicionales -> El sistema calcula el Precio Efectivo de ingreso.
@@ -904,7 +904,7 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 *   **Módulo:** MM
 *   **Regla de Negocio:** Solo registrar cuando el material ha ingresado físicamente.
 
-**Pasos del Proceso:**
+** 5 Pasos del Proceso:**
 1.  **Acceso:** Seleccionar "Entrada de mercancías" y referencia "Pedido" -> Ingresar N° de OC.
 2.  **Cabecera:** Validar Clase de Movimiento **101** y ajustar Fecha de Contabilización a la fecha real de recepción física -> Garantiza realidad operativa.
 3.  **Referencia:** Ingresar número de "Nota de Entrega" o Guía del proveedor -> Trazabilidad documental.
@@ -917,7 +917,7 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 *   **Módulo:** SD
 *   **Contexto Portland:** Contrato formal que reserva inventario y valida riesgo.
 
-**Pasos del Proceso:**
+**5 Pasos del Proceso:**
 1.  **Inicio:** Clase de Pedido (ej. **Z01D** para Distribución Local), Org. Ventas , Canal, Sector -> Contexto filial.
 2.  **Cabecera:** Ingresar Cliente y Referencia (Según OC física del cliente) -> Datos de contrato.
 3.  **Posiciones:** Ingresar Material y Cantidad -> El sistema realiza Verificación de Disponibilidad.
@@ -927,7 +927,7 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 ## [TX: VL01N / VL02N] Expedición (Salida de Mercancía)
 *   **Módulo:** Logística (LE-SD)
 
-**Pasos del Proceso:**
+**3 Pasos del Proceso:**
 1.  **Creación (VL01N):** Referenciar Pedido de Venta -> Genera Entrega de Salida (80XXXXXX).
 2.  **Picking (VL02N):** En pestaña Picking, ingresar cantidad real cargada, Almacén y Lote -> Preparación física.
 3.  **Contabilizar SM:** Clic en botón "Contabilizar SM" -> Ejecuta Movimiento **601**, rebaja inventario y registra Costo de Venta (CoMV).
