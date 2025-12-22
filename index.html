@@ -347,9 +347,31 @@
     background-color: #f8fafc;
 }
 
-/* Ajuste para que la tabla no se corte en móviles */
+/* Espacio superior para el icono de PDF y manejo de tablas */
 .chat-bubble-content {
     overflow-x: auto;
+    padding-top: 32px !important; 
+    position: relative;
+}
+
+/* Estilo del botón PDF dentro de la burbuja */
+.pdf-export-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: #ef4444; /* Rojo */
+    opacity: 0.6;
+    transition: all 0.2s;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    z-index: 20;
+}
+
+.pdf-export-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
 }
 /* Estilo forzado para el botón de soporte */
 .support-btn {
@@ -1064,61 +1086,62 @@ Al definir la valoración, se deben aplicar estas condiciones en la pestaña de 
 function addMessage(text, role, save = true) {
     const chatBox = document.getElementById('chatBox');
     const wrapper = document.createElement('div');
-    // Alineación según el remitente
     wrapper.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} mb-4 animate-fade-in`;
 
     const bubble = document.createElement('div');
-    // Clases base y diseño de burbuja
-    bubble.className = `p-4 rounded-2xl max-w-[85%] shadow-sm ${
+    // Mantenemos 'relative' para posicionar el botón de PDF arriba a la derecha
+    bubble.className = `p-4 rounded-2xl max-w-[85%] shadow-sm relative ${
         role === 'user' 
         ? 'bg-[#003366] text-white rounded-tr-none' 
         : 'bg-white border border-gray-200 text-gray-800 rounded-tl-none chat-bubble-content'
     }`;
 
     if (role === 'assistant') {
-        // 1. Convertir Markdown (tablas) a HTML
+        // --- 1. REINCORPORACIÓN DEL BOTÓN PDF ---
+        const pdfBtn = document.createElement('button');
+        pdfBtn.innerHTML = '<i class="fas fa-file-pdf"></i>';
+        pdfBtn.className = "absolute top-2 right-2 text-red-500 hover:text-red-700 transition-colors text-sm z-10 opacity-70 hover:opacity-100";
+        pdfBtn.title = "Exportar respuesta a PDF";
+        pdfBtn.onclick = () => exportToPDF(text);
+        bubble.appendChild(pdfBtn);
+
+        // --- 2. RENDERIZADO DE CONTENIDO (Markdown + Soporte) ---
+        const contentDiv = document.createElement('div');
         let htmlContent = marked.parse(text);
         
-        // 2. Palabras clave para detectar si la IA no tiene la información
-        const noInfoKeywords = [
-            "no tengo información", 
-            "no se encuentra documentado", 
-            "no tengo detalles", 
-            "consulta con tu key user",
-            "no se detalla en el manual"
-        ];
-        
-        const lowerText = text.toLowerCase();
-        
-        if (noInfoKeywords.some(keyword => lowerText.includes(keyword))) {
-            // Obtener la última pregunta del usuario y limpiar comillas/caracteres raros
+        // Lógica de detección para el botón de soporte por correo
+        const noInfoKeywords = ["no tengo información", "no se encuentra documentado", "consulta con tu key user"];
+        if (noInfoKeywords.some(k => text.toLowerCase().includes(k))) {
             const lastUserMsg = conversationHistory.filter(m => m.role === 'user').pop()?.content || "";
             const safeQuestion = lastUserMsg.replace(/'/g, "\\'").replace(/"/g, "&quot;");
-
-            // 3. Insertar el contenedor de soporte con estilo de botón real
             htmlContent += `
                 <div class="support-container" style="margin-top: 15px; padding: 15px; background-color: #f0f7ff; border: 1px dashed #003366; border-radius: 12px; text-align: center;">
-                    <p style="font-size: 11px; color: #003366; margin-bottom: 8px; font-weight: bold; font-family: sans-serif;">
-                        ¿No encontraste lo que buscabas?
-                    </p>
+                    <p style="font-size: 11px; color: #003366; margin-bottom: 8px; font-weight: bold;">¿Deseas soporte adicional?</p>
                     <button onclick="sendToSupport('${safeQuestion}')" class="support-btn">
-                        <i class="fas fa-envelope" style="margin-right: 8px;"></i>
-                        Enviar consulta a soporte
+                        <i class="fas fa-envelope mr-2"></i> Enviar consulta a gsalinas@pjportland.cl
                     </button>
-                </div>
-            `;
+                </div>`;
         }
-        bubble.innerHTML = htmlContent;
+        
+        contentDiv.innerHTML = htmlContent;
+        bubble.appendChild(contentDiv);
     } else {
-        // Mensaje del usuario (texto plano por seguridad)
         bubble.textContent = text;
     }
 
     wrapper.appendChild(bubble);
     chatBox.appendChild(wrapper);
     
-    // Scroll automático
-    chatBox.scrollTop = chatBox.scrollHeight;
+    // --- 3. CORRECCIÓN DEL SCROLL (Lectura desde el inicio) ---
+    // Si es un mensaje corto del usuario, hacemos scroll al final.
+    // Si es una respuesta larga de la IA, el scroll se queda quieto para permitir leer el inicio.
+    if (role === 'user') {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    } else {
+        // Solo hacemos un pequeño ajuste para asegurar que el mensaje sea visible,
+        // pero NO forzamos el scroll al final de la tabla/texto largo.
+        wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 
     if (save) {
         conversationHistory.push({ role, content: text });
