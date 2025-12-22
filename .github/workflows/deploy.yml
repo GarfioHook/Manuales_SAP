@@ -4,6 +4,12 @@ on:
   push:
     branches: ["main"]
 
+# ESTA ES LA PARTE QUE FALTA:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -13,7 +19,7 @@ jobs:
 
       - name: Inject API Key
         run: |
-          # Ahora apunta correctamente a index.html
+          # Asegúrate de que el archivo se llame index.html
           sed -i 's|REPLACE_ME_WITH_API_KEY|${{ secrets.OPENROUTER_API_KEY }}|g' index.html
 
       - name: Upload artifact
