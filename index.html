@@ -351,6 +351,39 @@
 .chat-bubble-content {
     overflow-x: auto;
 }
+/* Estilo forzado para el botón de soporte */
+.support-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    background-color: #003366 !important; /* Azul Portland */
+    color: white !important;
+    padding: 10px 20px !important;
+    border-radius: 9999px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    margin-top: 12px !important;
+    border: none !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+    transition: all 0.2s ease !important;
+}
+
+.support-btn:hover {
+    background-color: #004080 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.support-container {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f0f7ff;
+    border: 1px dashed #003366;
+    border-radius: 12px;
+    text-align: center;
+}
         /* --- Responsive Design --- */
         /* Ajuste para pantallas medianas (Tablets) */
         @media (max-width: 1200px) {
@@ -976,11 +1009,11 @@ Al definir la valoración, se deben aplicar estas condiciones en la pestaña de 
 function addMessage(text, role, save = true) {
     const chatBox = document.getElementById('chatBox');
     const wrapper = document.createElement('div');
-    // Alineación: derecha para usuario, izquierda para asistente
+    // Alineación según el remitente
     wrapper.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} mb-4 animate-fade-in`;
 
     const bubble = document.createElement('div');
-    // Aplicamos estilos base y específicos por rol
+    // Clases base y diseño de burbuja
     bubble.className = `p-4 rounded-2xl max-w-[85%] shadow-sm ${
         role === 'user' 
         ? 'bg-[#003366] text-white rounded-tr-none' 
@@ -988,54 +1021,88 @@ function addMessage(text, role, save = true) {
     }`;
 
     if (role === 'assistant') {
-        // 1. Convertimos el Markdown de la IA a HTML real (Tablas, negritas, etc.)
+        // 1. Convertir Markdown (tablas) a HTML
         let htmlContent = marked.parse(text);
         
-        // 2. Verificamos si la IA no pudo responder para ofrecer el botón de soporte
-        const noInfoKeywords = ["no tengo información", "no se encuentra documentado", "no tengo detalles", "consulta con tu Key User"];
+        // 2. Palabras clave para detectar si la IA no tiene la información
+        const noInfoKeywords = [
+            "no tengo información", 
+            "no se encuentra documentado", 
+            "no tengo detalles", 
+            "consulta con tu key user",
+            "no se detalla en el manual"
+        ];
+        
         const lowerText = text.toLowerCase();
         
         if (noInfoKeywords.some(keyword => lowerText.includes(keyword))) {
-            // Obtenemos la última pregunta del usuario para el cuerpo del mail
-            const lastUserMsg = conversationHistory.filter(m => m.role === 'user').pop()?.content || "Consulta sobre proceso SAP";
-            
-            // Añadimos el componente visual del botón de Outlook
+            // Obtener la última pregunta del usuario y limpiar comillas/caracteres raros
+            const lastUserMsg = conversationHistory.filter(m => m.role === 'user').pop()?.content || "";
+            const safeQuestion = lastUserMsg.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+
+            // 3. Insertar el contenedor de soporte con estilo de botón real
             htmlContent += `
-                <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-center">
-                    <p class="text-[11px] text-blue-800 mb-2 font-medium italic">¿La información no es suficiente? Contacta al experto:</p>
-                    <button onclick="sendToSupport('${lastUserMsg.replace(/'/g, "\\'")}')" 
-                            class="bg-[#003366] text-white px-4 py-2 rounded-full text-xs hover:bg-blue-800 transition-all shadow-sm flex items-center justify-center mx-auto">
-                        <i class="fas fa-envelope mr-2"></i> Enviar a gsalinas@pjportland.cl
+                <div class="support-container" style="margin-top: 15px; padding: 15px; background-color: #f0f7ff; border: 1px dashed #003366; border-radius: 12px; text-align: center;">
+                    <p style="font-size: 11px; color: #003366; margin-bottom: 8px; font-weight: bold; font-family: sans-serif;">
+                        ¿No encontraste lo que buscabas?
+                    </p>
+                    <button onclick="sendToSupport('${safeQuestion}')" class="support-btn">
+                        <i class="fas fa-envelope" style="margin-right: 8px;"></i>
+                        Enviar consulta a soporte
                     </button>
                 </div>
             `;
         }
         bubble.innerHTML = htmlContent;
     } else {
-        // Para el usuario usamos textContent por seguridad (evitar inyección de código)
+        // Mensaje del usuario (texto plano por seguridad)
         bubble.textContent = text;
     }
 
     wrapper.appendChild(bubble);
     chatBox.appendChild(wrapper);
     
-    // Auto-scroll al final del chat
+    // Scroll automático
     chatBox.scrollTop = chatBox.scrollHeight;
 
-    // Guardar en el historial de sesión si corresponde
     if (save) {
         conversationHistory.push({ role, content: text });
         sessionStorage.setItem('portland_chat_session', JSON.stringify(conversationHistory));
     }
 }
 
+/**
+ * Función auxiliar para abrir Outlook con la pregunta precargada
+ */
+function sendToSupport(userQuestion) {
+    const email = "gsalinas@pjportland.cl";
+    const subject = "Pregunta SAP";
+    
+    // Limpieza de texto para evitar errores en el enlace mailto
+    const cleanQuestion = userQuestion.replace(/[\r\n]+/g, " ").trim();
+    const body = `Hola Soporte,\n\nTengo la siguiente duda respecto a los procesos SAP:\n\n"${cleanQuestion}"\n\nQuedo atento a sus comentarios.`;
+    
+    // Generar link y redireccionar
+    const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoLink;
+}
+
 // Función auxiliar para gestionar el envío a Outlook
 function sendToSupport(userQuestion) {
     const email = "gsalinas@pjportland.cl";
     const subject = "Pregunta SAP";
-    const body = `Hola Soporte,\n\nTengo la siguiente duda respecto a los procesos SAP:\n\n"${userQuestion}"\n\nQuedo atento a sus comentarios.`;
     
-    window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    // Limpiamos la pregunta de saltos de línea extra o caracteres que bloquean el mailto
+    const cleanQuestion = userQuestion
+        .replace(/[\r\n]+/g, " ") // Quita saltos de línea
+        .trim();
+
+    const body = `Hola Soporte,\n\nTengo la siguiente duda respecto a los procesos SAP:\n\n"${cleanQuestion}"\n\nQuedo atento a sus comentarios.`;
+    
+    // Usamos el constructor de URLSearchParams para asegurar una codificación perfecta
+    const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    window.location.href = mailtoLink;
 }
 
         async function callOpenRouter() {
