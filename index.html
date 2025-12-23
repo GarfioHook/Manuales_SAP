@@ -844,7 +844,7 @@
     </script>
 
     <script>
-        const openRouterKey = "REPLACE_ME_WITH_API_KEY"; 
+        const openRouterKey = "REPLACE_ME_WITH_API_KEY";
         const modelID = "nex-agi/deepseek-v3.1-nex-n1:free";
 //        const manualURL = "https://garfiohook.github.io/Manuales_SAP/Manuales/Manual_de_Usuario_Consolidado.pdf";
         const supportEmail = "gsalinas@pjportland.cl";
@@ -1251,92 +1251,84 @@ function sendToSupport(userQuestion) {
         }
 
 function exportToPDF(text) {
+    // 1. Crear el contenedor virtual
     const element = document.createElement('div');
     const contentHtml = marked.parse(text);
     
+    // 2. Aplicar estilos de reseteo total al contenedor
+    // Importante: padding: 0 y margin: 0 para que html2pdf empiece en el tope
+    element.style.width = '190mm'; // Ancho A4 aproximado
+    element.style.margin = '0';
+    element.style.padding = '0';
+    element.style.backgroundColor = 'white';
+
     element.innerHTML = `
-        <div style="padding: 30px; font-family: 'Segoe UI', Arial, sans-serif; color: #333; background-color: white;">
+        <div style="padding: 20px; font-family: 'Segoe UI', Arial, sans-serif; color: #333;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #003366; padding-bottom: 10px; margin-bottom: 20px;">
                 <div>
-                    <div style="color: #003366; font-weight: 800; font-size: 22px; letter-spacing: 1px;">GRUPO PORTLAND</div>
-                    <div style="color: #6bae47; font-weight: 600; font-size: 12px;">MANUAL DE PROCESOS SAP S/4HANA</div>
+                    <div style="color: #003366; font-weight: 800; font-size: 20px;">GRUPO PORTLAND</div>
+                    <div style="color: #6bae47; font-weight: 600; font-size: 11px;">MANUAL DE PROCESOS SAP S/4HANA</div>
                 </div>
-                <div style="text-align: right; color: #666; font-size: 11px;">
+                <div style="text-align: right; color: #666; font-size: 10px;">
                     Generado el: ${new Date().toLocaleDateString()}<br>
-                    ID Documento: ${Math.floor(Math.random() * 1000000)}
+                    ID: ${Math.floor(Math.random() * 1000000)}
                 </div>
             </div>
 
             <style>
-                /* Estilo para los Pasos del Proceso (Listas Numeradas) */
-                ol { 
-                    counter-reset: step-counter; 
-                    list-style-type: none; 
-                    padding-left: 0; 
-                }
+                /* Estilos para evitar saltos y espacios */
+                .pdf-body { width: 100%; margin: 0; padding: 0; }
+                ol { counter-reset: step-counter; list-style-type: none; padding-left: 0; margin: 10px 0; }
                 ol li { 
-                    position: relative; 
-                    margin-bottom: 15px; 
-                    padding: 12px 15px 12px 50px; 
-                    background-color: #f1f5f9; 
-                    border-radius: 8px; 
-                    border-left: 5px solid #003366;
-                    font-size: 12px;
-                    page-break-inside: avoid;
+                    position: relative; margin-bottom: 10px; padding: 10px 10px 10px 45px; 
+                    background-color: #f1f5f9; border-radius: 6px; border-left: 5px solid #003366;
+                    font-size: 11px; page-break-inside: avoid;
                 }
                 ol li::before { 
-                    content: counter(step-counter); 
-                    counter-increment: step-counter; 
-                    position: absolute; 
-                    left: 12px; 
-                    top: 50%; 
-                    transform: translateY(-50%); 
-                    background-color: #003366; 
-                    color: white; 
-                    width: 24px; 
-                    height: 24px; 
-                    border-radius: 50%; 
-                    display: flex; 
-                    align-items: center; 
-                    justify-content: center; 
-                    font-weight: bold; 
-                    font-size: 12px;
+                    content: counter(step-counter); counter-increment: step-counter; 
+                    position: absolute; left: 10px; top: 50%; transform: translateY(-50%); 
+                    background-color: #003366; color: white; width: 22px; height: 22px; 
+                    border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+                    font-weight: bold; font-size: 10px;
                 }
-
-                /* Estilo para Tablas */
-                table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-                th { background-color: #003366; color: white; padding: 10px; border: 1px solid #003366; text-align: left; font-size: 11px; }
-                td { padding: 8px; border: 1px solid #cbd5e1; font-size: 10px; }
+                table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+                th { background-color: #003366; color: white; padding: 8px; border: 1px solid #003366; text-align: left; font-size: 10px; }
+                td { padding: 6px; border: 1px solid #cbd5e1; font-size: 9px; }
                 tr:nth-child(even) { background-color: #f8fafc; }
-
-                /* Texto General */
-                h1, h2, h3 { color: #003366; margin-top: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }
-                p { font-size: 12px; line-height: 1.6; margin-bottom: 10px; }
-                strong { color: #003366; }
+                h1, h2, h3 { color: #003366; margin-top: 15px; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px; }
+                p { font-size: 11px; line-height: 1.5; margin-bottom: 8px; }
             </style>
 
-            <div class="content">
+            <div class="pdf-body">
                 ${contentHtml}
             </div>
 
-            <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 10px; text-align: center; font-size: 9px; color: #999; font-style: italic;">
-                Este documento es una guía de consulta rápida generada por IA. Valide siempre con su Key User regional.
+            <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 10px; text-align: center; font-size: 8px; color: #999;">
+                Documento de consulta rápida - Portland SAP S/4HANA
             </div>
         </div>
     `;
 
+    // 3. Configuración CLAVE para eliminar los saltos iniciales
     const opt = {
-        margin: [15, 15, 15, 15],
+        margin: [10, 10, 10, 10],
         filename: 'Guia_Proceso_Portland.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, letterRendering: true, useCORS: true },
+        html2canvas: { 
+            scale: 2, 
+            useCORS: true,
+            scrollY: 0, // FUERZA a empezar en el tope del elemento, no del scroll del chat
+            scrollX: 0,
+            windowHeight: element.scrollHeight, // Limita el alto al contenido real
+            y: 0 // Asegura coordenada Y inicial cero
+        },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
     };
 
+    // 4. Ejecutar (sin añadir al body para evitar interferencias de scroll)
     html2pdf().set(opt).from(element).save();
 }
-
         function clearChat() {
             if(confirm("¿Estás seguro de que deseas borrar todo el historial de esta sesión?")) {
                 sessionStorage.removeItem('portland_chat_session');
