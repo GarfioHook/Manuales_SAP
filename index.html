@@ -881,6 +881,22 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 4.  **Extensión Comercial (Rol FLCU01 - Cliente):** Clic en "Comercial" -> Definir Área de Ventas (Org, Canal, Sector) y Funciones de Interlocutor -> Habilita ventas.
 5.  **Extensión Logística (Rol FLVN01 - Proveedor):** Clic en "Compras" -> Definir Org. Compras y Moneda del pedido -> Habilita órdenes de compra.
 
+## [TX: BP] Gestión de Crédito (Rol UKM000 - SAP Credit Management)
+* **Módulo:** FI / SD (Credit Management)
+* **Objetivo:** Definir la solvencia cualitativa (Riesgo) y el límite monetario (Cuantitativo) del cliente.
+* **Responsable:** Responsable de Crédito.
+
+**7 Pasos del Proceso:**
+1. **Acceso (BP):** Buscar el código del Interlocutor Comercial -> Acceso al dato maestro.
+2. **Modo Modificar:** Clic en botón "Conmutar entre visualizar y modificar" (icono lápiz) -> Habilita edición.
+3. **Selección de Rol:** En "Tratar función IC", elegir **UKM000 - SAP Credit Management** -> Habilita pestañas "Perfil de Crédito" y "Datos de Segmento".
+4. **Perfil de Crédito (Global):** En pestaña "Perfil de Crédito", ingresar la **Clase de Riesgo** (ej. A, B, C) -> Define la probabilidad de incumplimiento global.
+5. **Regla de Verificación:** Confirmar que la regla sea **01 (Sin cálculo automático)** -> El cálculo del riesgo se gestiona manualmente según política interna.
+6. **Segmento de Crédito (Local):** Clic en "Datos de Segmento de Crédito" y seleccionar el segmento según la Sociedad -> Unidad de riesgo específica.
+7. **Asignación de Límite:** En pestaña "Límite de crédito", ingresar el monto máximo de exposición monetaria (Límite) -> Techo de crédito para ventas.
+
+> ⚠️ **REGLA CRÍTICA:** La Clase de Riesgo es cualitativa y global (aplica a todas las filiales), mientras que el Límite Monetario es local por Segmento de Crédito.
+
 # II. CICLO DE COMPRAS Y SUMINISTRO (PROCURE-TO-PAY)
 
 ## [TX: ME21N] Creación de Pedido de Compra (OC)
@@ -922,7 +938,9 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 2.  **Cabecera:** Ingresar Cliente y Referencia (Según OC física del cliente) -> Datos de contrato.
 3.  **Posiciones:** Ingresar Material y Cantidad -> El sistema realiza Verificación de Disponibilidad.
 4.  **Precios:** Ingresar/Validar condición de Precio Base **PR00** y verificar Margen de Cobertura -> ⚠️ **REGLA CRÍTICA:** Márgen debe cumplir las politicas comerciales.
-5.  **Control de Crédito:** Al grabar, si el valor excede el límite, el pedido se guarda con Bloqueo de Crédito -> Requiere liberación por el Responsable de Crédito.
+5. **Control de Crédito:** Al grabar, el sistema suma: **Valor Pedido + Comprometido** (pedidos abiertos) + **Agotado** (facturas pendientes).
+    * **Resultado:** Si excede el límite, emite "Verificación de crédito sin éxito" y guarda con **Bloqueo de Crédito**.
+    * **Acción:** El pedido no podrá procesarse por logística; el Responsable de Crédito debe liberarlo.
 
 ## [TX: VL01N / VL02N] Expedición (Salida de Mercancía)
 *   **Módulo:** Logística (LE-SD)
@@ -945,6 +963,21 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 2.  **Referencia:** Ingresar N° de OC -> El sistema cruza Pedido-Recepción-Factura.
 3.  **Contabilizar:** Verificar que el saldo sea Cero y Grabar -> Salda provisión y crea obligación de pago.
 
+## [TX: F-53] Contabilizar Pago Saliente a Proveedor/Acreedor (Pago Manual)
+* **Responsable:** Responsable de Cuentas por Pagar.
+1.  **Cabecera:** Ingresar Fecha y Clase de Documento **KZ** (Pago Acreedor).
+2.  **Banco:** Ingresar cuenta de mayor del banco e Importe total a pagar.
+3.  **Selección:** En "Selección PA", ingresar código de Acreedor y clic en "Tratar Partidas Abiertas".
+4.  **Compensación:** Doble clic sobre las facturas para saldarlas.
+5.  **Validación:** El campo "No asignado" DEBE ser cero antes de Contabilizar.
+
+## [TX: F110] Programa de Pagos Automáticos a Proveedor/Acreedor (APP)
+* **Responsable:** Responsable de Tesorería.
+1.  **Parámetros:** Definir Fecha de Ejecución, ID, Sociedades y Métodos de Pago.
+2.  **Propuesta:** Clic en "Propuesta" -> El sistema lista partidas sin bloqueos.
+3.  **Revisión:** Visualizar propuesta para excluir o liberar facturas.
+4.  **Ejecutar Pago:** Contabiliza documentos FI y genera archivo para el banco.
+
 ## [TX: F-28] Contabilizar Pago de Cliente (Cobranza)
 1.  **Entrada:** Ingresar Banco e Importe recibido -> Registro de entrada de dinero.
 2.  **Compensación:** Ingresar Código de Cliente y seleccionar facturas pagadas -> El campo "No asignado" debe ser Cero -> Grabar.
@@ -954,6 +987,12 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 2.  **MI04 (Recuento):** Ingresar cantidades físicas contadas -> Usar "Recuento Cero" si no hay existencia.
 3.  **MI07 (Ajuste):** Contabilizar diferencias -> El sistema genera movimientos **701** (sobrante) o **702** (faltante).
 
+# V. REPORTES Y MONITOREO
+
+* **UKM_BP:** Visualizar Perfil de Crédito, exposición y riesgo [TX: UKM_BP].
+* **UKM_CASE:** Decisiones de Crédito Documentadas (DCD) por incumplimiento de límite [TX: UKM_CASE].
+* **FBL1N:** Verificar facturas pendientes o pagadas de Acreedores [TX: FBL1N].
+* **MRBR:** Liberar facturas bloqueadas por discrepancias de precio/cantidad [TX: MRBR].
 ---
 FIN DEL TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA.
 ---
