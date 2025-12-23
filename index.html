@@ -1341,7 +1341,6 @@ function exportToPDF(text) {
             <div class="pdf-body">
                 ${contentHtml}
             </div>
-
             <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 10px; text-align: center; font-size: 8px; color: #999;">
                 Documento de consulta rápida - Portland SAP S/4HANA
             </div>
@@ -1362,7 +1361,7 @@ function exportToPDF(text) {
             y: 0 // Asegura coordenada Y inicial cero
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        pagebreak: { mode: ['css', 'legacy'] }
     };
 
     // 4. Ejecutar (sin añadir al body para evitar interferencias de scroll)
