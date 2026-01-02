@@ -286,7 +286,7 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 2. **Línea Principal (Cliente - Partida Original):**
 * Se selecciona la partida abierta del cliente que contiene el saldo restante.
 3. **Líneas de Contrapartida (Ajuste y Liquidación):**
-* **Línea Contra (Cliente):** * **Asignacion:** Registrar el número de la factura original con el formato **[F-N° FACTURA]**.
+* **Línea Contra (Cliente):** * **Asignacion:** Registrar el número de la factura original con el formato **F[N° FACTURA]**.
 * **Línea Contra (Banco):** * **Asignacion:** Registrar el **[CODIGO BP]** del cliente.
 * **Texto de Posicion:** Ingresar obligatoriamente **SALDO CLIENTE**.
 4. **Validación:** El proceso debe asegurar que el abono previo y el nuevo pago cierren íntegramente la factura original. El campo "No asignado" debe ser **CERO**.
