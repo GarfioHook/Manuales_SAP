@@ -179,7 +179,7 @@
         // --- SISTEMA ---
         async function fetchSystemPrompt() {
             try {
-                const response = await fetch('system_prompt.txt?v=' + Date.now());
+                const response = await fetch('../system_prompt.txt?v=' + Date.now());
                 if (!response.ok) throw new Error("No se pudo cargar el system prompt");
                 systemPrompt = await response.text();
             } catch (error) {
