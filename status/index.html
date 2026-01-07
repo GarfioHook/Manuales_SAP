@@ -23,14 +23,14 @@
 </head>
 
 <body>
-  <div class="w-[380px] mx-auto p-4 space-y-6">
+  <div class="w-[370px] mx-auto p-2 space-y-2">
 
     <!-- ESTADO DEL PROYECTO -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h3 class="text-lg font-bold mb-4">Estado del Proyecto</h3>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-3">
+      <h3 class="text-lg font-bold mb-2">Estado del Proyecto</h3>
 
-      <div class="flex items-center justify-between mb-4">
-        <span class="text-sm font-medium text-gray-500">Plan para Sociedad:</span>
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-sm font-medium text-gray-500">Sociedad</span>
 
         <select
           id="societySelector"
@@ -38,7 +38,6 @@
           class="border border-gray-300 rounded-lg text-sm p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
           <option value="Perú" selected>Perú</option>
           <option value="Colombia">Colombia</option>
-          <option value="PTM">PTM</option>
           <option value="PJ Portland">PJ Portland</option>
           <option value="Noviciado">Noviciado</option>
           <option value="Perez y Jacard">Perez y Jacard</option>
@@ -47,21 +46,21 @@
         </select>
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
-        <div id="box-start" class="bg-gray-50 rounded-lg p-4 text-center">
+      <div class="grid grid-cols-2 gap-2">
+        <div id="box-start" class="bg-gray-50 rounded-lg p-2 text-center">
           <span id="days-to-start" class="block text-2xl font-bold text-gray-900">0</span>
           <span class="text-xs text-gray-500 uppercase">Días para Inicio</span>
         </div>
-        <div id="box-go-live" class="bg-gray-50 rounded-lg p-4 text-center">
+        <div id="box-go-live" class="bg-gray-50 rounded-lg p-2 text-center">
           <span id="days-to-go-live" class="block text-2xl font-bold text-gray-900">0</span>
-          <span class="text-xs text-gray-500 uppercase">Días para GoLive</span>
+          <span class="text-xs text-gray-500 uppercase">Días para Go-Live</span>
         </div>
       </div>
     </div>
 
     <!-- HITOS CLAVE -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h3 class="text-lg font-bold mb-6">Hitos Clave</h3>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-3">
+      <h3 class="text-lg font-bold mb-3">Hitos Clave</h3>
       <div id="milestones-container" class="relative pl-2"></div>
     </div>
 
@@ -70,57 +69,42 @@
   <!-- DATA + LOGICA -->
   <script>
 const milestonesData = {
-        "PTM": [
-            { stage: "Capacitación", type: "Actividad", start: "29-09-2025", end: "20-10-2025", status: "completed" },
-            { stage: "Pruebas", type: "Actividad", start: "20-10-2025", end: "03-11-2025", status: "in-progress" },
-            { stage: "Go-Live", type: "Hito", start: "05-01-2026", end: "05-01-2026", status: "pending" }
-        ],
         "Perú": [
             { stage: "Capacitación", type: "Actividad", start: "03-11-2025", end: "01-12-2025", status: "completed" },
             { stage: "Configuracion y Pruebas", type: "Actividad", start: "01-12-2025", end: "02-01-2026", status: "in-progress" },
-            { stage: "Go/No-Go", type: "Hito", start: "03-01-2026", end: "03-01-2026", status: "pending" },
             { stage: "Go-Live", type: "Hito", start: "05-01-2026", end: "05-01-2026", status: "pending" },
             { stage: "Acompañamiento 1er Cierre", type: "Actividad", start: "05-01-2026", end: "06-02-2026", status: "pending" }
         ],
         "Colombia": [
             { stage: "Capacitación", type: "Actividad", start: "03-11-2025", end: "01-12-2025", status: "completed" },
             { stage: "Configuracion y Pruebas", type: "Actividad", start: "01-12-2025", end: "15-01-2026", status: "in-progress" },
-            { stage: "Go/No-Go", type: "Hito", start: "16-01-2026", end: "16-01-2026", status: "pending" },
             { stage: "Go-Live", type: "Hito", start: "19-01-2026", end: "19-01-2026", status: "pending" },
             { stage: "Acompañamiento 1er Cierre", type: "Actividad", start: "19-01-2026", end: "06-02-2026", status: "pending" }
         ],
         "PJ Portland": [
-            { stage: "Capacitación", type: "Actividad", start: "03-11-2025", end: "01-12-2025", status: "pending" },
             { stage: "Configuracion y Pruebas", type: "Actividad", start: "01-12-2025", end: "09-01-2026", status: "in-progress" },
-            { stage: "Go/No-Go", type: "Hito", start: "09-01-2026", end: "09-01-2026", status: "pending" },
             { stage: "Go-Live", type: "Hito", start: "12-01-2026", end: "12-01-2026", status: "pending" },
             { stage: "Acompañamiento 1er Cierre", type: "Actividad", start: "12-01-2026", end: "06-02-2026", status: "pending" }
         ],
         "Noviciado": [
-            { stage: "Capacitación", type: "Actividad", start: "03-11-2025", end: "01-12-2025", status: "pending" },
             { stage: "Configuracion y Pruebas", type: "Actividad", start: "01-12-2025", end: "09-01-2026", status: "in-progress" },
-            { stage: "Go/No-Go", type: "Hito", start: "09-01-2026", end: "09-01-2026", status: "pending" },
             { stage: "Go-Live", type: "Hito", start: "12-01-2026", end: "12-01-2026", status: "pending" },
             { stage: "Acompañamiento 1er Cierre", type: "Actividad", start: "12-01-2026", end: "06-02-2026", status: "pending" }
         ],
         "Perez y Jacard": [
-            { stage: "Capacitación", type: "Actividad", start: "03-11-2025", end: "01-12-2025", status: "pending" },
             { stage: "Configuracion y Pruebas", type: "Actividad", start: "01-12-2025", end: "09-01-2026", status: "in-progress" },
-            { stage: "Go/No-Go", type: "Hito", start: "09-01-2026", end: "09-01-2026", status: "pending" },
             { stage: "Go-Live", type: "Hito", start: "12-01-2026", end: "12-01-2026", status: "pending" },
             { stage: "Acompañamiento 1er Cierre", type: "Actividad", start: "12-01-2026", end: "06-02-2026", status: "pending" }
         ],
         "Distribuidora Portland": [
             { stage: "Capacitación", type: "Actividad", start: "09-03-2026", end: "06-04-2026", status: "pending" },
             { stage: "Configuracion y Pruebas", type: "Actividad", start: "06-04-2026", end: "02-05-2026", status: "pending" },
-            { stage: "Go/No-Go", type: "Hito", start: "02-05-2026", end: "02-05-2026", status: "pending" },
             { stage: "Go-Live", type: "Hito", start: "04-05-2026", end: "04-05-2026", status: "pending" },
             { stage: "Acompañamiento 1er Cierre", type: "Actividad", start: "04-05-2026", end: "08-06-2026", status: "pending" }
         ],
         "Epoxa": [
             { stage: "Capacitación", type: "Actividad", start: "09-03-2026", end: "06-04-2026", status: "pending" },
             { stage: "Configuracion y Pruebas", type: "Actividad", start: "06-04-2026", end: "02-05-2026", status: "pending" },
-            { stage: "Go/No-Go", type: "Hito", start: "02-05-2026", end: "02-05-2026", status: "pending" },
             { stage: "Go-Live", type: "Hito", start: "04-05-2026", end: "04-05-2026", status: "pending" },
             { stage: "Acompañamiento 1er Cierre", type: "Actividad", start: "04-05-2026", end: "08-06-2026", status: "pending" }
         ]
@@ -158,7 +142,7 @@ const milestonesData = {
 
       const updateBox = (id, val) => {
         const el = document.getElementById(id);
-        el.className = `rounded-lg p-4 text-center ${val > 0 ? 'bg-blue-100' : 'bg-green-100'}`;
+        el.className = `rounded-lg p-2 text-center ${val > 0 ? 'bg-blue-100' : 'bg-green-100'}`;
       };
       updateBox("box-start", startVal);
 
@@ -170,7 +154,7 @@ const milestonesData = {
       } else if (goLiveItem && goLiveItem.status !== "completed") {
         goLiveColor = "bg-orange-100";
       }
-      boxGoLive.className = `rounded-lg p-4 text-center ${goLiveColor}`;
+      boxGoLive.className = `rounded-lg p-2 text-center ${goLiveColor}`;
 
       let html = `<div class="absolute left-[11px] top-2 bottom-2 w-[2px] bg-gray-200"></div>`;
 
@@ -196,7 +180,7 @@ const milestonesData = {
           : `Inicio: ${item.start} · Fin: ${item.end}`;
 
         html += `
-          <div class="flex gap-4 mb-6 relative">
+          <div class="flex gap-3 mb-3 relative">
             <div class="w-6 h-6 rounded-full ${color} border-4 border-white z-10"></div>
             <div>
               <p class="text-xs font-bold uppercase text-gray-500">${label}</p>
@@ -217,4 +201,3 @@ const milestonesData = {
 
 </body>
 </html>
-
