@@ -36,8 +36,8 @@
           id="societySelector"
           onchange="renderMilestones(this.value)"
           class="border border-gray-300 rounded-lg text-sm p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          <option value="Perú" selected>Perú</option>
-          <option value="Colombia">Colombia</option>
+          <option value="Perú">Perú</option>
+          <option value="Colombia" selected>Colombia</option>
           <option value="PJ Portland">PJ Portland</option>
           <option value="Noviciado">Noviciado</option>
           <option value="Perez y Jacard">Perez y Jacard</option>
@@ -195,7 +195,7 @@ const milestonesData = {
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      renderMilestones("Perú");
+      renderMilestones("Colombia");
     });
   </script>
 
