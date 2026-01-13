@@ -170,7 +170,7 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 ### [TX: FB60] Facturacion Manual y Nota de Debito de Acreedor (Sin OC)
 * **Módulo:** FI (Gestión de Acreedores).
 * **Responsable:** Responsable de Cuentas por Pagar.
-* **Objetivo:** Registrar facturas o notas de débito de proveedores que no poseen una Orden de Compra (gastos directos, servicios básicos, arriendos).
+* **Objetivo:** Registrar exclusivamente facturas o notas de débito de proveedores que no poseen una Orden de Compra (servicios básicos, arriendos), no aplica para compra de Insumos de Oficina, Servicios o Activos.
 * **REGLA DE FORMATO:** Todo texto en Referencia, Asignacion y Texto de Posicion debe ir en **MAYUSCULAS Y SIN ACENTOS**.
 **Estructura del Proceso:**
 1. **Cabecera (Datos de Factura):** * **Acreedor:** Ingresar el código del Proveedor (BP).
@@ -234,20 +234,20 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 * **Cabecera (Referencia):** **PAGO CLIENTE** | **Clase Doc:** **DZ**.
 * **Línea de Contrapartida (Banco):**
 * **Asignacion:** Registrar el **[CODIGO BP]** del cliente.
-* **Texto de Posicion:** Detallar según el formato: **F [N° FACTURA1-N° FACTURA2, ETC]**.
+* **Texto de Posicion:** Detallar según el formato: **F[N° FACTURA1-N° FACTURA2, ETC]**.
 #### 2. Pago con Cheque
 * **Escenario:** El cliente entrega uno o más cheques para cancelar facturas.
 * **Cabecera (Referencia):** **CHEQUE CLIENTE** | **Clase Doc:** **DZ**.
 * **Línea de Contrapartida (Cheque):**
 * **Asignacion:** Registrar **[BANCO-N°_CHEQUE]**.
-* **Texto de Posicion:** Detallar según el formato: **F [N° FACTURA1-N° FACTURA2, ETC]**.
+* **Texto de Posicion:** Detallar según el formato: **F[N° FACTURA1-N° FACTURA2, ETC]**.
 #### 3. Pago Parcial (Abono)
 * **Escenario:** El cliente realiza un pago por un monto inferior al de la factura, dejando un saldo pendiente.
 * **Cabecera (Referencia):** **ABONO CLIENTE** | **Clase Doc:** **DZ**.
 * **Proceso de Compensación:** Utilizar la pestaña "Pagos Parciales" dentro de la transacción.
 * **Línea de Contrapartida (Banco):**
 * **Asignacion:** Registrar el **[CODIGO BP]** del cliente.
-* **Texto de Posicion:** Detallar según el formato: **F [N° FACTURA]**.
+* **Texto de Posicion:** Detallar según el formato: **F[N° FACTURA]**.
 **Estructura del Proceso General:**
 1. **Datos de Cabecera:** Ingresar Fecha, Sociedad, Moneda y la **Referencia** según el escenario anterior.
 2. **Datos Bancarios:** Ingresar Cuenta de Mayor del Banco, Importe y completar **Asignacion** y **Texto** según el tipo de pago.
@@ -305,7 +305,7 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 * **Cuenta:** Ingresar el código del Cliente.
 * **Indicador CME:** Ingresar obligatoriamente el indicador **"W"** (Efectos/Letras).
 * **Asignacion:** Registrar el prefijo **L[N° LETRA]**.
-* **Texto de Posicion:** Detallar siguiendo el formato: **F [N° FACTURA1-N° FACTURA2, ETC]**.
+* **Texto de Posicion:** Detallar siguiendo el formato: **F[N° FACTURA1-N° FACTURA2, ETC]**.
 3. **Seleccion de Partidas (Linea Principal - Facturas):**
 * Clic en el botón para seleccionar las partidas abiertas (facturas) que serán compensadas con la letra.
 4. **Validacion y Compensacion:**
@@ -349,7 +349,7 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 * **Cabecera (Referencia):** **PAGO** | **Clase Doc:** **KZ**.
 * **Línea de Contrapartida (Banco):**
 * **Asignacion:** Registrar el **[CODIGO BP]** del proveedor.
-* **Texto de Posicion:** Detallar según el formato: **F [N° FACTURA]**.
+* **Texto de Posicion:** Detallar según el formato: **F[N° FACTURA]**.
 #### 3. Confirming (Pago de Facturas vía Confirming)
 * **Escenario:** Pago de facturas a través de la plataforma de Confirming Bancario.
 * **Cabecera (Referencia):** **CONFIRMING** | **Clase Doc:** **KZ**.
