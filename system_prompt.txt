@@ -18,16 +18,45 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 
 > ⚠️ **REGLA CRÍTICA:** La Unidad de Medida Base (ej. KG, UN) es inmutable una vez que el material tiene movimientos de stock. Validar con precisión antes de grabar.
 
-## [TX: BP] Gestión de Interlocutores Comerciales (Socios de Negocio)
-*   **Módulo:** Cross (FI/SD/MM)
-*   **Objetivo:** Crear y extender capacidades de Clientes y Proveedores.
+### [TX: BP] Gestión de Interlocutores Comerciales (Datos Generales y Finanzas)
+* **Módulo:** Cross (FI/SD/MM).
+* **Objetivo:** Registrar la identidad legal y fiscal del socio de negocio y habilitar su enlace con la contabilidad financiera.
+**Estructura del Proceso:**
+1. **Inicio y Datos Generales (Rol 000000):**
+* Acceder a la transacción **BP** y presionar el botón  **"Organización"** del menú superior.
+* **IMPORTANTE:** Los campos **Interlocutor comercial** y **Agrupación BP** deben dejarse **VACÍOS**. El sistema genera el número automáticamente.
+* **Pestaña Dirección:** Completar Razón Social (Nombre 1), Conceptos de búsqueda, Dirección completa, Ciudad, País y Región.
+* **Pestaña Identificación:** Cargar la **Categoría fiscal** y el **NIF** (RUT/RUC/NIT). Es obligatorio para el control de duplicidad.
+2. **Extensión Financiera (Rol FLCU00 - Deudor / FLVN00 - Acreedor):**
+* Cambiar el Rol a **FLCU00** (Clientes) o **FLVN00** (Proveedores).
+* Hacer clic en el botón **Sociedad** del menú superior.
+* **Nivel Organizativo:** En la ventana emergente, ingresar el código de la **Sociedad** (ej. GP01) y presionar Enter.
+* **Pestaña Gestión de cuenta:** Ingresar la **Cuenta asociada** (ej. 12XXXX para clientes / 21XXXX para proveedores).
+* **Pestaña Pagos:** Definir **Condición de pago** y **Vías de pago**.
 
-**5 Pasos del Proceso:**
-1.  **Creación Inicial:** Seleccionar "Organización" e ingresar Razón Social, Dirección y Ciudad -> Identificación básica.
-2.  **Datos Fiscales:** En pestaña "Identificador", ingresar NIF/RUC/NIT -> El sistema valida duplicidad y formato.
-3.  **Extensión Financiera (Rol FLCU00 / FLVN00):** Clic en "Sociedad" -> Ingresar Cuenta Asociada para Clientes o Proveedores -> Enlace con Balance General.
-4.  **Extensión Comercial (Rol FLCU01 - Cliente):** Clic en "Comercial" -> Definir Área de Ventas (Org, Canal, Sector) y Funciones de Interlocutor -> Habilita ventas.
-5.  **Extensión Logística (Rol FLVN01 - Proveedor):** Clic en "Compras" -> Definir Org. Compras y Moneda del pedido -> Habilita órdenes de compra.
+### [TX: BP] Extensión Logística de Proveedores (Rol FLVN01)
+* **Módulo:** MM (Gestión de Materiales / Compras).
+* **Objetivo:** Habilitar al socio de negocio para la emisión de Órdenes de Compra y procesos de abastecimiento.
+**Estructura del Proceso:**
+1. **Selección de Rol:** En el campo "Tratar función IC", seleccionar **FLVN01 - Proveedor**.
+2. **Acceso a Datos de Compra:** Hacer clic en el botón **Compras** del menú superior.
+3. **Nivel Organizativo:** En la ventana emergente "Niveles de organización de compras", ingresar el código de la **Org. de compras** (ej. GPOC) y presionar Enter.
+4. **Configuración de Compras:**
+* **Pestaña Datos de compras:** Ingresar obligatoriamente la **Moneda del pedido** (ej. USD).
+* Verificar el indicador de "Verificación de factura basada en entrada de mercancías" según la política de la filial.
+* Validar que los datos de control coincidan con los términos comerciales del proveedor.
+
+### [TX: BP] Extensión Logística de Clientes (Rol FLCU01)
+* **Módulo:** SD (Ventas y Distribución).
+* **Objetivo:** Habilitar al socio de negocio para la creación de Pedidos de Venta, entrega de mercancías y facturación comercial.
+**Estructura del Proceso:**
+1. **Selección de Rol:** En el campo "Tratar función IC", seleccionar **FLCU01 - Cliente**.
+2. **Acceso a Datos de Ventas:** Hacer clic en el botón **Ventas y Distr.** del menú superior.
+3. **Nivel Organizativo:** En la ventana emergente, completar obligatoriamente: **Org. Ventas**, **Canal de distribución** y **Sector**. Presionar Enter.
+4. **Configuración Comercial:**
+* **Pestaña Ventas:** Definir la **Moneda** y el **Esquema de cliente** (para determinación de precios).
+* **Pestaña Expedición:** Definir la **Prioridad de entrega** y la **Condición de expedición**.
+* **Pestaña Funciones de interlocutor:** Validar que el sistema haya determinado automáticamente las funciones: **SO** (Solicitante), **DF** (Receptor de factura), **RP** (Pagador) y **DM** (Destinatario de mercancías). Busque y seleccione en la celda vacía junto a la función **ZV** el encargado de venta. Sin estas funciones, el pedido de venta fallará.
 
 ## [TX: BP] Gestión de Crédito (Rol UKM000 - SAP Credit Management)
 * **Módulo:** FI / SD (Credit Management)
