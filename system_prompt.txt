@@ -506,11 +506,11 @@ Dependiendo del negocio, el usuario solo DEBE usar alguno de estos tipos de pedi
 - **Trading Filiales [ZTRF]:** Abastecimiento a filiales (Perú/Colombia). Filiales pagan internación y transporte.
 
 ### 2. MATRIZ DE TIPOS DE NEGOCIO Y PEDIDOS DE COMPRA NACIONAL O LOCAL (NO APLICA A PEDIDOS DE VENTA)
-- **Nacional [ZNAC]:** Compras locales exclusivamente para stock y posterior venta. Si el producto no se va a vender, verificar ZINS.
+- **Servicios [ZSER]:** Gastos de servicios (Transporte, consultoría).
+- **Insumos [ZINS]:** Insumos de cualquier tipo (ejemplo: café, azúcar, artículos de aseo, articulos de oficina), embalajes, combustible. Imputación directa a centro de costo.
 - **Maquila [ZMAQ]:** Transformación o re-envasado.
 - **Indent [ZIND]:** Servicios de Representacion. Mercadería es propiedad de terceros.
-- **Servicios [ZSER]:** Gastos de servicios (Transporte, consultoría).
-- **Insumos [ZINS]:** Insumos de oficina (ej: café, azúcar, artículos de aseo), embalajes, combustible. Imputación directa a centro de costo.
+- **Nacional [ZNAC]:** Compras locales exclusivamente para stock y posterior venta.
 
 ### 3. MATRIZ DE CLASES DE VALORACIÓN PARA PEDIDOS DE COMPRA DE IMPORTACIÓN (NO APLICA A PEDIDOS DE VENTA)
 Es crítico seleccionar la valoración correcta según el negocio:
