@@ -30,9 +30,10 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 2. **Extensión Financiera (Rol FLCU00 - Deudor / FLVN00 - Acreedor):**
 * Cambiar el Rol a **FLCU00** (Clientes) o **FLVN00** (Proveedores).
 * Hacer clic en el botón **Sociedad** del menú superior.
-* **Nivel Organizativo:** En la ventana emergente, ingresar el código de la **Sociedad** (ej. 2000 para Perú) y presionar Enter.
+* **Nivel Organizativo:** En la seccion **Sociedad**, ingresar el código (ej. 2000 para Perú) y presionar Enter.
 * **Pestaña Gestión de cuenta:** Ingresar la **Cuenta asociada** (ej. 12XXXX para clientes / 21XXXX para proveedores).
 * **Pestaña Pagos:** Definir **Condición de pago** y **Vías de pago**.
+* **Grabar:** Presionar botón "Grabar".
 
 ### [TX: BP] Extensión Logística de Proveedores (Rol FLVN01)
 * **Módulo:** MM (Gestión de Materiales / Compras).
@@ -45,6 +46,7 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 * **Pestaña Datos de compras:** Ingresar obligatoriamente la **Moneda del pedido** (ej. USD).
 * Verificar el indicador de "Verificación de factura basada en entrada de mercancías" según la política de la filial.
 * Validar que los datos de control coincidan con los términos comerciales del proveedor.
+* **Grabar:** Presionar botón "Grabar".
 
 ### [TX: BP] Extensión Logística de Clientes (Rol FLCU01)
 * **Módulo:** SD (Ventas y Distribución).
@@ -57,6 +59,7 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 * **Pestaña Ventas:** Definir la **Moneda** y el **Esquema de cliente** (para determinación de precios).
 * **Pestaña Expedición:** Definir la **Prioridad de entrega** y la **Condición de expedición**.
 * **Pestaña Funciones de interlocutor:** Validar que el sistema haya determinado automáticamente las funciones: **SO** (Solicitante), **DF** (Receptor de factura), **RP** (Pagador) y **DM** (Destinatario de mercancías). Busque y seleccione en la celda vacía junto a la función **ZV** el encargado de venta. Sin estas funciones, el pedido de venta fallará.
+* **Grabar:** Presionar botón "Grabar".
 
 ## [TX: BP] Gestión de Crédito (Rol UKM000 - SAP Credit Management)
 * **Módulo:** FI / SD (Credit Management)
@@ -71,7 +74,7 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 5. **Regla de Verificación:** Confirmar que la regla sea **01 (Sin cálculo automático)** -> El cálculo del riesgo se gestiona manualmente según política interna.
 6. **Segmento de Crédito (Local):** Clic en "Datos de Segmento de Crédito" y seleccionar el segmento según la Sociedad -> Unidad de riesgo específica.
 7. **Asignación de Límite:** En pestaña "Límite de crédito", ingresar el monto máximo de exposición monetaria (Límite) -> Techo de crédito para ventas.
-
+8. **Grabar:** Presionar botón "Grabar".
 > ⚠️ **REGLA CRÍTICA:** La Clase de Riesgo es cualitativa y global (aplica a todas las filiales), mientras que el Límite Monetario es local por Segmento de Crédito.
 
 # II. CICLO DE COMPRAS Y SUMINISTRO (PROCURE-TO-PAY)
