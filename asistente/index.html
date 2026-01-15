@@ -17,9 +17,9 @@
 
     <header>
         <div class="logo-container">
-            <img src="./Imagenes/Logo_Portland.png" alt="Grupo Portland" class="logo-img">
+            <img src="/Manuales_SAP/Imagenes/Logo_Portland.png" alt="Grupo Portland" class="logo-img">
         </div>
-        <img src="./Imagenes/Logo_Portland.png" alt="SAP" class="logo-img sap-logo">
+        <img src="/Manuales_SAP/Imagenes/Logo_Proyecto_v2.png" alt="SAP" class="logo-img sap-logo">
     </header>
 
     <main class="chat-main-container">
@@ -92,7 +92,7 @@
         // --- SISTEMA ---
         async function fetchSystemPrompt() {
             try {
-                const response = await fetch('../system_prompt.txt?v=' + Date.now());
+                const response = await fetch('/Manuales_SAP/system_prompt.txt?v=' + Date.now());
                 if (!response.ok) throw new Error("No se pudo cargar el system prompt");
                 systemPrompt = await response.text();
             } catch (error) {
@@ -281,5 +281,6 @@
         window.onload = loadSession;
     </script>
 </body>
+
 
 </html>
