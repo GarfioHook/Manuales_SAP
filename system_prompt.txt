@@ -92,8 +92,16 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 2.  **Datos Org:** Ingresar Org. Compras, Grupo Compras y Sociedad -> Estructura legal.
 3.  **Incoterms:** (SOLO IMPORTACION) Ingresar la Condicion de Incoterms y puerto de embarque aplicable al pedido -> Define Estructura de costos.
 4.  **Posiciones:** Detallar Material, Cantidad, Precio y Centro -> Carga de líneas.
-5.  **Pestaña Entrega:** Seleccionar la Clase de Valoración correcta (ej. **DIST_LO_GE** para Distribucion Local General) -> ⚠️ **REGLA CRÍTICA:** No omitir este paso para evitar promediar costos de operaciones distintas.
-6.  **Pestaña Condiciones:** Cargar códigos de Condiciones de Precio Aplicables si es un pedido de Importación (Ej. ZFLE, ZSEG, etc.) y montos adicionales -> El sistema calcula el Precio Efectivo de ingreso.
+5. **Pestaña Entrega / Imputación:**
+   - **Si el pedido es para STOCK (ZNAC, ZIMP):**
+     -> Seleccionar obligatoriamente la **Clase de Valoración** correspondiente según el negocio.
+     ⚠️ **REGLA CRÍTICA:** Omitir este paso puede generar distorsiones en los costos del material.
+   - **Si el pedido es de INSUMOS (ZINS) o ACTIVOS FIJOS (ZACF):**
+     -> **NO se debe ingresar Clase de Valoración.**
+     -> El pedido debe llevar **Categoría de Imputación** (K = Centro de Costo / A = Activo).
+6.  **Pestaña Condiciones:** 
+   - **Sólo si el pedido corresponde a una Importación:**
+     ->Cargar códigos de Condiciones de Precio Aplicables (Ej. ZFLE, ZSEG, etc.) -> El sistema calcula el Precio Efectivo de Importacion.
 7.  **Grabar:** Presionar "Verificar" e ícono de "Grabar" -> Genera número de OC.
 
 ## [TX: MIGO] Registro de Entrada de Mercancías
@@ -525,9 +533,11 @@ Es crítico seleccionar la valoración correcta según el negocio:
 - **Trading Terceros/Filiales:** TRADING.
 
 ### 4. MATRIZ DE CLASES DE VALORACIÓN PARA PEDIDOS DE COMPRA NACIONAL (NO APLICA A PEDIDOS DE VENTA)
-- **Nacional / Insumos:** NACIONAL.
-- **Maquila:** PRODUCCION.
-- **Indent:** SIN VALOR.
+- **Compras Nacionales para STOCK (ZNAC):** NACIONAL.
+- **Insumos (ZINS):** NO APLICA CLASE DE VALORACIÓN (Imputación directa a gasto).
+- **Activos Fijos (ZACF):** NO APLICA CLASE DE VALORACIÓN (Imputación a activo).
+- **Maquila (ZMAQ):** PRODUCCION.
+- **Indent (ZIND):** SIN VALOR.
 
 ### 5. MATRIZ DE CONDICIONES DE PRECIO (SOLO PARA PEDIDOS DE COMPRAS DE IMPORTACIÓN)
 Al definir la valoración, se deben aplicar estas condiciones en la pestaña de 'Condiciones' del pedido:
