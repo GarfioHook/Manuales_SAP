@@ -4,48 +4,35 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 
 # I. GESTIÓN DE DATOS MAESTROS
 
-## [TX: MM01 / MM03] Creación y Extensión de Materiales
-
+### [TX: MM01 / MM03] Creación y Extensión de Materiales
 * **Módulo:** MM (Gestión de Materiales).
-* **Objetivo:** Asegurar que los materiales cuenten con las vistas logísticas y comerciales necesarias para el ciclo de negocio (Comprar, Almacenar y Vender).
-* **Contexto Portland:** Función centralizada; el usuario final es el solicitante y el **Equipo Central de Datos Maestros** es el ejecutor. Unifica datos para filiales en Chile, Perú y Colombia.
-
+* **Objetivo:** Garantizar que los materiales posean las vistas logísticas (Centro/Almacén) y comerciales (Org. Ventas/Canal) necesarias para operar (Comprar, Almacenar, Vender).
+* **Contexto Portland:** Función centralizada unificada para todas las filiales (Chile, Perú, Colombia). El usuario final solicita los datos y el **Equipo Central de Datos Maestros** ejecuta la transacción.
 **Flujo de Trabajo Mandatorio:**
-1. **Verificación (MM03):** Obligatorio consultar existencia previa mediante búsqueda (F4) por descripción o grupo de artículos.
-* **Caso A (Extensión):** El material existe pero falta una vista o nivel organizacional (ej. nuevo Centro).
-* **Caso B (Creación):** El material no existe en el sistema.
+1. **Verificación Previa (MM03):** Obligatorio buscar por descripción o grupo de artículos (F4). Si el sistema informa que el material "no está extendido para estos niveles", se procede al **Caso A**; si no existe el código, al **Caso B**.
+2. **Determinación de la Acción a Realizar:**
+* **Caso A (Extensión de Material):** El material existe en otra filial o centro. Se usa el código existente y se indica el Centro/Org. Ventas de **referencia** actual y el de **destino** para copiar datos básicos.
+* **Caso B (Creación de Material):** Material nuevo. Definir **Tipo de Material** a crear: **Mercadería** (HAWA) o **Servicio** (DIEN).
 
-**Configuración por Pestañas (MM01):**
-
-### 1. Datos de Acceso y Cabecera
-* **Tipo de Material:** Definir según naturaleza: `HAWA` (**Mercadería**) o `DIEN` (**Servicio**).
-* **Referencia (Solo Caso A):** Indicar el Centro/Org. Ventas de origen para copiar datos y extender al nivel de destino.
-
-### 2. Vista Datos Básicos 1 y 2 (Nivel Mandante)
-* **Descripción:** Nombre oficial del producto.
-* **Unidad de Medida Base (UoM):** Dato más crítico; debe ser la unidad mínima de control.
-* **Grupo de Artículos:** Agrupación para reportes estadísticos y financieros.
-* **Datos Adicionales:** Gestionar textos en otros idiomas y **Unidades de Medida Alternativas** (ej. 1 Caja = 24 UN).
-
-### 3. Vistas de Compras y Almacenamiento (Nivel Centro/Almacén)
-* **Gestión de Lotes:** **Check obligatorio** en Portland para garantizar trazabilidad.
-* **Unidad de Medida de Pedido:** Definir si la compra se realiza en una unidad distinta a la base.
-* **Datos de Conservación:** Ingresar vida útil total y tiempo de permanencia mínimo.
-
-### 4. Vistas de Ventas (Nivel Org. Ventas / Canal / Centro)
-* **Ventas 1:** Clasificación de impuestos (IVA) y Centro de Beneficios.
-* **Ventas 2:** **Grupo de imputación de material** (determina la cuenta contable de ingresos).
-* **Ventas General/Centro:** Definir Grupo de Transporte y Grupo de Carga (críticos para guías de despacho).
-
-### 5. Vista Contabilidad 1 (Nivel Centro)
-* **Clase de Valoración:** Enlace con la cuenta contable de inventario en FI.
-* **Control de Precio:** Usar siempre **V** (Precio Variable/PMP).
-* **Valoración Separada:** Permite que cada lote tenga su propio costo (útil en importaciones).
-
-> ⚠️ **CONTROLES CRÍTICOS DE PORTLAND:**
-> * **Inmutabilidad:** La UoM Base no se puede cambiar si existen movimientos de stock.
-> * **Diferenciación:** Embalajes distintos (ej. Tambor 250L vs 100L) requieren **códigos SAP independientes**.
-> * **Integridad:** El Equipo Central rechazará creaciones duplicadas; busque siempre en MM03 antes de solicitar.
+**Estructura del Proceso de Creación de Materiales:**
+1. * **Vista Datos Básicos** 
+* Ingresar **Unidad de Medida Base** (UoM)
+* Seleccionar **Grupo de Artículos** (ej. 10-00024). 
+* Usar **Datos Adicionales** para textos en otros idiomas y unidades alternativas (ej. 1 Caja = 24 UN).
+2. * **Vista Compras/Almacenamiento (Nivel Centro)**
+* Activar **Gestión de Lotes** (Check obligatorio en Portland para trazabilidad).
+* Definir **Unidad de medida de pedido** si difiere de la unidad base.
+3. * **Vista Ventas**
+* Seleccionar **Centro**, **Org. Ventas** y **Canal de Distribición** (ej. 10 para Distribucion Local)
+* Definir Indicador de IVA (Ventas 1)
+* Seleccionar **Grupo de Imputación** (Ventas 2) y **Grupos de Carga/Transporte** (General/Centro).
+4. * **Vista Contabilidad 1**
+* Asignar **Clase de Valoración**
+* **Control de Precio:** Usar `V` (Precio Variable).
+> ⚠️ **CONTROLES CRÍTICOS:**
+> * **UoM Base:** Inmutable una vez hay stock. Cambiarla requiere dejar stock en cero (proceso complejo).
+> * **Duplicidad:** Embalajes distintos (ej. Tambor 250L vs 100L) requieren **códigos distintos** por diferencias en costo y transporte.
+> * **Rechazo:** El Equipo Central rechazará creaciones si el material ya existe con otro nombre.
 
 ### [TX: BP] Gestión de Interlocutores Comerciales (Datos Generales y Finanzas)
 * **Módulo:** Cross (FI/SD/MM).
