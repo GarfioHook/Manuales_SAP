@@ -5,18 +5,47 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 # I. GESTIÓN DE DATOS MAESTROS
 
 ## [TX: MM01 / MM03] Creación y Extensión de Materiales
-*   **Módulo:** MM (Gestión de Materiales)
-*   **Objetivo:** Definir propiedades logísticas, comerciales y contables de productos/servicios.
-*   **Contexto Portland:** Función centralizada solicitada por usuario final y ejecutada por Equipo Central de Datos Maestros.
 
-**5 Pasos del Proceso:**
-1.  **Verificación (MM03):** Buscar existencia previa por descripción o grupo de artículos (F4) -> Evita duplicados.
-2.  **Definición de Tipo (MM01):** Seleccionar HAWA (Mercadería) o DIEN (Servicio) -> Define lógica de comportamiento.
-3.  **Selección de Vistas:** Elegir Datos Básicos, Ventas (1 y 2), Compras, Almacenamiento y Contabilidad 1 -> Habilitación de campos.
-4.  **Niveles Organizativos:** Ingresar Centro y Almacén correspondiente -> Delimitación geográfica.
-5.  **Configuración Contable:** Asignar Clase de Valoración Aplicable y Control de Precio -> Enlace financiero.
+* **Módulo:** MM (Gestión de Materiales).
+* **Objetivo:** Asegurar que los materiales cuenten con las vistas logísticas y comerciales necesarias para el ciclo de negocio (Comprar, Almacenar y Vender).
+* **Contexto Portland:** Función centralizada; el usuario final es el solicitante y el **Equipo Central de Datos Maestros** es el ejecutor. Unifica datos para filiales en Chile, Perú y Colombia.
 
-> ⚠️ **REGLA CRÍTICA:** La Unidad de Medida Base (ej. KG, UN) es inmutable una vez que el material tiene movimientos de stock. Validar con precisión antes de grabar.
+**Flujo de Trabajo Mandatorio:**
+1. **Verificación (MM03):** Obligatorio consultar existencia previa mediante búsqueda (F4) por descripción o grupo de artículos.
+* **Caso A (Extensión):** El material existe pero falta una vista o nivel organizacional (ej. nuevo Centro).
+* **Caso B (Creación):** El material no existe en el sistema.
+
+**Configuración por Pestañas (MM01):**
+
+### 1. Datos de Acceso y Cabecera
+* **Tipo de Material:** Definir según naturaleza: `HAWA` (**Mercadería**) o `DIEN` (**Servicio**).
+* **Referencia (Solo Caso A):** Indicar el Centro/Org. Ventas de origen para copiar datos y extender al nivel de destino.
+
+### 2. Vista Datos Básicos 1 y 2 (Nivel Mandante)
+* **Descripción:** Nombre oficial del producto.
+* **Unidad de Medida Base (UoM):** Dato más crítico; debe ser la unidad mínima de control.
+* **Grupo de Artículos:** Agrupación para reportes estadísticos y financieros.
+* **Datos Adicionales:** Gestionar textos en otros idiomas y **Unidades de Medida Alternativas** (ej. 1 Caja = 24 UN).
+
+### 3. Vistas de Compras y Almacenamiento (Nivel Centro/Almacén)
+* **Gestión de Lotes:** **Check obligatorio** en Portland para garantizar trazabilidad.
+* **Unidad de Medida de Pedido:** Definir si la compra se realiza en una unidad distinta a la base.
+* **Datos de Conservación:** Ingresar vida útil total y tiempo de permanencia mínimo.
+
+### 4. Vistas de Ventas (Nivel Org. Ventas / Canal / Centro)
+* **Ventas 1:** Clasificación de impuestos (IVA) y Centro de Beneficios.
+* **Ventas 2:** **Grupo de imputación de material** (determina la cuenta contable de ingresos).
+* **Ventas General/Centro:** Definir Grupo de Transporte y Grupo de Carga (críticos para guías de despacho).
+
+### 5. Vista Contabilidad 1 (Nivel Centro)
+* **Clase de Valoración:** Enlace con la cuenta contable de inventario en FI.
+* **Control de Precio:** Usar siempre **V** (Precio Variable/PMP).
+* **Valoración Separada:** Permite que cada lote tenga su propio costo (útil en importaciones).
+
+> ⚠️ **CONTROLES CRÍTICOS DE PORTLAND:**
+> * **Inmutabilidad:** La UoM Base no se puede cambiar si existen movimientos de stock.
+> * **Diferenciación:** Embalajes distintos (ej. Tambor 250L vs 100L) requieren **códigos SAP independientes**.
+> * **Integridad:** El Equipo Central rechazará creaciones duplicadas; busque siempre en MM03 antes de solicitar.
 
 ### [TX: BP] Gestión de Interlocutores Comerciales (Datos Generales y Finanzas)
 * **Módulo:** Cross (FI/SD/MM).
