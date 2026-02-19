@@ -134,7 +134,7 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 4.  **Configuración CRÍTICA:** En la pestaña **Entrega** del detalle de posición, seleccionar obligatoriamente la Clase de Valoración **"PRODUCCION"**.
 5.  **Componentes:** En el detalle de posición, pestaña **Material**, hacer clic en el botón **Componentes** e ingresar manualmente los códigos y cantidades del granel y envases necesarios.4. **Configuración CRÍTICA:** En la pestaña **Entrega** del detalle de posición, seleccionar obligatoriamente la Clase de Valoración **"PRODUCCION"** para asegurar la segregación correcta del costo.
 6.  **Condiciones / Precio Neto:** Ingresar el **costo del servicio de maquila** (no es precio del material).
-7.  **Grabar:** Verificar y grabar -> Genera número de OC de Subcontratación.
+7.  **Grabar:** Verificar y grabar -> Genera número de OC de Subcontratación  (ej. 49XXXXXXXX).
 
 ### [TX: MIGO] Traspaso de Componentes al Proveedor (Movimiento 541)
 *   **Objetivo:** Registrar la salida física de componentes hacia el proveedor a **stock especial en poder del proveedor (O)**.
