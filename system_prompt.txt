@@ -121,28 +121,20 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 7.  **Grabar:** Presionar "Verificar" e ícono de "Grabar" -> Genera número de OC.
 
 ## [PROCESO SEPARADO] MAQUILA / SUBCONTRATACIÓN (Proceso Completo)
-*   **Regla de Negocio:** La maquila transforma un material usando **componentes propios** que se entregan al proveedor. El costo final del producto terminado incluye **materiales consumidos + servicio de maquila**.  
-*   **Diferencia clave vs compra normal:** Se usa **Tipo de Posición L (Subcontratación)** y movimientos **541 / 101** (con **543 automático**).
-
-### [TX: CS01] Definición de Lista de Materiales (BOM) para Maquila
-*   **Objetivo:** Definir la “receta” (componentes y cantidades) que se entregarán al proveedor para obtener el producto terminado.
-
-** 4 Pasos del Proceso:**
-1.  **Cabecera:** Ingresar **Material (Producto Terminado)**, **Centro**, **Utilización = 1 (Fabricación)**.
-2.  **Cantidad Base:** Definir la base de la receta (ej. 1 UN / 1000 KG).
-3.  **Posiciones (Componentes):** Ingresar cada componente y su cantidad según la Cantidad Base.
-4.  **Tipo de Posición del Componente (CRÍTICO):** Para componentes inventariables, asegurar **TpoPos = L (Posición de almacén)**.
+* **Regla de Negocio:** Proceso para registrar el ciclo de subcontratación donde Portland entrega componentes (granel y envases) para recibir un producto terminado. El costo final es la suma del valor de los componentes entregados más el precio del servicio de maquila.
+* **Consideraciones Clave:** Se utiliza la clase de documento **ZMAQ** y el **Tipo de Posición L** (Subcontratación). Para la correcta ejecución del proceso, todos los materiales deben estar extendidos a la clase de valoración **PRODUCCION** en el Centro.
 
 ### [TX: ME21N] Pedido de Compra de Maquila (Subcontratación)
 *   **Objetivo:** Formalizar el servicio de transformación y vincular componentes (BOM) con el pedido.
 
 ** 6 Pasos del Proceso:**
-1.  **Cabecera:** Ingresar **Proveedor (maquilador)** y datos organizativos (Org. Compras, Sociedad).
+1.  **Cabecera:** Seleccionar clase de pedido **ZMAQ** e Ingresar **Proveedor (maquilador)** y datos organizativos (Org. Compras, Sociedad).
 2.  **Posición:** Ingresar **Material (Producto Terminado a recibir)**, **Cantidad**, **Centro**.
-3.  **Tipo de Posición (CRÍTICO):** En la posición seleccionar **TpoP = L (Subcontratación)**.
-4.  **Componentes:** En el detalle de posición, el sistema debe **explotar la BOM** (CS01) y listar componentes; verificar cantidades.
-5.  **Condiciones / Precio Neto:** Ingresar el **costo del servicio de maquila** (no es precio del material).
-6.  **Grabar:** Verificar y grabar -> Genera número de OC de Subcontratación.
+3.  **Tipo de Posición:** En la posición seleccionar **TpoP = L (Subcontratación)**.
+4.  **Configuración CRÍTICA:** En la pestaña **Entrega** del detalle de posición, seleccionar obligatoriamente la Clase de Valoración **"PRODUCCION"**.
+5.  **Componentes:** En el detalle de posición, pestaña **Material**, hacer clic en el botón **Componentes** e ingresar manualmente los códigos y cantidades del granel y envases necesarios.4. **Configuración CRÍTICA:** En la pestaña **Entrega** del detalle de posición, seleccionar obligatoriamente la Clase de Valoración **"PRODUCCION"** para asegurar la segregación correcta del costo.
+6.  **Condiciones / Precio Neto:** Ingresar el **costo del servicio de maquila** (no es precio del material).
+7.  **Grabar:** Verificar y grabar -> Genera número de OC de Subcontratación.
 
 ### [TX: MIGO] Traspaso de Componentes al Proveedor (Movimiento 541)
 *   **Objetivo:** Registrar la salida física de componentes hacia el proveedor a **stock especial en poder del proveedor (O)**.
@@ -152,18 +144,25 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 2.  **Referencia:** Seleccionar **Otros** o referencia al **Pedido** (según corresponda).
 3.  **Movimiento:** Ingresar **541**.
 4.  **Datos:** Indicar **Centro**, **Almacén de salida** y **Proveedor**.
-5.  **Posiciones:** Ingresar **Componentes** y **Cantidades** entregadas.
-6.  **Contabilizar:** Marcar “Posición OK” y contabilizar -> Genera **Documento de Material** (sin documento financiero).
+5. **Identificación de Lotes:** Para cada componente debe seleccionar el lote de origen con stock disponible.
+6. **Regla Portland:** Asignar un **NUEVO lote** con la Clase de Valoración **PRODUCCION** para cada componente enviado, marcando así el inicio del ciclo productivo.
+7.  **Contabilizar:** Marcar “Posición OK” y contabilizar -> Genera **Documento de Material** (sin documento financiero).
 
 ### [TX: MIGO] Recepción de Producto Terminado (Movimiento 101) + Consumo Automático (543)
 *   **Objetivo:** Registrar la entrada del producto terminado y el consumo automático de componentes en poder del proveedor.
 
 ** 5 Pasos del Proceso:**
 1.  **Acceso:** Seleccionar **Entrada de mercancías** con referencia **Pedido**.
-2.  **Referencia:** Ingresar N° de **OC de Subcontratación** -> el sistema propone material/cantidad.
+2.  **Referencia:** Ingresar N° de **OC de Subcontratación**.
 3.  **Cabecera:** Validar **Movimiento 101** y fecha de contabilización real.
-4.  **Detalle:** Verificar **Cantidad**, ingresar **Almacén destino** y (si aplica) **Lote proveedor**.
-5.  **Contabilizar:** Marcar “Posición OK” -> Genera Documento de Material y **aumenta stock** del terminado (101) y **consume automáticamente** componentes del stock especial del proveedor (543).  
+4. **Trazabilidad de Lotes:** Explotar los componentes para introducir el lote creado previamente con la clase **PRODUCCION**.
+5.  **Detalle:** Verificar **Cantidad**, ingresar **Almacén destino** y (si aplica) **Lote proveedor**.
+6.  **Contabilizar:** Marcar “Posición OK” -> Genera Documento de Material y **aumenta stock** del terminado (101) y **consume automáticamente** componentes del stock especial del proveedor (543).  
+
+### [TX: CKM3] Control de Gestión y Costos
+* **Objetivo:** Auditar que el costo real del producto terminado sea la sumatoria correcta de los componentes más el servicio de maquila.
+
+> ⚠️ **REGLA CRÍTICA:** No omitir la Clase de Valoración **PRODUCCION** en el pedido (ME21N), ya que esto distorsionaría los informes financieros al valorar el producto como una compra estándar.
 
 ---
 
