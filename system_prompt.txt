@@ -164,6 +164,34 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 
 > ⚠️ **REGLA CRÍTICA:** No omitir la Clase de Valoración **PRODUCCION** en el pedido (ME21N), ya que esto distorsionaría los informes financieros al valorar el producto como una compra estándar.
 
+### [PROCESO DE REVERSA] ANULACIÓN COMPLETA DE MAQUILA
+
+* **Objetivo:** Reversar el ciclo de subcontratación en caso de errores en precios, componentes o lotes, garantizando que el stock físico y contable regrese a su estado original.
+* **Regla de Oro Portland:** La reversa debe ejecutarse estrictamente en el orden inverso a la creación para evitar inconsistencias en el Libro de Materiales.
+
+#### 1. Fase de Investigación (ME23N / MB51)
+* **Objetivo:** Localizar los números de documento de material de la entrada (101) y del traspaso (541).
+* **Pasos:** Consultar la pestaña "Historia del Pedido" en **ME23N** o ejecutar el reporte **MB51** filtrando por material, centro y fecha de operación.
+
+#### 2. Etapa I: Reversa de la Entrada de Producto Terminado (MIGO - Mov. 102 / 544)
+* **Objetivo:** Anular el ingreso del material envasado y el consumo automático de los componentes.
+* **Pasos:**
+1. **Acción:** Seleccionar "A03 Anulación" y "R02 Documento de material".
+2. **Referencia:** Ingresar el número de documento de la entrada original (Mov. 101).
+3. **Validación:** El sistema cargará automáticamente el producto final (102) y los componentes (544). Marcar "Posición OK" para todas las líneas y contabilizar.
+
+#### 3. Etapa II: Reversa del Traspaso de Componentes (MIGO - Mov. 542)
+* **Objetivo:** Retornar el granel y envases desde el "Stock facilitado al proveedor" hacia la "Libre utilización" en Portland.
+* **Pasos:** Repetir el proceso de anulación en **MIGO** utilizando el número de documento del traspaso original (Mov. 541).
+
+#### 4. Etapa III: Modificación del Pedido y Liberación de Presupuesto (ME22N)
+* **Objetivo:** Anular o bloquear la posición del pedido **ZMAQ** para corregir datos o liberar el presupuesto del área.
+* **Pasos:**
+1. **Acceso:** Cargar el pedido en la transacción **ME22N**.
+2. **Acción:** Seleccionar la posición y utilizar el icono de **Bloqueo** (candado) para impedir nuevas recepciones, o el **Bote de Basura** para una anulación definitiva si el pedido fue un error.
+3. **Grabar:** Finalizar para actualizar el estatus del pedido.
+> ⚠️ **CONTROL:** Tras la reversa, es importante validar en **MMBE** que el stock de componentes esté nuevamente en "Libre Utilización" y que el estado "Facilitado al proveedor" figure en cero.
+
 ---
 
 ## [TX: MIGO] Registro de Entrada de Mercancías
@@ -241,8 +269,12 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 3. **Posiciones (Validación y Auditoría):** * **Cantidad e Importe:** Comparar SAP vs. Físico.
 * **Texto de Posición:** Si es una NC o ND, detallar el **[MOTIVO]** del ajuste.
 * **Indicador de Impuestos:** Verificar código (ej. C1). Si hay diferencias de precio excediendo la tolerancia, la factura quedará **Bloqueada para el Pago**.
-4. **Costos Indirectos (Importaciones/COMEX):** * Cambiar desplegable a **"Costos indirectos de adquisición planificados"**.
-* Seleccionar conceptos (**ZFLE, ZSEG, ZAGA**) que correspondan al documento.
+4. **Gestión de Costos Indirectos y Prorrateo (COMEX):**
+* **Selección de Concepto:** En el desplegable, elegir **"Costos indirectos de adquisición planificados"**.
+* **Registro Parcial / Facturas Múltiples:** Si una factura cubre solo una fracción del costo planificado (ej. primer pago de flete) o si una misma factura debe dividirse por tener **diferentes indicadores de impuestos**, el usuario debe:
+4.1 **Seleccionar conceptos (**ZFLE, ZSEG, ZAGA**) que correspondan al documento.
+4.2 **Modificar Cantidad (Prorrateo):** Ajustar la **Cantidad** en la línea de posición para que sea proporcional al monto facturado. Esto asegura que la provisión se rebaje de forma exacta y permita registros posteriores contra la misma OC.
+4.3 **Ajuste de Importe:** Ingresar el valor neto que indica el documento físico para ese concepto específico.
 5. **Contabilización (Cuadre y Registro):** * **Verificar Saldo:** El semáforo debe estar en **Verde (Saldo cero)**.
 * **Simular:** Visualizar el asiento (Pasivo Proveedor vs. Limpieza EM/RF).
 * **Éxito:** Genera documento **51XXXXXXXX**. Anotar el número en el físico.
