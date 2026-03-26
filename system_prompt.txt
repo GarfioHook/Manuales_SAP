@@ -205,6 +205,16 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 4.  **Posición:** En pestañas inferiores, verificar Cantidad, Almacén y marcar checkbox "Posición OK" -> Conformidad de línea.
 5.  **Contabilizar:** Clic en "Contabilizar" -> Genera Documento de Material y aumenta stock.
 
+### [TX: MIGO] Traspaso entre Almacenes (Movimiento 311)
+* **Módulo:** MM (Gestión de Stock).
+* **Objetivo:** Traslado físico de inventario entre almacenes de un mismo Centro (un solo paso).
+* **Guía Paso a Paso:**
+    1. **Pre-check (MMBE):** Validar que el almacén de origen tenga stock suficiente y el lote sea el correcto.
+    2. **Configuración en MIGO:** Seleccionar en las listas desplegables superiores: **[Traspaso]** y **[Otros]**.
+    3. **Ingreso de Datos:** En la pestaña "Material", ingresar el código; en "Traslado", ingresar Centro y Almacén de origen/destino; en "Lote", el lote original.
+    4. **Validación:** Presionar el botón **[Verificar]**. Si el semáforo es verde, presionar **[Contabilizar]**.
+    5. **Auditoría:** Verificar el documento generado (serie 49/50) en la **MB51** y confirmar en la **CKM3** que el costo unitario no varió.
+
 # III. CICLO DE VENTAS Y DISTRIBUCIÓN (ORDER-TO-CASH)
 
 ### [TX: VA01] Creación de Pedido de Venta
@@ -279,6 +289,32 @@ TEXTO ESTRUCTURADO DEL MANUAL: GRUPO PORTLAND - SAP S/4HANA
 * **Simular:** Visualizar el asiento (Pasivo Proveedor vs. Limpieza EM/RF).
 * **Éxito:** Genera documento **51XXXXXXXX**. Anotar el número en el físico.
 > ⚠️ **REGLA CRÍTICA:** Si se detectan errores tras grabar, no se puede borrar; debe anularse mediante la transacción **MR8M**.
+
+### [TX: MIRO / FB65 / FB50] Gestión de Diferencias en Recepción
+* **Módulo:** MM / FI.
+* **Objetivo:** Limpiar la cuenta de "Importaciones en Tránsito" cuando lo recibido es menor a lo facturado.
+* **Escenarios y Procedimientos:**
+    * **Escenario A: Ajuste al Proveedor (Vía MIRO)**
+        1. Ingresar a MIRO y seleccionar la transacción **[Abono]**.
+        2. Cargar el importe de la diferencia y marcar "Calcular Impuesto".
+        3. Contabilizar para reducir la deuda con el proveedor y saldar la cuenta puente.
+    * **Escenario B: Reclamo a Seguros (Vía FB65)**
+        1. Ingresar en FB65 (Nota de Crédito FI).
+        2. Cargar el monto del faltante al **Debe** (Cta. Cuentas por Cobrar Seguros) y al **Haber** (Cta. Importaciones en Tránsito).
+        3. En el campo "Asignación", colocar obligatoriamente el número de póliza y pedido original.
+    * **Escenario C: Gasto Propio / Merma (Vía FB50)**
+        1. Crear asiento contable directo: **Debe** (Gasto por Ajuste de Inventario) con su Centro de Costo, contra **Haber** (Importaciones en Tránsito).
+        2. Validar en **FBL3N** que el saldo del pedido quede en cero.
+
+### [TX: MIRO] Notas de Crédito por Ajuste de Precio
+* **Módulo:** MM (Verificación de Facturas).
+* **Objetivo:** Ajustar el costo unitario del material sin mover stock físico.
+* **Procedimiento Paso a Paso:**
+    1. **Identificación:** Recibir la Nota de Crédito del proveedor y localizar el Pedido de Compra (PO) original.
+    2. **Ejecución en MIRO:** * **Paso Crítico:** Seleccionar obligatoriamente la opción **[Abono posterior]** (esto ajusta el valor, no la cantidad).
+        * Ingresar el importe neto del descuento en la columna "Importe" de la línea del ítem correspondiente.
+    3. **Impuestos:** Marcar la casilla "Calcular Impuesto" para el ajuste proporcional de IVA/IGV.
+    4. **Verificación de Margen (CKM3N):** Es mandatorio entrar al Explorador de Precios para confirmar que el Precio Promedio Variable (PPP) bajó tras el abono.
 
 ### [TX: F-53] Pago de Confirming al Banco
 * **Módulo:** FI (Gestión de Pagos).

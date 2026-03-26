@@ -795,7 +795,29 @@
                             <span class="btn-code">FB50</span>
                         </a>
                     </div>
-                </div>                  
+                </div>
+                <!-- Paso 3.12 -->
+                <div class="step-card">
+                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
+                    <div class="step-title">NC AJUSTE DE PRECIO<br> (Contabilidad) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="NC-AJUSTE">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">MIRO</span>
+                        </a>
+                    </div>
+                </div>    
+                <!-- Paso 3.13 -->
+                <div class="step-card">
+                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
+                    <div class="step-title">DIFERENCIAS MIGO-MIRO<br> (Contabilidad) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="DIF-MIGO-MIRO">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">MIRO</span>
+                        </a>
+                    </div>
+                </div>                       
                 <!-- El espacio 5 queda vacío automáticamente para mantener la estructura de grilla -->
 
             </div>
@@ -827,7 +849,18 @@
                             <span class="btn-code">MIGO</span>
                         </a>
                     </div>
-                </div>                
+                </div>
+                <!-- Paso 4.2.1 -->
+                <div class="step-card">
+                    <div class="icon-box"><i class="fa-solid fa-truck-fast"></i></div>
+                    <div class="step-title">TRASPASO ENTRE ALMACENES <br> (Logística) </div>
+                    <div class="step-action">
+                        <a href="#" class="btn-manual" data-manual="TRASPASO">
+                            <span class="btn-text">Ver Manual</span>
+                            <span class="btn-code">MIGO</span>
+                        </a>
+                    </div>
+                </div>
                 <!-- Paso 4.3 -->
                 <div class="step-card">
                     <div class="icon-box"><i class="fa-solid fa-warehouse"></i></div>
@@ -944,7 +977,7 @@
                 "ME29N": { archivo: "Manuales/MANUAL_DE_USUARIO - LIBERACIÓN DE PEDIDOS DE COMPRA (ME29N).pdf", existe: true },
                 "MIGO":  { archivo: "Manuales/Manual de Usuario-Registro de Entrada de Mercancías (MIGO).pdf", existe: true }, // Ejemplo: Pendiente
                 "MAQ":  { archivo: "Manuales/MANUAL DE USUARIO - GESTIÓN DE MAQUILA-ENVASADO (ME21N).pdf", existe: true },
-                "REVMAQ":  { archivo: "Manuales/MANUAL DE USUARIO - REVERSA DEL PROCESO DE MAQUILA.pdf", existe: true },                
+                "REVMAQ":  { archivo: "Manuales/MANUAL DE USUARIO - REVERSA DEL PROCESO DE MAQUILA.pdf", existe: true },              
                 "MIRO":  { archivo: "Manuales/MANUAL DE USUARIO - REGISTRO DE FACTURAS (MIRO).pdf", existe: true },
                 "F110":  { archivo: "Manuales/MANUAL DE USUARIO - PAGOS A PROVEEDORES.pdf", existe: true },                
                 "VA01":  { archivo: "Manuales/MANUAL DE USUARIO - GESTIÓN DE PEDIDOS DE VENTA (VA01).pdf", existe: true },
@@ -968,6 +1001,10 @@
                 "FB60":  { archivo: "Manuales/MANUAL DE USUARIO - CONTABILIZACIÓN DE FACTURAS Y NOTAS DE DÉBITO MANUALES (FB60).pdf", existe: true }, 
                 "FB65":  { archivo: "Manuales/MANUAL DE USUARIO - CONTABILIZACIÓN DE NOTAS DE CREDITO MANUALES (FB65).pdf", existe: true }, 
                 "FB50":  { archivo: "Manuales/MANUAL DE USUARIO - CONTABILIZACIÓN EN CUENTAS DE MAYOR (FB50).pdf", existe: true }, 
+                "NC-AJUSTE":  { archivo: "Manuales/MANUAL_DE_USUARIO - GESTION DE NOTAS DE CREDITO DE PROVEEDOR (AJUSTE DE PRECIO) EN MIRO.pdf", existe: true }, 
+                "DIF-MIGO-MIRO":  { archivo: "Manuales/MANUAL DE USUARIO - GESTIÓN DE DIFERENCIAS EN RECEPCIÓN FINAL (MIRO-MIGO).pdf", existe: true }, 
+                "TRASPASO":  { archivo: "Manuales/MANUAL DE USUARIO - TRASPASO ENTRE ALMACENES (MIGO).pdf", existe: true }, 
+                
             };
 
             const botones = document.querySelectorAll('.btn-manual');
@@ -998,7 +1035,7 @@
 
     <script>
         const openRouterKey = "REPLACE_ME_WITH_API_KEY";
-        const modelID = "stepfun/step-3.5-flash:free";        
+        const modelID = "stepfun/step-3.5-flash:free";     
 //        const modelID = "nex-agi/deepseek-v3.1-nex-n1:free";
 //        const manualURL = "https://garfiohook.github.io/Manuales_SAP/Manuales/Manual_de_Usuario_Consolidado.pdf";
         const supportEmail = "gsalinas@pjportland.cl";
