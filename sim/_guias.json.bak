@@ -1,0 +1,7572 @@
+[
+ {
+  "tx": "BP",
+  "titulo": "Creación de Business Partner · rol Cliente",
+  "sub": "Roles 000000 · FLCU00 · FLCU01",
+  "modulo": "Cross",
+  "pasos": [
+   {
+    "g": "1 · Datos generales · rol 000000"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a <b>BP</b> y presionar el botón <b>Organización</b> de la barra.",
+    "d": "⚠️ Los campos Interlocutor comercial y Agrupación BP deben quedar VACÍOS: el sistema numera automáticamente.",
+    "crit": 1,
+    "set": {
+     "tcode": "BP"
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Dirección",
+    "target": "nombre1",
+    "h": "Pestaña <b>Dirección</b> → grupo <b>Nombre</b>: la Razón Social.",
+    "d": "El bloque Nombre admite hasta cuatro líneas más el tratamiento.",
+    "set": {
+     "ttl": "Crear Organización",
+     "bpid": "",
+     "bpnom": "",
+     "rol": "000000 Interloc.cial.general",
+     "nombre1": "INDUSTRIAS EL CISNE S.A.C."
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Dirección",
+    "target": "busqueda",
+    "h": "Grupo <b>Conceptos de búsqueda</b>: cargar el <b>Concept.búsq.1</b>.",
+    "d": "En Portland se usa el número fiscal, para que la búsqueda por RUC/RUT/NIT funcione.",
+    "set": {
+     "busqueda": "20101414940"
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Dirección",
+    "target": "calle",
+    "h": "Grupo <b>Dirección estándar → Dirección calle</b>: dirección completa.",
+    "d": "Calle/Número, Distrito, Residencia alt. (ciudad), Código postal y Población. País y Región son obligatorios.",
+    "set": {
+     "calle": "AV. LOS ALGARROBOS MZA. F",
+     "distrito": "VILLA EL SALVADOR",
+     "ciudad": "LIMA",
+     "cp": "150142",
+     "poblacion": "LOTE 2"
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Identificador",
+    "target": "nif",
+    "h": "Pestaña <b>Identificador</b>: cargar la Categoría fiscal y el <b>NIF</b>.",
+    "d": "Es una grilla, no un campo suelto: Tipo (ej. PE1), Denominación (Perú: RUC) y N.I.F. largo. Obligatorio para el control de duplicidad.",
+    "crit": 1,
+    "set": {
+     "bpid": "10220",
+     "bpnom": "INDUSTRIAS EL CISNE S.A.C. / 150142 LOTE 2-VILLA E",
+     "ttl": "Visualizar Organización: 10220",
+     "nifrows": [
+      [
+       "",
+       "PE1",
+       {
+        "v": "Perú: RUC",
+        "t": 1
+       },
+       "20101414940",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "g": "2 · Extensión financiera · rol FLCU00"
+   },
+   {
+    "screen": "bp",
+    "tab": "Deudor: Gestión de cuenta",
+    "target": "rol",
+    "h": "Cambiar <b>Visual./Tratar función IC</b> a <b>FLCU00 Deudor (Finanzas)</b>.",
+    "d": "Cambian el título de la pantalla, la barra de botones (aparecen Datos generales y Datos ETM) y toda la barra de pestañas.",
+    "set": {
+     "ttl": "Visualizar Organización: 10220, rol Deudor (Finanzas)",
+     "rol": "FLCU00 Deudor (Finanzas)",
+     "rolext": 1,
+     "tabs": [
+      "Deudor: Gestión de cuenta",
+      "Deudor: Pagos",
+      "Deudor: Correspondencia",
+      "Deudor: Seguro",
+      "Deudor: Status",
+      "Deudor: Retención impuestos",
+      "Deudor: Textos"
+     ],
+     "orgtit": "Sociedad",
+     "orgb1": "Sociedades",
+     "orgb2": "Cambiar sociedad",
+     "orgrows": [
+      [
+       {
+        "lb": "Sociedad:",
+        "lw": 140,
+        "k": "sociedad",
+        "w": 60,
+        "f4": 1
+       },
+       {
+        "type": "txt",
+        "k": "sociedadd",
+        "lb": ""
+       }
+      ],
+      [
+       {
+        "lb": "Cliente:",
+        "lw": 140,
+        "k": "clientebp",
+        "w": 150
+       }
+      ],
+      [
+       {
+        "lb": "Proveedor:",
+        "lw": 140,
+        "k": "proveedorbp",
+        "w": 150
+       }
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Deudor: Gestión de cuenta",
+    "target": "orgb1",
+    "h": "Clic en <b>Sociedad</b> e ingresar el código (ej. <b>2000</b> para Perú) y Enter.",
+    "d": "Aparece el bloque de nivel organizativo sobre las pestañas. Recién entonces se habilitan los datos financieros.",
+    "crit": 1,
+    "set": {
+     "sociedad": "2000",
+     "sociedadd": "PORTLAND PERU SAC",
+     "clientebp": "10220"
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Deudor: Gestión de cuenta",
+    "target": "ctaasoc",
+    "h": "Pestaña <b>Deudor: Gestión de cuenta</b> → <b>Cuenta asociada</b>.",
+    "d": "Serie 11XXXX/12XXXX para clientes. El sistema muestra la denominación a la derecha.",
+    "crit": 1,
+    "set": {
+     "ctaasoc": "110301001",
+     "ctaasocd": "CLIENTES NACIONALES"
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Deudor: Pagos",
+    "target": "condpago",
+    "h": "Pestaña <b>Deudor: Pagos</b>: <b>Condición de pago</b> y <b>Vías de pago</b>.",
+    "d": "",
+    "set": {
+     "condpago": "F090",
+     "condpagod": "CREDITO 90 DIAS",
+     "viaspago": "T"
+    }
+   },
+   {
+    "g": "3 · Extensión comercial · rol FLCU01"
+   },
+   {
+    "screen": "bp",
+    "tab": "Órdenes",
+    "target": "rol",
+    "h": "Cambiar el rol a <b>FLCU01 Cliente (Comercial)</b> y clic en <b>Ventas y Distr.</b>",
+    "d": "En la ventana emergente completar obligatoriamente Org. Ventas, Canal de distribución y Sector, y presionar Enter.",
+    "crit": 1,
+    "set": {
+     "ttl": "Visualizar Organización: 10220, rol Cliente (Comercial)",
+     "rol": "FLCU01 Cliente (Comercial)",
+     "tabs": [
+      "Órdenes",
+      "Expedición",
+      "Factura",
+      "Funciones de interlocutor",
+      "Datos adicionales",
+      "Estado",
+      "Deudor: Textos",
+      "Documentos",
+      "Datos de transporte"
+     ],
+     "orgtit": "Área vtas.",
+     "orgb1": "Áreas de ventas",
+     "orgb2": "Modificar área",
+     "orgrows": [
+      [
+       {
+        "lb": "Organiz.ventas:",
+        "lw": 140,
+        "k": "orgventas",
+        "w": 60,
+        "f4": 1
+       },
+       {
+        "type": "txt",
+        "k": "orgventasd",
+        "lb": ""
+       }
+      ],
+      [
+       {
+        "lb": "Canal distrib.:",
+        "lw": 140,
+        "k": "canal",
+        "w": 44
+       },
+       {
+        "type": "txt",
+        "k": "canald",
+        "lb": ""
+       }
+      ],
+      [
+       {
+        "lb": "Sector:",
+        "lw": 140,
+        "k": "sector",
+        "w": 44
+       },
+       {
+        "type": "txt",
+        "k": "sectord",
+        "lb": ""
+       }
+      ]
+     ],
+     "orgventas": "2000",
+     "orgventasd": "PORTLAND PERU",
+     "canal": "10",
+     "canald": "DISTRIBUCION",
+     "sector": "50",
+     "sectord": "POLIURETANOS"
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Órdenes",
+    "target": "moneda",
+    "h": "Pestaña <b>Órdenes</b>: definir la <b>Moneda</b> y el <b>Esquema de cliente</b>.",
+    "d": "El esquema determina la búsqueda de precios. Aquí también viven Oficina y Grupo de ventas, Probabilidad de pedido y Clase ABC.",
+    "set": {
+     "moneda": "USD",
+     "monedad": "Dólar americano EE.UU.",
+     "probped": "100",
+     "esquema": "1"
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Expedición",
+    "target": "prioridad",
+    "h": "Pestaña <b>Expedición</b>: <b>Prioridad de entrega</b> y <b>Condición de expedición</b>.",
+    "d": "",
+    "set": {
+     "prioridad": "02 Normal",
+     "condexp": "01 Terrestre"
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Funciones de interlocutor",
+    "target": "funciones",
+    "h": "Pestaña <b>Funciones de interlocutor</b>: validar las funciones determinadas.",
+    "d": "SO Solicitante · DF Destinatario factura · RP Responsable de pago · DM Destinatario mcía. Las determina el sistema automáticamente.",
+    "set": {
+     "funciones": [
+      [
+       "",
+       "SO",
+       {
+        "v": "Solicitante",
+        "t": 1
+       },
+       "10220",
+       "10220",
+       {
+        "v": "INDUSTRIAS EL CISNE S.A.C.",
+        "t": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "",
+       "DF",
+       {
+        "v": "Destinatario factura",
+        "t": 1
+       },
+       "10220",
+       "10220",
+       {
+        "v": "INDUSTRIAS EL CISNE S.A.C.",
+        "t": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "",
+       "RP",
+       {
+        "v": "Responsable de pago",
+        "t": 1
+       },
+       "10220",
+       "10220",
+       {
+        "v": "INDUSTRIAS EL CISNE S.A.C.",
+        "t": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "",
+       "DM",
+       {
+        "v": "Destinatario mcía.",
+        "t": 1
+       },
+       "10220",
+       "10220",
+       {
+        "v": "INDUSTRIAS EL CISNE S.A.C.",
+        "t": 1
+       },
+       "",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Funciones de interlocutor",
+    "target": "funciones",
+    "h": "Buscar y asignar el <b>encargado comercial</b> en la fila <b>VE</b>.",
+    "d": "⚠️ Es el único que no se determina solo. Sin las cinco funciones el pedido de venta falla. La columna Número lleva el código del vendedor, no el del cliente.",
+    "crit": 1,
+    "set": {
+     "funciones": [
+      [
+       "",
+       "SO",
+       {
+        "v": "Solicitante",
+        "t": 1
+       },
+       "10220",
+       "10220",
+       {
+        "v": "INDUSTRIAS EL CISNE S.A.C.",
+        "t": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "",
+       "DF",
+       {
+        "v": "Destinatario factura",
+        "t": 1
+       },
+       "10220",
+       "10220",
+       {
+        "v": "INDUSTRIAS EL CISNE S.A.C.",
+        "t": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "",
+       "RP",
+       {
+        "v": "Responsable de pago",
+        "t": 1
+       },
+       "10220",
+       "10220",
+       {
+        "v": "INDUSTRIAS EL CISNE S.A.C.",
+        "t": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "",
+       "VE",
+       {
+        "v": "Encargado comercial",
+        "t": 1
+       },
+       "7",
+       "6",
+       {
+        "v": "SHIRO NEMOTTO CHAVEZ",
+        "t": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "",
+       "DM",
+       {
+        "v": "Destinatario mcía.",
+        "t": 1
+       },
+       "10220",
+       "10220",
+       {
+        "v": "INDUSTRIAS EL CISNE S.A.C.",
+        "t": 1
+       },
+       "",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Funciones de interlocutor",
+    "target": "btn-Introducir",
+    "h": "<b>Grabar</b>.",
+    "d": "El BP queda habilitado para pedidos de venta, entregas y facturación.",
+    "set": {
+     "msg": "Interlocutor comercial 10220 grabado"
+    }
+   }
+  ],
+  "slug": "bp-cliente",
+  "pdf": "Manuales/MANUAL DE USUARIO - Creacion de Business Partner (BP) – ROL Cliente.pdf"
+ },
+ {
+  "tx": "BP",
+  "titulo": "Creación de Business Partner · rol Proveedor",
+  "sub": "Roles 000000 · FLVN00 · FLVN01",
+  "modulo": "Cross",
+  "pasos": [
+   {
+    "g": "1 · Datos generales · rol 000000"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a <b>BP</b> y presionar <b>Organización</b>.",
+    "d": "⚠️ Interlocutor comercial y Agrupación BP deben quedar VACÍOS.",
+    "crit": 1,
+    "set": {
+     "tcode": "BP"
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Dirección",
+    "target": "nombre1",
+    "h": "Pestaña <b>Dirección</b> → grupo <b>Nombre</b>: Razón Social.",
+    "d": "",
+    "set": {
+     "ttl": "Crear Organización",
+     "rol": "000000 Interloc.cial.general",
+     "nombre1": "INTER-CHEMIE LIMITED"
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Dirección",
+    "target": "calle",
+    "h": "Grupo <b>Dirección estándar</b>: dirección completa del proveedor extranjero.",
+    "d": "",
+    "set": {
+     "busqueda": "111111",
+     "calle": "SHANGHAI ROAD 1200",
+     "distrito": "PUDONG",
+     "ciudad": "SHANGHAI",
+     "cp": "200120",
+     "poblacion": "SHANGHAI"
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Identificador",
+    "target": "nif",
+    "h": "Pestaña <b>Identificador</b>: Categoría fiscal y <b>NIF</b>.",
+    "d": "Obligatorio para el control de duplicidad.",
+    "crit": 1,
+    "set": {
+     "bpid": "10573",
+     "bpnom": "INTER-CHEMIE LIMITED / 111111",
+     "ttl": "Visualizar Organización: 10573",
+     "nifrows": [
+      [
+       "",
+       "CN1",
+       {
+        "v": "China: Tax ID",
+        "t": 1
+       },
+       "91310000MA1K35",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "g": "2 · Extensión financiera · rol FLVN00"
+   },
+   {
+    "screen": "bp",
+    "tab": "Acreedor: Gestión de cuenta",
+    "target": "rol",
+    "h": "Cambiar el rol a <b>FLVN00 Acreedor (Finanzas)</b> y clic en <b>Sociedad</b>.",
+    "d": "Ingresar 2000 y Enter. Aparece el bloque Sociedad sobre las pestañas.",
+    "crit": 1,
+    "set": {
+     "ttl": "Visualizar Organización: 10573, rol Acreedor (Finanzas)",
+     "rol": "FLVN00 Acreedor (Finanzas)",
+     "rolext": 1,
+     "tabs": [
+      "Acreedor: Gestión de cuenta",
+      "Acreedor: Pagos",
+      "Acreedor: Correspondencia",
+      "Acreedor: Status",
+      "Acreedor: Retención impuestos",
+      "Acreedor: Textos"
+     ],
+     "orgtit": "Sociedad",
+     "orgb1": "Sociedades",
+     "orgb2": "Cambiar sociedad",
+     "orgrows": [
+      [
+       {
+        "lb": "Sociedad:",
+        "lw": 140,
+        "k": "sociedad",
+        "w": 60,
+        "f4": 1
+       },
+       {
+        "type": "txt",
+        "k": "sociedadd",
+        "lb": ""
+       }
+      ],
+      [
+       {
+        "lb": "Cliente:",
+        "lw": 140,
+        "k": "clientebp",
+        "w": 150
+       }
+      ],
+      [
+       {
+        "lb": "Proveedor:",
+        "lw": 140,
+        "k": "proveedorbp",
+        "w": 150
+       }
+      ]
+     ],
+     "sociedad": "2000",
+     "sociedadd": "PORTLAND PERU SAC",
+     "proveedorbp": "10573"
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Acreedor: Gestión de cuenta",
+    "target": "ctaasoc",
+    "h": "<b>Cuenta asociada</b>: serie 21XXXX para proveedores.",
+    "d": "",
+    "crit": 1,
+    "set": {
+     "ctaasoc": "211001001",
+     "ctaasocd": "PROVEEDORES DEL EXTERIOR"
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Acreedor: Pagos",
+    "target": "condpago",
+    "h": "Pestaña <b>Acreedor: Pagos</b>: <b>Condición de pago</b> y <b>Vías de pago</b>.",
+    "d": "",
+    "set": {
+     "condpago": "C120",
+     "condpagod": "CREDITO 120 DIAS",
+     "viaspago": "T"
+    }
+   },
+   {
+    "g": "3 · Extensión logística · rol FLVN01"
+   },
+   {
+    "screen": "bp",
+    "tab": "Datos de compras",
+    "target": "rol",
+    "h": "En «Tratar función IC» seleccionar <b>FLVN01 Proveedor (compras)</b> y clic en <b>Compras</b>.",
+    "d": "En «Niveles de organización de compras» ingresar el código de Org. de compras (ej. 2000 para Perú) y Enter.",
+    "crit": 1,
+    "set": {
+     "ttl": "Visualizar Organización: 10573, rol Proveedor (compras)",
+     "rol": "FLVN01 Proveedor (compras)",
+     "sistema": "DS4 (3) 120",
+     "tabs": [
+      "Datos de compras",
+      "Funciones de interlocutor",
+      "Surtidos parciales proveedor",
+      "Intercambiabilidad",
+      "Proveedor: Textos",
+      "Región de suministro"
+     ],
+     "orgtit": "Organización de compras",
+     "orgb1": "Organizaciones de compras",
+     "orgb2": "Cambiar organización",
+     "orgrows": [
+      [
+       {
+        "lb": "Organización compras",
+        "lw": 180,
+        "k": "orgcompras",
+        "w": 60
+       },
+       {
+        "type": "txt",
+        "k": "orgcomprasd",
+        "lb": ""
+       }
+      ]
+     ],
+     "orgcompras": "2000",
+     "orgcomprasd": "PORTLAND PERU"
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Datos de compras",
+    "target": "monpedido",
+    "h": "Grupo <b>Condiciones</b>: ingresar obligatoriamente la <b>Moneda de pedido</b>.",
+    "d": "Ej. USD. Sin ella no se puede emitir la orden de compra.",
+    "crit": 1,
+    "set": {
+     "monpedido": "USD",
+     "monpedidod": "Dólar americano EE.UU."
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Datos de compras",
+    "target": "condpago",
+    "h": "Verificar las <b>Condiciones de pago</b> e Incoterms del proveedor.",
+    "d": "Deben coincidir con los términos comerciales pactados. Los Incoterms de aquí se proponen luego en el pedido de compra.",
+    "set": {
+     "condpago": "C120",
+     "condpagod": "CREDITO 120 DIAS",
+     "valmin": "0,00"
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Datos de compras",
+    "target": "verifem",
+    "h": "Grupo <b>Control</b>: verificación de factura basada en <b>entrada de mercancías</b>.",
+    "d": "Según la política de la filial.",
+    "set": {
+     "verifem": "1"
+    }
+   },
+   {
+    "screen": "bp",
+    "tab": "Datos de compras",
+    "target": "btn-Introducir",
+    "h": "<b>Grabar</b>.",
+    "d": "El proveedor queda habilitado para órdenes de compra y abastecimiento.",
+    "set": {
+     "msg": "Interlocutor comercial 10573 grabado"
+    }
+   }
+  ],
+  "slug": "bp-proveedor",
+  "pdf": "Manuales/MANUAL DE USUARIO - Creación de Business Partner (BP) – Rol  Proveedor.pdf"
+ },
+ {
+  "tx": "F-28",
+  "titulo": "Contabilización de pagos recibidos",
+  "sub": "Pago de factura · cheque · pago parcial",
+  "modulo": "FI",
+  "pasos": [
+   {
+    "g": "1 · Escenario"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a <b>F-28</b>.",
+    "d": "Tres escenarios: PAGO CLIENTE (transferencia) · CHEQUE CLIENTE (uno o más cheques) · ABONO CLIENTE (pago parcial que deja saldo pendiente).",
+    "set": {
+     "tcode": "F-28"
+    }
+   },
+   {
+    "g": "2 · Datos de cabecera"
+   },
+   {
+    "screen": "f53cab",
+    "target": "clasedoc",
+    "h": "<b>Clase de documento:</b> <b>DZ</b>.",
+    "d": "DZ Pago deudor",
+    "crit": 1,
+    "set": {
+     "ttl": "Contabilizar contabilización de pagos recibidos: Datos cabecera",
+     "clasedoc": "DZ",
+     "fdoc": "26.07.2026",
+     "fcont": "26.07.2026",
+     "moneda": "USD",
+     "sociedad": "2000"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "referencia",
+    "h": "<b>Referencia:</b> ingresar obligatoriamente <b>PAGO CLIENTE</b>.",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "crit": 1,
+    "set": {
+     "referencia": "PAGO CLIENTE"
+    }
+   },
+   {
+    "g": "3 · Línea de contrapartida"
+   },
+   {
+    "screen": "f53cab",
+    "target": "ctabanco",
+    "h": "<b><b>Cuenta:</b> cuenta de mayor del banco receptor</b> en el bloque <b>Datos bancarios</b>.",
+    "d": "Es el único campo obligatorio del bloque.",
+    "set": {
+     "ctabanco": "0110102110"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "importe",
+    "h": "<b>Importe</b> de la operación.",
+    "d": "",
+    "set": {
+     "importe": "1.792,47"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "asignacion",
+    "h": "<b>Asignación:</b> el <b>código BP</b> del cliente. Si es cheque, <b>[BANCO-Nº_CHEQUE]</b>. → 10022",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "asignacion": "10022"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "textopos",
+    "h": "<b>Texto de posición:</b> formato <b>F[Nº FACTURA1-Nº FACTURA2, ETC]</b>. → F90001188",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "textopos": "F90001188"
+    }
+   },
+   {
+    "g": "4 · Selección de partidas abiertas"
+   },
+   {
+    "screen": "f53cab",
+    "target": "ctapa",
+    "h": "<b>Cuenta:</b> el interlocutor cuyas partidas se compensan.",
+    "d": "Clase de cuenta K para acreedores, D para deudores. Los criterios de selección están en esta misma pantalla.",
+    "set": {
+     "ctapa": "10208",
+     "clasecta": "K"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "btn-Contabilizar",
+    "h": "Clic en <b>Tratar PAs</b> de la barra superior.",
+    "d": "Salta directo a la pantalla de compensación. No hay pantalla de selección intermedia.",
+    "set": {
+     "msg": ""
+    }
+   },
+   {
+    "g": "5 · Compensación"
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Estándar",
+    "target": "pa",
+    "h": "Se listan las <b>partidas abiertas</b> del interlocutor.",
+    "d": "Doble clic sobre el importe activa o desactiva cada partida.",
+    "set": {
+     "ttlpa": "Contabilizar salida pagos Procesar partidas abiertas",
+     "pafilas": [
+      [
+       "12418",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12419",
+       "KR",
+       "23.06.2026",
+       "31",
+       "60",
+       "3",
+       {
+        "v": "375,21-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12420",
+       "KR",
+       "23.06.2026",
+       "31",
+       "20",
+       "3",
+       {
+        "v": "439,89-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12421",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "113,04-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12422",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.137,07-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12423",
+       "KR",
+       "23.06.2026",
+       "31",
+       "50",
+       "3",
+       {
+        "v": "50,40-",
+        "r": 1
+       },
+       "",
+       ""
+      ]
+     ],
+     "impentrado": "1.792,47-",
+     "asignados": "0,00",
+     "sinasignar": "1.792,47-",
+     "moneda": "USD",
+     "msg": "40 partidas seleccionadas"
+    }
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Pago parc.",
+    "target": "pa",
+    "h": "Pestaña <b>Pago parc.</b> para pagos por un monto inferior al de la factura.",
+    "d": "Se escribe el monto en la columna Importe pago. Deja la factura abierta por el saldo restante.",
+    "set": {
+     "pafilaspp": [
+      [
+       "12418",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12419",
+       "KR",
+       "23.06.2026",
+       "31",
+       "60",
+       "3",
+       {
+        "v": "375,21-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12420",
+       "KR",
+       "23.06.2026",
+       "31",
+       "20",
+       "3",
+       {
+        "v": "439,89-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12421",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "113,04-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12422",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.137,07-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12423",
+       "KR",
+       "23.06.2026",
+       "31",
+       "50",
+       "3",
+       {
+        "v": "50,40-",
+        "r": 1
+       },
+       "",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Estándar",
+    "target": "sinasignar",
+    "h": "El campo <b>Sin asignar</b> debe quedar en <b>CERO</b>.",
+    "d": "Mientras haya diferencia, el sistema no deja simular ni contabilizar.",
+    "crit": 1,
+    "set": {
+     "asignados": "1.792,47-",
+     "sinasignar": "0,00",
+     "msg": "Partida asignada"
+    }
+   },
+   {
+    "g": "6 · Simulación y registro"
+   },
+   {
+    "screen": "f53res",
+    "target": "asiento",
+    "h": "Menú <b>Documento → Simular</b>: revisar el asiento.",
+    "d": "Verificar que el cargo y el abono estén en las cuentas correctas antes de registrar.",
+    "set": {
+     "ttlres": "Contabilizar salida pagos Visualizar Resumen",
+     "fdoc": "26.07.2026",
+     "fcont": "26.07.2026",
+     "asientorows": [
+      [
+       "001",
+       "40",
+       "60",
+       {
+        "v": "0110102110 BANCO BCP ME",
+        "t": 1
+       },
+       "",
+       {
+        "v": "1.792,47",
+        "r": 1
+       },
+       ""
+      ],
+      [
+       "002",
+       "15",
+       "70",
+       {
+        "v": "0000010022 COLCHONES ROMANTIC",
+        "t": 1
+       },
+       "",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       ""
+      ]
+     ],
+     "totd": "D  1.792,47",
+     "toth": "H  1.792,47",
+     "totiva": "0,00",
+     "totpos": "3 Posiciones"
+    }
+   },
+   {
+    "screen": "f53res",
+    "target": "btn-Contabilizar",
+    "h": "<b>Contabilizar</b>.",
+    "d": "Genera el documento contable. Si tras grabar se detecta un error, anular con FB08 — nunca borrar.",
+    "set": {
+     "msg": "Documento 1500000321 contabilizado en sociedad 2000"
+    }
+   }
+  ],
+  "slug": "f28-pagos-recibidos",
+  "pdf": "Manuales/MANUAL DE USUARIO - CONTABILIZACIÓN DE PAGOS RECIBIDOS (F-28).pdf"
+ },
+ {
+  "tx": "F-29",
+  "titulo": "Contabilizar anticipos de cliente (CME)",
+  "sub": "Pago sin factura o excedente",
+  "modulo": "FI",
+  "pasos": [
+   {
+    "g": "1 · Escenario"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a <b>F-29</b>.",
+    "d": "Registrar pagos de clientes cuando aún no hay factura o el cliente paga más de lo adeudado.",
+    "set": {
+     "tcode": "F-29"
+    }
+   },
+   {
+    "g": "2 · Datos de cabecera"
+   },
+   {
+    "screen": "f53cab",
+    "target": "clasedoc",
+    "h": "<b>Clase de documento:</b> <b>DZ</b>.",
+    "d": "DZ Pago deudor",
+    "crit": 1,
+    "set": {
+     "ttl": "Contabilizar contabilizar anticipos de cliente (cme): Datos cabecera",
+     "clasedoc": "DZ",
+     "fdoc": "26.07.2026",
+     "fcont": "26.07.2026",
+     "moneda": "USD",
+     "sociedad": "2000"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "referencia",
+    "h": "<b>Referencia:</b> ingresar obligatoriamente <b>ANTICIPO CLIENTE</b>.",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "crit": 1,
+    "set": {
+     "referencia": "ANTICIPO CLIENTE"
+    }
+   },
+   {
+    "g": "3 · Línea de contrapartida"
+   },
+   {
+    "screen": "f53cab",
+    "target": "ctabanco",
+    "h": "<b><b>Cuenta:</b> cuenta de mayor del banco</b> en el bloque <b>Datos bancarios</b>.",
+    "d": "Es el único campo obligatorio del bloque.",
+    "set": {
+     "ctabanco": "0110102110"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "importe",
+    "h": "<b>Importe</b> de la operación.",
+    "d": "",
+    "set": {
+     "importe": "1.792,47"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "asignacion",
+    "h": "<b>Asignación:</b> el prefijo <b>OC-[Nº OC]</b> en la línea principal y el <b>código BP</b> en la del banco. → OC-C2026-0063",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "asignacion": "OC-C2026-0063"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "textopos",
+    "h": "<b>Texto de posición:</b> el motivo del anticipo. En la línea del banco va ANTICIPO CLIENTE. → ANTICIPO PEDIDO 1477",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "textopos": "ANTICIPO PEDIDO 1477"
+    }
+   },
+   {
+    "g": "4 · Selección de partidas abiertas"
+   },
+   {
+    "screen": "f53cab",
+    "target": "ctapa",
+    "h": "<b>Cuenta:</b> el interlocutor cuyas partidas se compensan.",
+    "d": "Clase de cuenta K para acreedores, D para deudores. Los criterios de selección están en esta misma pantalla.",
+    "set": {
+     "ctapa": "10208",
+     "clasecta": "K"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "cme",
+    "h": "<b>Indicador CME:</b> <b>A</b>.",
+    "d": "A Anticipos",
+    "crit": 1,
+    "set": {
+     "cme": "A"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "btn-Contabilizar",
+    "h": "Clic en <b>Tratar PAs</b> de la barra superior.",
+    "d": "Salta directo a la pantalla de compensación. No hay pantalla de selección intermedia.",
+    "set": {
+     "msg": ""
+    }
+   },
+   {
+    "g": "5 · Compensación"
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Estándar",
+    "target": "pa",
+    "h": "Se listan las <b>partidas abiertas</b> del interlocutor.",
+    "d": "Doble clic sobre el importe activa o desactiva cada partida.",
+    "set": {
+     "ttlpa": "Contabilizar salida pagos Procesar partidas abiertas",
+     "pafilas": [
+      [
+       "12418",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12419",
+       "KR",
+       "23.06.2026",
+       "31",
+       "60",
+       "3",
+       {
+        "v": "375,21-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12420",
+       "KR",
+       "23.06.2026",
+       "31",
+       "20",
+       "3",
+       {
+        "v": "439,89-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12421",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "113,04-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12422",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.137,07-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12423",
+       "KR",
+       "23.06.2026",
+       "31",
+       "50",
+       "3",
+       {
+        "v": "50,40-",
+        "r": 1
+       },
+       "",
+       ""
+      ]
+     ],
+     "impentrado": "1.792,47-",
+     "asignados": "0,00",
+     "sinasignar": "1.792,47-",
+     "moneda": "USD",
+     "msg": "40 partidas seleccionadas"
+    }
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Pago parc.",
+    "target": "pa",
+    "h": "Pestaña <b>Pago parc.</b> para pagos por un monto inferior al de la factura.",
+    "d": "Se escribe el monto en la columna Importe pago. Deja la factura abierta por el saldo restante.",
+    "set": {
+     "pafilaspp": [
+      [
+       "12418",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12419",
+       "KR",
+       "23.06.2026",
+       "31",
+       "60",
+       "3",
+       {
+        "v": "375,21-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12420",
+       "KR",
+       "23.06.2026",
+       "31",
+       "20",
+       "3",
+       {
+        "v": "439,89-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12421",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "113,04-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12422",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.137,07-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12423",
+       "KR",
+       "23.06.2026",
+       "31",
+       "50",
+       "3",
+       {
+        "v": "50,40-",
+        "r": 1
+       },
+       "",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Estándar",
+    "target": "sinasignar",
+    "h": "El campo <b>Sin asignar</b> debe quedar en <b>CERO</b>.",
+    "d": "Mientras haya diferencia, el sistema no deja simular ni contabilizar.",
+    "crit": 1,
+    "set": {
+     "asignados": "1.792,47-",
+     "sinasignar": "0,00",
+     "msg": "Partida asignada"
+    }
+   },
+   {
+    "g": "6 · Simulación y registro"
+   },
+   {
+    "screen": "f53res",
+    "target": "asiento",
+    "h": "Menú <b>Documento → Simular</b>: revisar el asiento.",
+    "d": "Verificar que el cargo y el abono estén en las cuentas correctas antes de registrar.",
+    "set": {
+     "ttlres": "Contabilizar salida pagos Visualizar Resumen",
+     "fdoc": "26.07.2026",
+     "fcont": "26.07.2026",
+     "asientorows": [
+      [
+       "001",
+       "40",
+       "60",
+       {
+        "v": "0110102110 BANCO BCP ME",
+        "t": 1
+       },
+       "",
+       {
+        "v": "1.792,47",
+        "r": 1
+       },
+       ""
+      ],
+      [
+       "002",
+       "19",
+       "70",
+       {
+        "v": "0000010022 COLCHONES ROMANTIC",
+        "t": 1
+       },
+       "",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       ""
+      ]
+     ],
+     "totd": "D  1.792,47",
+     "toth": "H  1.792,47",
+     "totiva": "0,00",
+     "totpos": "3 Posiciones"
+    }
+   },
+   {
+    "screen": "f53res",
+    "target": "btn-Contabilizar",
+    "h": "<b>Contabilizar</b>.",
+    "d": "Genera el documento contable. Si tras grabar se detecta un error, anular con FB08 — nunca borrar.",
+    "set": {
+     "msg": "Documento 1500000321 contabilizado en sociedad 2000"
+    }
+   }
+  ],
+  "slug": "f29-anticipos-clientes",
+  "pdf": "Manuales/MANUAL DE USUARIO - CONTABILIZAR ANTICIPOS DE CLIENTES (F-29).pdf"
+ },
+ {
+  "tx": "F-30",
+  "titulo": "Contabilización de saldos pendientes",
+  "sub": "Pago del saldo tras un abono previo",
+  "modulo": "FI",
+  "pasos": [
+   {
+    "g": "1 · Escenario"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a <b>F-30</b>.",
+    "d": "Registrar el pago del saldo de una factura que ya tiene un abono o pago parcial anterior.",
+    "set": {
+     "tcode": "F-30"
+    }
+   },
+   {
+    "g": "2 · Datos de cabecera"
+   },
+   {
+    "screen": "f53cab",
+    "target": "clasedoc",
+    "h": "<b>Clase de documento:</b> <b>DZ</b>.",
+    "d": "DZ Pago deudor",
+    "crit": 1,
+    "set": {
+     "ttl": "Contabilizar contabilización de saldos pendientes: Datos cabecera",
+     "clasedoc": "DZ",
+     "fdoc": "26.07.2026",
+     "fcont": "26.07.2026",
+     "moneda": "USD",
+     "sociedad": "2000"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "referencia",
+    "h": "<b>Referencia:</b> ingresar obligatoriamente <b>SALDO PENDIENTE</b>.",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "crit": 1,
+    "set": {
+     "referencia": "SALDO PENDIENTE"
+    }
+   },
+   {
+    "g": "3 · Línea de contrapartida"
+   },
+   {
+    "screen": "f53cab",
+    "target": "ctabanco",
+    "h": "<b><b>Cuenta:</b> cuenta de mayor del banco</b> en el bloque <b>Datos bancarios</b>.",
+    "d": "Es el único campo obligatorio del bloque.",
+    "set": {
+     "ctabanco": "0110102110"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "importe",
+    "h": "<b>Importe</b> de la operación.",
+    "d": "",
+    "set": {
+     "importe": "1.792,47"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "asignacion",
+    "h": "<b>Asignación:</b> el número de la factura original con formato <b>F[Nº FACTURA]</b> en la línea del cliente y el <b>código BP</b> en la del banco. → F90001188",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "asignacion": "F90001188"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "textopos",
+    "h": "<b>Texto de posición:</b> obligatoriamente <b>SALDO CLIENTE</b> en la línea del banco. → SALDO CLIENTE",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "textopos": "SALDO CLIENTE"
+    }
+   },
+   {
+    "g": "4 · Selección de partidas abiertas"
+   },
+   {
+    "screen": "f53cab",
+    "target": "ctapa",
+    "h": "<b>Cuenta:</b> el interlocutor cuyas partidas se compensan.",
+    "d": "Clase de cuenta K para acreedores, D para deudores. Los criterios de selección están en esta misma pantalla.",
+    "set": {
+     "ctapa": "10208",
+     "clasecta": "K"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "btn-Contabilizar",
+    "h": "Clic en <b>Tratar PAs</b> de la barra superior.",
+    "d": "Salta directo a la pantalla de compensación. No hay pantalla de selección intermedia.",
+    "set": {
+     "msg": ""
+    }
+   },
+   {
+    "g": "5 · Compensación"
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Estándar",
+    "target": "pa",
+    "h": "Se listan las <b>partidas abiertas</b> del interlocutor.",
+    "d": "Doble clic sobre el importe activa o desactiva cada partida.",
+    "set": {
+     "ttlpa": "Contabilizar salida pagos Procesar partidas abiertas",
+     "pafilas": [
+      [
+       "12418",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12419",
+       "KR",
+       "23.06.2026",
+       "31",
+       "60",
+       "3",
+       {
+        "v": "375,21-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12420",
+       "KR",
+       "23.06.2026",
+       "31",
+       "20",
+       "3",
+       {
+        "v": "439,89-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12421",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "113,04-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12422",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.137,07-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12423",
+       "KR",
+       "23.06.2026",
+       "31",
+       "50",
+       "3",
+       {
+        "v": "50,40-",
+        "r": 1
+       },
+       "",
+       ""
+      ]
+     ],
+     "impentrado": "1.792,47-",
+     "asignados": "0,00",
+     "sinasignar": "1.792,47-",
+     "moneda": "USD",
+     "msg": "40 partidas seleccionadas"
+    }
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Pago parc.",
+    "target": "pa",
+    "h": "Pestaña <b>Pago parc.</b> para pagos por un monto inferior al de la factura.",
+    "d": "Se escribe el monto en la columna Importe pago. Deja la factura abierta por el saldo restante.",
+    "set": {
+     "pafilaspp": [
+      [
+       "12418",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12419",
+       "KR",
+       "23.06.2026",
+       "31",
+       "60",
+       "3",
+       {
+        "v": "375,21-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12420",
+       "KR",
+       "23.06.2026",
+       "31",
+       "20",
+       "3",
+       {
+        "v": "439,89-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12421",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "113,04-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12422",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.137,07-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12423",
+       "KR",
+       "23.06.2026",
+       "31",
+       "50",
+       "3",
+       {
+        "v": "50,40-",
+        "r": 1
+       },
+       "",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Estándar",
+    "target": "sinasignar",
+    "h": "El campo <b>Sin asignar</b> debe quedar en <b>CERO</b>.",
+    "d": "Mientras haya diferencia, el sistema no deja simular ni contabilizar.",
+    "crit": 1,
+    "set": {
+     "asignados": "1.792,47-",
+     "sinasignar": "0,00",
+     "msg": "Partida asignada"
+    }
+   },
+   {
+    "g": "6 · Simulación y registro"
+   },
+   {
+    "screen": "f53res",
+    "target": "asiento",
+    "h": "Menú <b>Documento → Simular</b>: revisar el asiento.",
+    "d": "Verificar que el cargo y el abono estén en las cuentas correctas antes de registrar.",
+    "set": {
+     "ttlres": "Contabilizar salida pagos Visualizar Resumen",
+     "fdoc": "26.07.2026",
+     "fcont": "26.07.2026",
+     "asientorows": [
+      [
+       "001",
+       "40",
+       "60",
+       {
+        "v": "0110102110 BANCO BCP ME",
+        "t": 1
+       },
+       "",
+       {
+        "v": "1.792,47",
+        "r": 1
+       },
+       ""
+      ],
+      [
+       "002",
+       "15",
+       "70",
+       {
+        "v": "0000010022 COLCHONES ROMANTIC",
+        "t": 1
+       },
+       "",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       ""
+      ]
+     ],
+     "totd": "D  1.792,47",
+     "toth": "H  1.792,47",
+     "totiva": "0,00",
+     "totpos": "3 Posiciones"
+    }
+   },
+   {
+    "screen": "f53res",
+    "target": "btn-Contabilizar",
+    "h": "<b>Contabilizar</b>.",
+    "d": "Genera el documento contable. Si tras grabar se detecta un error, anular con FB08 — nunca borrar.",
+    "set": {
+     "msg": "Documento 1500000321 contabilizado en sociedad 2000"
+    }
+   }
+  ],
+  "slug": "f30-saldos-pendientes",
+  "pdf": "Manuales/MANUAL DE USUARIO - CONTABILIZACION DE SALDOS PENDIENTES (F-30).pdf"
+ },
+ {
+  "tx": "F-36",
+  "titulo": "Gestión de canje de letras",
+  "sub": "Variante operativa del canje",
+  "modulo": "FI",
+  "pasos": [
+   {
+    "g": "1 · Escenario"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a <b>F-36</b>.",
+    "d": "El monto de la letra debe coincidir exactamente con la sumatoria de las facturas seleccionadas.",
+    "set": {
+     "tcode": "F-36"
+    }
+   },
+   {
+    "g": "2 · Datos de cabecera"
+   },
+   {
+    "screen": "f53cab",
+    "target": "clasedoc",
+    "h": "<b>Clase de documento:</b> <b>DA</b>.",
+    "d": "DA Documento de clientes",
+    "crit": 1,
+    "set": {
+     "ttl": "Contabilizar gestión de canje de letras: Datos cabecera",
+     "clasedoc": "DA",
+     "fdoc": "26.07.2026",
+     "fcont": "26.07.2026",
+     "moneda": "USD",
+     "sociedad": "2000"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "referencia",
+    "h": "<b>Referencia:</b> ingresar obligatoriamente <b>PAGO CON LETRA</b>.",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "crit": 1,
+    "set": {
+     "referencia": "PAGO CON LETRA"
+    }
+   },
+   {
+    "g": "3 · Línea de contrapartida"
+   },
+   {
+    "screen": "f53cab",
+    "target": "ctabanco",
+    "h": "<b><b>Cuenta:</b> el código del cliente</b> en el bloque <b>Datos bancarios</b>.",
+    "d": "Es el único campo obligatorio del bloque.",
+    "set": {
+     "ctabanco": "10022"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "importe",
+    "h": "<b>Importe</b> de la operación.",
+    "d": "",
+    "set": {
+     "importe": "1.792,47"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "asignacion",
+    "h": "<b>Asignación:</b> el prefijo <b>L[Nº LETRA]</b>. → L2026-0045",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "asignacion": "L2026-0045"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "textopos",
+    "h": "<b>Texto de posición:</b> las facturas compensadas. → F90001188-F90001190",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "textopos": "F90001188-F90001190"
+    }
+   },
+   {
+    "g": "4 · Selección de partidas abiertas"
+   },
+   {
+    "screen": "f53cab",
+    "target": "ctapa",
+    "h": "<b>Cuenta:</b> el interlocutor cuyas partidas se compensan.",
+    "d": "Clase de cuenta K para acreedores, D para deudores. Los criterios de selección están en esta misma pantalla.",
+    "set": {
+     "ctapa": "10208",
+     "clasecta": "K"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "cme",
+    "h": "<b>Indicador CME:</b> <b>W</b>.",
+    "d": "W Efectos / Letras",
+    "crit": 1,
+    "set": {
+     "cme": "W"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "btn-Contabilizar",
+    "h": "Clic en <b>Tratar PAs</b> de la barra superior.",
+    "d": "Salta directo a la pantalla de compensación. No hay pantalla de selección intermedia.",
+    "set": {
+     "msg": ""
+    }
+   },
+   {
+    "g": "5 · Compensación"
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Estándar",
+    "target": "pa",
+    "h": "Se listan las <b>partidas abiertas</b> del interlocutor.",
+    "d": "Doble clic sobre el importe activa o desactiva cada partida.",
+    "set": {
+     "ttlpa": "Contabilizar salida pagos Procesar partidas abiertas",
+     "pafilas": [
+      [
+       "12418",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12419",
+       "KR",
+       "23.06.2026",
+       "31",
+       "60",
+       "3",
+       {
+        "v": "375,21-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12420",
+       "KR",
+       "23.06.2026",
+       "31",
+       "20",
+       "3",
+       {
+        "v": "439,89-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12421",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "113,04-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12422",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.137,07-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12423",
+       "KR",
+       "23.06.2026",
+       "31",
+       "50",
+       "3",
+       {
+        "v": "50,40-",
+        "r": 1
+       },
+       "",
+       ""
+      ]
+     ],
+     "impentrado": "1.792,47-",
+     "asignados": "0,00",
+     "sinasignar": "1.792,47-",
+     "moneda": "USD",
+     "msg": "40 partidas seleccionadas"
+    }
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Pago parc.",
+    "target": "pa",
+    "h": "Pestaña <b>Pago parc.</b> para pagos por un monto inferior al de la factura.",
+    "d": "Se escribe el monto en la columna Importe pago. Deja la factura abierta por el saldo restante.",
+    "set": {
+     "pafilaspp": [
+      [
+       "12418",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12419",
+       "KR",
+       "23.06.2026",
+       "31",
+       "60",
+       "3",
+       {
+        "v": "375,21-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12420",
+       "KR",
+       "23.06.2026",
+       "31",
+       "20",
+       "3",
+       {
+        "v": "439,89-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12421",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "113,04-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12422",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.137,07-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12423",
+       "KR",
+       "23.06.2026",
+       "31",
+       "50",
+       "3",
+       {
+        "v": "50,40-",
+        "r": 1
+       },
+       "",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Estándar",
+    "target": "sinasignar",
+    "h": "El campo <b>Sin asignar</b> debe quedar en <b>CERO</b>.",
+    "d": "Mientras haya diferencia, el sistema no deja simular ni contabilizar.",
+    "crit": 1,
+    "set": {
+     "asignados": "1.792,47-",
+     "sinasignar": "0,00",
+     "msg": "Partida asignada"
+    }
+   },
+   {
+    "g": "6 · Simulación y registro"
+   },
+   {
+    "screen": "f53res",
+    "target": "asiento",
+    "h": "Menú <b>Documento → Simular</b>: revisar el asiento.",
+    "d": "Verificar que el cargo y el abono estén en las cuentas correctas antes de registrar.",
+    "set": {
+     "ttlres": "Contabilizar salida pagos Visualizar Resumen",
+     "fdoc": "26.07.2026",
+     "fcont": "26.07.2026",
+     "asientorows": [
+      [
+       "001",
+       "09",
+       "70",
+       {
+        "v": "0000010022 LETRAS POR COBRAR",
+        "t": 1
+       },
+       "",
+       {
+        "v": "1.792,47",
+        "r": 1
+       },
+       ""
+      ],
+      [
+       "002",
+       "15",
+       "70",
+       {
+        "v": "0000010022 COLCHONES ROMANTIC",
+        "t": 1
+       },
+       "",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       ""
+      ]
+     ],
+     "totd": "D  1.792,47",
+     "toth": "H  1.792,47",
+     "totiva": "0,00",
+     "totpos": "3 Posiciones"
+    }
+   },
+   {
+    "screen": "f53res",
+    "target": "btn-Contabilizar",
+    "h": "<b>Contabilizar</b>.",
+    "d": "Genera el documento contable. Si tras grabar se detecta un error, anular con FB08 — nunca borrar.",
+    "set": {
+     "msg": "Documento 1500000321 contabilizado en sociedad 2000"
+    }
+   }
+  ],
+  "slug": "f36-canje-letras",
+  "pdf": "Manuales/MANUAL_DE_USUARIO - GESTIÓN DE CANJE DE LETRAS (F-36).pdf"
+ },
+ {
+  "tx": "F-36",
+  "titulo": "Registro de letras de cambio",
+  "sub": "Canje de facturas por efectos",
+  "modulo": "FI",
+  "pasos": [
+   {
+    "g": "1 · Escenario"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a <b>F-36</b>.",
+    "d": "Registrar el canje de una o más facturas por una letra de cambio aceptada por el cliente.",
+    "set": {
+     "tcode": "F-36"
+    }
+   },
+   {
+    "g": "2 · Datos de cabecera"
+   },
+   {
+    "screen": "f53cab",
+    "target": "clasedoc",
+    "h": "<b>Clase de documento:</b> <b>DA</b>.",
+    "d": "DA Documento de clientes",
+    "crit": 1,
+    "set": {
+     "ttl": "Contabilizar registro de letras de cambio: Datos cabecera",
+     "clasedoc": "DA",
+     "fdoc": "26.07.2026",
+     "fcont": "26.07.2026",
+     "moneda": "USD",
+     "sociedad": "2000"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "referencia",
+    "h": "<b>Referencia:</b> ingresar obligatoriamente <b>PAGO CON LETRA</b>.",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "crit": 1,
+    "set": {
+     "referencia": "PAGO CON LETRA"
+    }
+   },
+   {
+    "g": "3 · Línea de contrapartida"
+   },
+   {
+    "screen": "f53cab",
+    "target": "ctabanco",
+    "h": "<b><b>Cuenta:</b> el código del cliente (nueva partida de letra)</b> en el bloque <b>Datos bancarios</b>.",
+    "d": "Es el único campo obligatorio del bloque.",
+    "set": {
+     "ctabanco": "10022"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "importe",
+    "h": "<b>Importe</b> de la operación.",
+    "d": "",
+    "set": {
+     "importe": "1.792,47"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "asignacion",
+    "h": "<b>Asignación:</b> el prefijo <b>L[Nº LETRA]</b>. → L2026-0044",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "asignacion": "L2026-0044"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "textopos",
+    "h": "<b>Texto de posición:</b> formato <b>F[Nº FACTURA1-Nº FACTURA2, ETC]</b>. → F90001188",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "textopos": "F90001188"
+    }
+   },
+   {
+    "g": "4 · Selección de partidas abiertas"
+   },
+   {
+    "screen": "f53cab",
+    "target": "ctapa",
+    "h": "<b>Cuenta:</b> el interlocutor cuyas partidas se compensan.",
+    "d": "Clase de cuenta K para acreedores, D para deudores. Los criterios de selección están en esta misma pantalla.",
+    "set": {
+     "ctapa": "10208",
+     "clasecta": "K"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "cme",
+    "h": "<b>Indicador CME:</b> <b>W</b>.",
+    "d": "W Efectos / Letras",
+    "crit": 1,
+    "set": {
+     "cme": "W"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "btn-Contabilizar",
+    "h": "Clic en <b>Tratar PAs</b> de la barra superior.",
+    "d": "Salta directo a la pantalla de compensación. No hay pantalla de selección intermedia.",
+    "set": {
+     "msg": ""
+    }
+   },
+   {
+    "g": "5 · Compensación"
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Estándar",
+    "target": "pa",
+    "h": "Se listan las <b>partidas abiertas</b> del interlocutor.",
+    "d": "Doble clic sobre el importe activa o desactiva cada partida.",
+    "set": {
+     "ttlpa": "Contabilizar salida pagos Procesar partidas abiertas",
+     "pafilas": [
+      [
+       "12418",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12419",
+       "KR",
+       "23.06.2026",
+       "31",
+       "60",
+       "3",
+       {
+        "v": "375,21-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12420",
+       "KR",
+       "23.06.2026",
+       "31",
+       "20",
+       "3",
+       {
+        "v": "439,89-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12421",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "113,04-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12422",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.137,07-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12423",
+       "KR",
+       "23.06.2026",
+       "31",
+       "50",
+       "3",
+       {
+        "v": "50,40-",
+        "r": 1
+       },
+       "",
+       ""
+      ]
+     ],
+     "impentrado": "1.792,47-",
+     "asignados": "0,00",
+     "sinasignar": "1.792,47-",
+     "moneda": "USD",
+     "msg": "40 partidas seleccionadas"
+    }
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Pago parc.",
+    "target": "pa",
+    "h": "Pestaña <b>Pago parc.</b> para pagos por un monto inferior al de la factura.",
+    "d": "Se escribe el monto en la columna Importe pago. Deja la factura abierta por el saldo restante.",
+    "set": {
+     "pafilaspp": [
+      [
+       "12418",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12419",
+       "KR",
+       "23.06.2026",
+       "31",
+       "60",
+       "3",
+       {
+        "v": "375,21-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12420",
+       "KR",
+       "23.06.2026",
+       "31",
+       "20",
+       "3",
+       {
+        "v": "439,89-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12421",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "113,04-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12422",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.137,07-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12423",
+       "KR",
+       "23.06.2026",
+       "31",
+       "50",
+       "3",
+       {
+        "v": "50,40-",
+        "r": 1
+       },
+       "",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Estándar",
+    "target": "sinasignar",
+    "h": "El campo <b>Sin asignar</b> debe quedar en <b>CERO</b>.",
+    "d": "Mientras haya diferencia, el sistema no deja simular ni contabilizar.",
+    "crit": 1,
+    "set": {
+     "asignados": "1.792,47-",
+     "sinasignar": "0,00",
+     "msg": "Partida asignada"
+    }
+   },
+   {
+    "g": "6 · Simulación y registro"
+   },
+   {
+    "screen": "f53res",
+    "target": "asiento",
+    "h": "Menú <b>Documento → Simular</b>: revisar el asiento.",
+    "d": "Verificar que el cargo y el abono estén en las cuentas correctas antes de registrar.",
+    "set": {
+     "ttlres": "Contabilizar salida pagos Visualizar Resumen",
+     "fdoc": "26.07.2026",
+     "fcont": "26.07.2026",
+     "asientorows": [
+      [
+       "001",
+       "09",
+       "70",
+       {
+        "v": "0000010022 LETRAS POR COBRAR",
+        "t": 1
+       },
+       "",
+       {
+        "v": "1.792,47",
+        "r": 1
+       },
+       ""
+      ],
+      [
+       "002",
+       "15",
+       "70",
+       {
+        "v": "0000010022 COLCHONES ROMANTIC",
+        "t": 1
+       },
+       "",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       ""
+      ]
+     ],
+     "totd": "D  1.792,47",
+     "toth": "H  1.792,47",
+     "totiva": "0,00",
+     "totpos": "3 Posiciones"
+    }
+   },
+   {
+    "screen": "f53res",
+    "target": "btn-Contabilizar",
+    "h": "<b>Contabilizar</b>.",
+    "d": "Genera el documento contable. Si tras grabar se detecta un error, anular con FB08 — nunca borrar.",
+    "set": {
+     "msg": "Documento 1500000321 contabilizado en sociedad 2000"
+    }
+   }
+  ],
+  "slug": "f36-letras",
+  "pdf": "Manuales/MANUAL DE USUARIO - REGISTRO DE LETRAS DE CAMBIO (F-36).pdf"
+ },
+ {
+  "tx": "F-47",
+  "titulo": "Solicitud de anticipo a proveedores",
+  "sub": "Apunte estadístico · no mueve saldos",
+  "modulo": "FI",
+  "pasos": [
+   {
+    "g": "1 · Escenario"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a <b>F-47</b>.",
+    "d": "Solicitud formal de pago anticipado. Es un apunte estadístico: no genera asiento contable, pero permite que Tesorería visualice la necesidad de pago.",
+    "set": {
+     "tcode": "F-47"
+    }
+   },
+   {
+    "g": "2 · Datos de cabecera"
+   },
+   {
+    "screen": "f53cab",
+    "target": "clasedoc",
+    "h": "<b>Clase de documento:</b> <b>KA</b>.",
+    "d": "KA Documento de acreedor",
+    "crit": 1,
+    "set": {
+     "ttl": "Contabilizar solicitud de anticipo a proveedores: Datos cabecera",
+     "clasedoc": "KA",
+     "fdoc": "26.07.2026",
+     "fcont": "26.07.2026",
+     "moneda": "USD",
+     "sociedad": "2000"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "referencia",
+    "h": "<b>Referencia:</b> ingresar obligatoriamente <b>SOL ANTICIPO</b>.",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "crit": 1,
+    "set": {
+     "referencia": "SOL ANTICIPO"
+    }
+   },
+   {
+    "g": "3 · Línea de contrapartida"
+   },
+   {
+    "screen": "f53cab",
+    "target": "ctabanco",
+    "h": "<b><b>Cuenta:</b> el código del proveedor (BP)</b> en el bloque <b>Datos bancarios</b>.",
+    "d": "Es el único campo obligatorio del bloque.",
+    "set": {
+     "ctabanco": "10208"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "importe",
+    "h": "<b>Importe</b> de la operación.",
+    "d": "",
+    "set": {
+     "importe": "1.792,47"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "asignacion",
+    "h": "<b>Asignación:</b> obligatoriamente el <b>Nº de OC</b>. → 4500000014",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "asignacion": "4500000014"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "textopos",
+    "h": "<b>Texto de posición:</b> el motivo de la solicitud. → ANTICIPO 30% PROVEEDOR EXTRANJERO",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "textopos": "ANTICIPO 30% PROVEEDOR EXTRANJERO"
+    }
+   },
+   {
+    "g": "4 · Selección de partidas abiertas"
+   },
+   {
+    "screen": "f53cab",
+    "target": "ctapa",
+    "h": "<b>Cuenta:</b> el interlocutor cuyas partidas se compensan.",
+    "d": "Clase de cuenta K para acreedores, D para deudores. Los criterios de selección están en esta misma pantalla.",
+    "set": {
+     "ctapa": "10208",
+     "clasecta": "K"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "cme",
+    "h": "<b>Indicador CME:</b> <b>F</b>.",
+    "d": "F Solicitud de anticipo",
+    "crit": 1,
+    "set": {
+     "cme": "F"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "btn-Contabilizar",
+    "h": "Clic en <b>Tratar PAs</b> de la barra superior.",
+    "d": "Salta directo a la pantalla de compensación. No hay pantalla de selección intermedia.",
+    "set": {
+     "msg": ""
+    }
+   },
+   {
+    "g": "5 · Compensación"
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Estándar",
+    "target": "pa",
+    "h": "Se listan las <b>partidas abiertas</b> del interlocutor.",
+    "d": "Doble clic sobre el importe activa o desactiva cada partida.",
+    "set": {
+     "ttlpa": "Contabilizar salida pagos Procesar partidas abiertas",
+     "pafilas": [
+      [
+       "12418",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12419",
+       "KR",
+       "23.06.2026",
+       "31",
+       "60",
+       "3",
+       {
+        "v": "375,21-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12420",
+       "KR",
+       "23.06.2026",
+       "31",
+       "20",
+       "3",
+       {
+        "v": "439,89-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12421",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "113,04-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12422",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.137,07-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12423",
+       "KR",
+       "23.06.2026",
+       "31",
+       "50",
+       "3",
+       {
+        "v": "50,40-",
+        "r": 1
+       },
+       "",
+       ""
+      ]
+     ],
+     "impentrado": "1.792,47-",
+     "asignados": "0,00",
+     "sinasignar": "1.792,47-",
+     "moneda": "USD",
+     "msg": "40 partidas seleccionadas"
+    }
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Pago parc.",
+    "target": "pa",
+    "h": "Pestaña <b>Pago parc.</b> para pagos por un monto inferior al de la factura.",
+    "d": "Se escribe el monto en la columna Importe pago. Deja la factura abierta por el saldo restante.",
+    "set": {
+     "pafilaspp": [
+      [
+       "12418",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12419",
+       "KR",
+       "23.06.2026",
+       "31",
+       "60",
+       "3",
+       {
+        "v": "375,21-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12420",
+       "KR",
+       "23.06.2026",
+       "31",
+       "20",
+       "3",
+       {
+        "v": "439,89-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12421",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "113,04-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12422",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.137,07-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12423",
+       "KR",
+       "23.06.2026",
+       "31",
+       "50",
+       "3",
+       {
+        "v": "50,40-",
+        "r": 1
+       },
+       "",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Estándar",
+    "target": "sinasignar",
+    "h": "El campo <b>Sin asignar</b> debe quedar en <b>CERO</b>.",
+    "d": "Mientras haya diferencia, el sistema no deja simular ni contabilizar.",
+    "crit": 1,
+    "set": {
+     "asignados": "1.792,47-",
+     "sinasignar": "0,00",
+     "msg": "Partida asignada"
+    }
+   },
+   {
+    "g": "6 · Simulación y registro"
+   },
+   {
+    "screen": "f53res",
+    "target": "asiento",
+    "h": "Confirmar que el sistema <b>no solicita cuenta de contrapartida</b>.",
+    "d": "Al ser un apunte estadístico solo hay una posición. El documento generado sirve de base para el pago posterior por F-48 o F-51.",
+    "crit": 1,
+    "set": {}
+   },
+   {
+    "screen": "f53res",
+    "target": "asiento",
+    "h": "Menú <b>Documento → Simular</b>: revisar el asiento.",
+    "d": "Verificar que el cargo y el abono estén en las cuentas correctas antes de registrar.",
+    "set": {
+     "ttlres": "Contabilizar salida pagos Visualizar Resumen",
+     "fdoc": "26.07.2026",
+     "fcont": "26.07.2026",
+     "asientorows": [
+      [
+       "001",
+       "29",
+       "70",
+       {
+        "v": "0000010208 TRANSPORTES Y ALMAC",
+        "t": 1
+       },
+       "",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       ""
+      ]
+     ],
+     "totd": "D  1.792,47",
+     "toth": "H  1.792,47",
+     "totiva": "0,00",
+     "totpos": "3 Posiciones"
+    }
+   },
+   {
+    "screen": "f53res",
+    "target": "btn-Contabilizar",
+    "h": "<b>Contabilizar</b>.",
+    "d": "Genera el documento contable. Si tras grabar se detecta un error, anular con FB08 — nunca borrar.",
+    "set": {
+     "msg": "Documento 1500000321 contabilizado en sociedad 2000"
+    }
+   }
+  ],
+  "slug": "f47-anticipo-proveedores",
+  "pdf": "Manuales/MANUAL DE USUARIO - SOLICITUD DE ANTICIPO A PROVEEDORES (F-47).pdf"
+ },
+ {
+  "tx": "F-51",
+  "titulo": "Contabilización con compensación para acreedores",
+  "sub": "Traspaso con compensación",
+  "modulo": "FI",
+  "pasos": [
+   {
+    "g": "1 · Escenario"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a <b>F-51</b>.",
+    "d": "Compensar partidas abiertas de un acreedor contra otra cuenta sin movimiento de fondos.",
+    "set": {
+     "tcode": "F-51"
+    }
+   },
+   {
+    "g": "2 · Datos de cabecera"
+   },
+   {
+    "screen": "f53cab",
+    "target": "clasedoc",
+    "h": "<b>Clase de documento:</b> <b>KZ</b>.",
+    "d": "KZ Pago acreedor",
+    "crit": 1,
+    "set": {
+     "ttl": "Contabilizar contabilización con compensación para acreedores: Datos cabecera",
+     "clasedoc": "KZ",
+     "fdoc": "26.07.2026",
+     "fcont": "26.07.2026",
+     "moneda": "USD",
+     "sociedad": "2000"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "referencia",
+    "h": "<b>Referencia:</b> ingresar obligatoriamente <b>COMPENSACION</b>.",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "crit": 1,
+    "set": {
+     "referencia": "COMPENSACION"
+    }
+   },
+   {
+    "g": "3 · Línea de contrapartida"
+   },
+   {
+    "screen": "f53cab",
+    "target": "ctabanco",
+    "h": "<b><b>Cuenta:</b> la cuenta de contrapartida</b> en el bloque <b>Datos bancarios</b>.",
+    "d": "Es el único campo obligatorio del bloque.",
+    "set": {
+     "ctabanco": "0110102110"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "importe",
+    "h": "<b>Importe</b> de la operación.",
+    "d": "",
+    "set": {
+     "importe": "1.792,47"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "asignacion",
+    "h": "<b>Asignación:</b> el <b>código BP</b> del proveedor. → 10208",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "asignacion": "10208"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "textopos",
+    "h": "<b>Texto de posición:</b> el motivo de la compensación. → COMPENSACION PARTIDAS ABIERTAS",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "textopos": "COMPENSACION PARTIDAS ABIERTAS"
+    }
+   },
+   {
+    "g": "4 · Selección de partidas abiertas"
+   },
+   {
+    "screen": "f53cab",
+    "target": "ctapa",
+    "h": "<b>Cuenta:</b> el interlocutor cuyas partidas se compensan.",
+    "d": "Clase de cuenta K para acreedores, D para deudores. Los criterios de selección están en esta misma pantalla.",
+    "set": {
+     "ctapa": "10208",
+     "clasecta": "K"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "btn-Contabilizar",
+    "h": "Clic en <b>Tratar PAs</b> de la barra superior.",
+    "d": "Salta directo a la pantalla de compensación. No hay pantalla de selección intermedia.",
+    "set": {
+     "msg": ""
+    }
+   },
+   {
+    "g": "5 · Compensación"
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Estándar",
+    "target": "pa",
+    "h": "Se listan las <b>partidas abiertas</b> del interlocutor.",
+    "d": "Doble clic sobre el importe activa o desactiva cada partida.",
+    "set": {
+     "ttlpa": "Contabilizar salida pagos Procesar partidas abiertas",
+     "pafilas": [
+      [
+       "12418",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12419",
+       "KR",
+       "23.06.2026",
+       "31",
+       "60",
+       "3",
+       {
+        "v": "375,21-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12420",
+       "KR",
+       "23.06.2026",
+       "31",
+       "20",
+       "3",
+       {
+        "v": "439,89-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12421",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "113,04-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12422",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.137,07-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12423",
+       "KR",
+       "23.06.2026",
+       "31",
+       "50",
+       "3",
+       {
+        "v": "50,40-",
+        "r": 1
+       },
+       "",
+       ""
+      ]
+     ],
+     "impentrado": "1.792,47-",
+     "asignados": "0,00",
+     "sinasignar": "1.792,47-",
+     "moneda": "USD",
+     "msg": "40 partidas seleccionadas"
+    }
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Pago parc.",
+    "target": "pa",
+    "h": "Pestaña <b>Pago parc.</b> para pagos por un monto inferior al de la factura.",
+    "d": "Se escribe el monto en la columna Importe pago. Deja la factura abierta por el saldo restante.",
+    "set": {
+     "pafilaspp": [
+      [
+       "12418",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12419",
+       "KR",
+       "23.06.2026",
+       "31",
+       "60",
+       "3",
+       {
+        "v": "375,21-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12420",
+       "KR",
+       "23.06.2026",
+       "31",
+       "20",
+       "3",
+       {
+        "v": "439,89-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12421",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "113,04-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12422",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.137,07-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12423",
+       "KR",
+       "23.06.2026",
+       "31",
+       "50",
+       "3",
+       {
+        "v": "50,40-",
+        "r": 1
+       },
+       "",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Estándar",
+    "target": "sinasignar",
+    "h": "El campo <b>Sin asignar</b> debe quedar en <b>CERO</b>.",
+    "d": "Mientras haya diferencia, el sistema no deja simular ni contabilizar.",
+    "crit": 1,
+    "set": {
+     "asignados": "1.792,47-",
+     "sinasignar": "0,00",
+     "msg": "Partida asignada"
+    }
+   },
+   {
+    "g": "6 · Simulación y registro"
+   },
+   {
+    "screen": "f53res",
+    "target": "asiento",
+    "h": "Menú <b>Documento → Simular</b>: revisar el asiento.",
+    "d": "Verificar que el cargo y el abono estén en las cuentas correctas antes de registrar.",
+    "set": {
+     "ttlres": "Contabilizar salida pagos Visualizar Resumen",
+     "fdoc": "26.07.2026",
+     "fcont": "26.07.2026",
+     "asientorows": [
+      [
+       "001",
+       "50",
+       "60",
+       {
+        "v": "0110102110 BANCO BCP ME",
+        "t": 1
+       },
+       "",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       ""
+      ],
+      [
+       "002",
+       "25",
+       "70",
+       {
+        "v": "0000010208 TRANSPORTES Y ALMAC",
+        "t": 1
+       },
+       "",
+       {
+        "v": "1.792,47",
+        "r": 1
+       },
+       ""
+      ],
+      [
+       "003",
+       "40",
+       "70",
+       {
+        "v": "0810301001 DIF CAMBIO COBERTUR",
+        "t": 1
+       },
+       "",
+       {
+        "v": "0,00",
+        "r": 1
+       },
+       ""
+      ]
+     ],
+     "totd": "D  1.792,47",
+     "toth": "H  1.792,47",
+     "totiva": "0,00",
+     "totpos": "3 Posiciones"
+    }
+   },
+   {
+    "screen": "f53res",
+    "target": "btn-Contabilizar",
+    "h": "<b>Contabilizar</b>.",
+    "d": "Genera el documento contable. Si tras grabar se detecta un error, anular con FB08 — nunca borrar.",
+    "set": {
+     "msg": "Documento 1500000321 contabilizado en sociedad 2000"
+    }
+   }
+  ],
+  "slug": "f51-compensacion-acreedores",
+  "pdf": "Manuales/MANUAL DE USUARIO - CONTABILIZACIÓN CON COMPENSACIÓN PARA ACREEDORES (F-51).pdf"
+ },
+ {
+  "tx": "F-51",
+  "titulo": "Ejecución de pago manual a proveedores",
+  "sub": "Anticipo · pago · confirming · rendiciones",
+  "modulo": "FI",
+  "pasos": [
+   {
+    "g": "1 · Escenario"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a <b>F-51</b>.",
+    "d": "Cuatro escenarios: ANTICIPO (pago previo a la factura) · PAGO (proveedor extranjero fuera de F110) · CONFIRMING (vía plataforma bancaria) · RENDICION (restitución de gastos a empleados). Cada uno tiene su Referencia exacta.",
+    "set": {
+     "tcode": "F-51"
+    }
+   },
+   {
+    "g": "2 · Datos de cabecera"
+   },
+   {
+    "screen": "f53cab",
+    "target": "clasedoc",
+    "h": "<b>Clase de documento:</b> <b>KZ</b>.",
+    "d": "KZ Pago acreedor",
+    "crit": 1,
+    "set": {
+     "ttl": "Contabilizar ejecución de pago manual a proveedores: Datos cabecera",
+     "clasedoc": "KZ",
+     "fdoc": "26.07.2026",
+     "fcont": "26.07.2026",
+     "moneda": "USD",
+     "sociedad": "2000"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "referencia",
+    "h": "<b>Referencia:</b> ingresar obligatoriamente <b>ANTICIPO</b>.",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "crit": 1,
+    "set": {
+     "referencia": "ANTICIPO"
+    }
+   },
+   {
+    "g": "3 · Línea de contrapartida"
+   },
+   {
+    "screen": "f53cab",
+    "target": "ctabanco",
+    "h": "<b><b>Cuenta:</b> cuenta de mayor del banco</b> en el bloque <b>Datos bancarios</b>.",
+    "d": "Es el único campo obligatorio del bloque.",
+    "set": {
+     "ctabanco": "0110102110"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "importe",
+    "h": "<b>Importe</b> de la operación.",
+    "d": "",
+    "set": {
+     "importe": "1.792,47"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "asignacion",
+    "h": "<b>Asignación:</b> el <b>código BP</b> del proveedor. → 10208",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "asignacion": "10208"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "textopos",
+    "h": "<b>Texto de posición:</b> el motivo del anticipo. → ANTICIPO IMPORTACION OC 4500000014",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "textopos": "ANTICIPO IMPORTACION OC 4500000014"
+    }
+   },
+   {
+    "g": "4 · Selección de partidas abiertas"
+   },
+   {
+    "screen": "f53cab",
+    "target": "ctapa",
+    "h": "<b>Cuenta:</b> el interlocutor cuyas partidas se compensan.",
+    "d": "Clase de cuenta K para acreedores, D para deudores. Los criterios de selección están en esta misma pantalla.",
+    "set": {
+     "ctapa": "10208",
+     "clasecta": "K"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "cme",
+    "h": "<b>Indicador CME:</b> <b>F</b>.",
+    "d": "F Solicitud de anticipo",
+    "crit": 1,
+    "set": {
+     "cme": "F"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "btn-Contabilizar",
+    "h": "Clic en <b>Tratar PAs</b> de la barra superior.",
+    "d": "Salta directo a la pantalla de compensación. No hay pantalla de selección intermedia.",
+    "set": {
+     "msg": ""
+    }
+   },
+   {
+    "g": "5 · Compensación"
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Estándar",
+    "target": "pa",
+    "h": "Se listan las <b>partidas abiertas</b> del interlocutor.",
+    "d": "Doble clic sobre el importe activa o desactiva cada partida.",
+    "set": {
+     "ttlpa": "Contabilizar salida pagos Procesar partidas abiertas",
+     "pafilas": [
+      [
+       "12418",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12419",
+       "KR",
+       "23.06.2026",
+       "31",
+       "60",
+       "3",
+       {
+        "v": "375,21-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12420",
+       "KR",
+       "23.06.2026",
+       "31",
+       "20",
+       "3",
+       {
+        "v": "439,89-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12421",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "113,04-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12422",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.137,07-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12423",
+       "KR",
+       "23.06.2026",
+       "31",
+       "50",
+       "3",
+       {
+        "v": "50,40-",
+        "r": 1
+       },
+       "",
+       ""
+      ]
+     ],
+     "impentrado": "1.792,47-",
+     "asignados": "0,00",
+     "sinasignar": "1.792,47-",
+     "moneda": "USD",
+     "msg": "40 partidas seleccionadas"
+    }
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Pago parc.",
+    "target": "pa",
+    "h": "Pestaña <b>Pago parc.</b> para pagos por un monto inferior al de la factura.",
+    "d": "Se escribe el monto en la columna Importe pago. Deja la factura abierta por el saldo restante.",
+    "set": {
+     "pafilaspp": [
+      [
+       "12418",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12419",
+       "KR",
+       "23.06.2026",
+       "31",
+       "60",
+       "3",
+       {
+        "v": "375,21-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12420",
+       "KR",
+       "23.06.2026",
+       "31",
+       "20",
+       "3",
+       {
+        "v": "439,89-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12421",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "113,04-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12422",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.137,07-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12423",
+       "KR",
+       "23.06.2026",
+       "31",
+       "50",
+       "3",
+       {
+        "v": "50,40-",
+        "r": 1
+       },
+       "",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Estándar",
+    "target": "sinasignar",
+    "h": "El campo <b>Sin asignar</b> debe quedar en <b>CERO</b>.",
+    "d": "Mientras haya diferencia, el sistema no deja simular ni contabilizar.",
+    "crit": 1,
+    "set": {
+     "asignados": "1.792,47-",
+     "sinasignar": "0,00",
+     "msg": "Partida asignada"
+    }
+   },
+   {
+    "g": "6 · Simulación y registro"
+   },
+   {
+    "screen": "f53res",
+    "target": "asiento",
+    "h": "Menú <b>Documento → Simular</b>: revisar el asiento.",
+    "d": "Verificar que el cargo y el abono estén en las cuentas correctas antes de registrar.",
+    "set": {
+     "ttlres": "Contabilizar salida pagos Visualizar Resumen",
+     "fdoc": "26.07.2026",
+     "fcont": "26.07.2026",
+     "asientorows": [
+      [
+       "001",
+       "50",
+       "60",
+       {
+        "v": "0110102110 BANCO BCP ME",
+        "t": 1
+       },
+       "",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       ""
+      ],
+      [
+       "002",
+       "25",
+       "70",
+       {
+        "v": "0000010208 TRANSPORTES Y ALMAC",
+        "t": 1
+       },
+       "",
+       {
+        "v": "1.792,47",
+        "r": 1
+       },
+       ""
+      ],
+      [
+       "003",
+       "40",
+       "70",
+       {
+        "v": "0810301001 DIF CAMBIO COBERTUR",
+        "t": 1
+       },
+       "",
+       {
+        "v": "0,00",
+        "r": 1
+       },
+       ""
+      ]
+     ],
+     "totd": "D  1.792,47",
+     "toth": "H  1.792,47",
+     "totiva": "0,00",
+     "totpos": "3 Posiciones"
+    }
+   },
+   {
+    "screen": "f53res",
+    "target": "btn-Contabilizar",
+    "h": "<b>Contabilizar</b>.",
+    "d": "Genera el documento contable. Si tras grabar se detecta un error, anular con FB08 — nunca borrar.",
+    "set": {
+     "msg": "Documento 1500000321 contabilizado en sociedad 2000"
+    }
+   }
+  ],
+  "slug": "f51-pago-manual",
+  "pdf": "Manuales/MANUAL DE USUARIO - EJECUCIÓN DE PAGO MANUAL A PROVEEDORES (F-51).pdf"
+ },
+ {
+  "tx": "F-53",
+  "titulo": "Contabilización de pagos a acreedores",
+  "sub": "Pago de confirming al banco",
+  "modulo": "FI",
+  "pasos": [
+   {
+    "g": "1 · Escenario"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a <b>F-53</b>.",
+    "d": "Registrar el pago final de la deuda de confirming desde la cuenta bancaria hacia la entidad financiera.",
+    "set": {
+     "tcode": "F-53"
+    }
+   },
+   {
+    "g": "2 · Datos de cabecera"
+   },
+   {
+    "screen": "f53cab",
+    "target": "clasedoc",
+    "h": "<b>Clase de documento:</b> <b>KZ</b>.",
+    "d": "KZ Pago acreedor",
+    "crit": 1,
+    "set": {
+     "ttl": "Contabilizar contabilización de pagos a acreedores: Datos cabecera",
+     "clasedoc": "KZ",
+     "fdoc": "26.07.2026",
+     "fcont": "26.07.2026",
+     "moneda": "USD",
+     "sociedad": "2000"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "referencia",
+    "h": "<b>Referencia:</b> ingresar obligatoriamente <b>PAGO CONFIRMING</b>.",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "crit": 1,
+    "set": {
+     "referencia": "PAGO CONFIRMING"
+    }
+   },
+   {
+    "g": "3 · Línea de contrapartida"
+   },
+   {
+    "screen": "f53cab",
+    "target": "ctabanco",
+    "h": "<b><b>Cuenta:</b> cuenta de mayor del banco emisor</b> en el bloque <b>Datos bancarios</b>.",
+    "d": "Es el único campo obligatorio del bloque.",
+    "set": {
+     "ctabanco": "0110102110"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "importe",
+    "h": "<b>Importe</b> de la operación.",
+    "d": "",
+    "set": {
+     "importe": "1.792,47"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "asignacion",
+    "h": "<b>Asignación:</b> el <b>código BP</b> de la entidad bancaria. → 10208",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "asignacion": "10208"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "textopos",
+    "h": "<b>Texto de posición:</b> formato <b>F[Nº DOC FISICO] [NOMBRE DEL PROVEEDOR]</b>. → F12345 INTER-CHEMIE LIMITED",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "textopos": "F12345 INTER-CHEMIE LIMITED"
+    }
+   },
+   {
+    "g": "4 · Selección de partidas abiertas"
+   },
+   {
+    "screen": "f53cab",
+    "target": "ctapa",
+    "h": "<b>Cuenta:</b> el interlocutor cuyas partidas se compensan.",
+    "d": "Clase de cuenta K para acreedores, D para deudores. Los criterios de selección están en esta misma pantalla.",
+    "set": {
+     "ctapa": "10208",
+     "clasecta": "K"
+    }
+   },
+   {
+    "screen": "f53cab",
+    "target": "btn-Contabilizar",
+    "h": "Clic en <b>Tratar PAs</b> de la barra superior.",
+    "d": "Salta directo a la pantalla de compensación. No hay pantalla de selección intermedia.",
+    "set": {
+     "msg": ""
+    }
+   },
+   {
+    "g": "5 · Compensación"
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Estándar",
+    "target": "pa",
+    "h": "Se listan las <b>partidas abiertas</b> del interlocutor.",
+    "d": "Doble clic sobre el importe activa o desactiva cada partida.",
+    "set": {
+     "ttlpa": "Contabilizar salida pagos Procesar partidas abiertas",
+     "pafilas": [
+      [
+       "12418",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12419",
+       "KR",
+       "23.06.2026",
+       "31",
+       "60",
+       "3",
+       {
+        "v": "375,21-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12420",
+       "KR",
+       "23.06.2026",
+       "31",
+       "20",
+       "3",
+       {
+        "v": "439,89-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12421",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "113,04-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12422",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.137,07-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12423",
+       "KR",
+       "23.06.2026",
+       "31",
+       "50",
+       "3",
+       {
+        "v": "50,40-",
+        "r": 1
+       },
+       "",
+       ""
+      ]
+     ],
+     "impentrado": "1.792,47-",
+     "asignados": "0,00",
+     "sinasignar": "1.792,47-",
+     "moneda": "USD",
+     "msg": "40 partidas seleccionadas"
+    }
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Pago parc.",
+    "target": "pa",
+    "h": "Pestaña <b>Pago parc.</b> para pagos por un monto inferior al de la factura.",
+    "d": "Se escribe el monto en la columna Importe pago. Deja la factura abierta por el saldo restante.",
+    "set": {
+     "pafilaspp": [
+      [
+       "12418",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12419",
+       "KR",
+       "23.06.2026",
+       "31",
+       "60",
+       "3",
+       {
+        "v": "375,21-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12420",
+       "KR",
+       "23.06.2026",
+       "31",
+       "20",
+       "3",
+       {
+        "v": "439,89-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12421",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "113,04-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12422",
+       "KR",
+       "23.06.2026",
+       "31",
+       "70",
+       "3",
+       {
+        "v": "1.137,07-",
+        "r": 1
+       },
+       "",
+       ""
+      ],
+      [
+       "12423",
+       "KR",
+       "23.06.2026",
+       "31",
+       "50",
+       "3",
+       {
+        "v": "50,40-",
+        "r": 1
+       },
+       "",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "f53pa",
+    "tab": "Estándar",
+    "target": "sinasignar",
+    "h": "El campo <b>Sin asignar</b> debe quedar en <b>CERO</b>.",
+    "d": "Mientras haya diferencia, el sistema no deja simular ni contabilizar.",
+    "crit": 1,
+    "set": {
+     "asignados": "1.792,47-",
+     "sinasignar": "0,00",
+     "msg": "Partida asignada"
+    }
+   },
+   {
+    "g": "6 · Simulación y registro"
+   },
+   {
+    "screen": "f53res",
+    "target": "asiento",
+    "h": "Menú <b>Documento → Simular</b>: revisar el asiento.",
+    "d": "Verificar que el cargo y el abono estén en las cuentas correctas antes de registrar.",
+    "set": {
+     "ttlres": "Contabilizar salida pagos Visualizar Resumen",
+     "fdoc": "26.07.2026",
+     "fcont": "26.07.2026",
+     "asientorows": [
+      [
+       "001",
+       "50",
+       "60",
+       {
+        "v": "0110102110 BANCO BCP ME",
+        "t": 1
+       },
+       "",
+       {
+        "v": "1.792,47-",
+        "r": 1
+       },
+       ""
+      ],
+      [
+       "002",
+       "25",
+       "70",
+       {
+        "v": "0000010208 TRANSPORTES Y ALMAC",
+        "t": 1
+       },
+       "",
+       {
+        "v": "1.792,47",
+        "r": 1
+       },
+       ""
+      ],
+      [
+       "003",
+       "40",
+       "70",
+       {
+        "v": "0810301001 DIF CAMBIO COBERTUR",
+        "t": 1
+       },
+       "",
+       {
+        "v": "0,00",
+        "r": 1
+       },
+       ""
+      ]
+     ],
+     "totd": "D  1.792,47",
+     "toth": "H  1.792,47",
+     "totiva": "0,00",
+     "totpos": "3 Posiciones"
+    }
+   },
+   {
+    "screen": "f53res",
+    "target": "btn-Contabilizar",
+    "h": "<b>Contabilizar</b>.",
+    "d": "Genera el documento contable. Si tras grabar se detecta un error, anular con FB08 — nunca borrar.",
+    "set": {
+     "msg": "Documento 1500000321 contabilizado en sociedad 2000"
+    }
+   }
+  ],
+  "slug": "f53-pagos-acreedores",
+  "pdf": "Manuales/MANUAL DE USUARIO - CONTABILIZACIÓN DE PAGOS ACREEDORES (F-53).pdf"
+ },
+ {
+  "tx": "FB50",
+  "titulo": "Contabilización en cuentas de mayor",
+  "sub": "Nómina · provisiones · impuestos · forward",
+  "modulo": "FI",
+  "pasos": [
+   {
+    "g": "1 · Escenario"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Identificar el <b>escenario contable</b>.",
+    "d": "Remuneraciones · Préstamos personal · Indemnizaciones · Provisiones · Forward · Pago de impuestos. Cada uno tiene su Referencia exacta.",
+    "crit": 1,
+    "set": {
+     "tcode": "FB50"
+    }
+   },
+   {
+    "g": "2 · Cabecera"
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "clasedoc",
+    "h": "<b>Clase de documento:</b> <b>SA</b>.",
+    "d": "Documento contable general, sin auxiliar de proveedor ni cliente.",
+    "set": {
+     "ttl": "Registrar contabilización en el libro mayor: Sociedad 2000",
+     "operacion": "",
+     "clasedoc": "SA Documento contable",
+     "moneda": "PEN"
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "referencia",
+    "h": "<b>Referencia:</b> el valor exacto del escenario.",
+    "d": "REMUNERACIONES · PREST PERSONAL · INDEMNIZACIONES · PROVISION · FORWARD · IMPUESTOS. ⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "crit": 1,
+    "set": {
+     "referencia": "PROVISION",
+     "ffact": "31.07.2026"
+    }
+   },
+   {
+    "g": "3 · Posiciones de mayor"
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "posgl",
+    "h": "Usar clave de contabilización <b>40</b> (Debe) y <b>50</b> (Haber).",
+    "d": "El documento debe cuadrar: el balance del encabezado debe ser CERO.",
+    "crit": 1,
+    "set": {
+     "filas": [
+      [
+       "",
+       "639900",
+       {
+        "v": "GASTOS DIVERSOS",
+        "t": 1
+       },
+       {
+        "v": "40 Debe",
+        "t": 1
+       },
+       {
+        "v": "12.000,00",
+        "r": 1
+       },
+       "1010",
+       "PROVISION",
+       {
+        "v": "PROVISION AUDITORIA 2026",
+        "t": 1
+       }
+      ],
+      [
+       "",
+       "461200",
+       {
+        "v": "PROVISIONES DIVERSAS",
+        "t": 1
+       },
+       {
+        "v": "50 Haber",
+        "t": 1
+       },
+       {
+        "v": "12.000,00",
+        "r": 1
+       },
+       "",
+       "PROVISION",
+       {
+        "v": "PROVISION AUDITORIA 2026",
+        "t": 1
+       }
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "posgl",
+    "h": "<b>Centro de Costo</b> obligatorio en toda cuenta de gasto o pérdida.",
+    "d": "Sin él la contabilización de gasto será rechazada por la derivación.",
+    "crit": 1,
+    "set": {}
+   },
+   {
+    "g": "4 · Registro"
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "saldo",
+    "h": "El balance del encabezado debe ser <b>CERO</b>.",
+    "d": "",
+    "set": {
+     "saldo": "0,00"
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "btn-Contabilizar",
+    "h": "<b>Simular</b> y contabilizar.",
+    "d": "Simular verifica que no haya errores de derivación antes de registrar.",
+    "set": {
+     "msg": "Documento 1000000778 contabilizado en sociedad 2000"
+    }
+   }
+  ],
+  "slug": "fb50-mayor",
+  "pdf": "Manuales/MANUAL DE USUARIO - CONTABILIZACIÓN EN CUENTAS DE MAYOR (FB50).pdf"
+ },
+ {
+  "tx": "FB60",
+  "titulo": "Facturación manual y nota de débito de acreedor",
+  "sub": "Sin orden de compra",
+  "modulo": "FI",
+  "pasos": [
+   {
+    "g": "1 · Regla de encuadre"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "¿El gasto tiene <b>orden de compra</b>?",
+    "d": "Si la tiene, NO usar FB60: debe procesarse por MIRO. FB60 es solo para servicios básicos, arriendos y gastos sin OC.",
+    "crit": 1,
+    "set": {
+     "tcode": "FB60"
+    }
+   },
+   {
+    "g": "2 · Cabecera"
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "bp",
+    "h": "<b>Acreedor:</b> ingresar el código del proveedor (BP).",
+    "d": "",
+    "set": {
+     "ttl": "Registrar factura de acreedor: Sociedad 2000",
+     "operacion": "R Factura",
+     "bp": "10800",
+     "moneda": "PEN"
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "clasedoc",
+    "h": "<b>Clase de documento:</b> <b>KR</b> (Factura acreedor).",
+    "d": "",
+    "set": {
+     "clasedoc": "KR Factura acreedor"
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "referencia",
+    "h": "<b>Referencia:</b> el Nº de documento físico.",
+    "d": "Dato obligatorio para el control de duplicados. ⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "crit": 1,
+    "set": {
+     "referencia": "F001-99871"
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "importe",
+    "h": "<b>Importe:</b> monto total, incluyendo impuestos.",
+    "d": "Fecha de factura y de contabilización según el documento legal.",
+    "set": {
+     "importe": "1.180,00",
+     "ffact": "20.07.2026"
+    }
+   },
+   {
+    "g": "3 · Posiciones"
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "posgl",
+    "h": "<b>Línea de contrapartida:</b> cuenta de gasto y <b>Centro de Costo</b>.",
+    "d": "El centro de costo es obligatorio. En Asignación va el código BP del proveedor y en Texto el motivo.",
+    "set": {
+     "filas": [
+      [
+       "",
+       "631001",
+       {
+        "v": "SERVICIO DE ENERGIA",
+        "t": 1
+       },
+       {
+        "v": "S Debe",
+        "t": 1
+       },
+       {
+        "v": "1.000,00",
+        "r": 1
+       },
+       "1010",
+       "10800",
+       {
+        "v": "PAGO DE LUZ JULIO 2026",
+        "t": 1
+       }
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "calcimp",
+    "h": "Marcar <b>Calcular impuestos</b> y seleccionar el indicador de IVA.",
+    "d": "",
+    "crit": 1,
+    "set": {
+     "calcimp": "1"
+    }
+   },
+   {
+    "g": "4 · Validación"
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "saldo",
+    "h": "Verificar el <b>semáforo en verde</b> (saldo cero).",
+    "d": "",
+    "set": {
+     "saldo": "0,00"
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "btn-Contabilizar",
+    "h": "<b>Simular</b> y contabilizar.",
+    "d": "Asiento esperado — Debe: Gasto e IVA · Haber: Proveedor. Si hay error tras grabar, anular con FB08; nunca borrar.",
+    "set": {
+     "msg": "Documento 1900000456 contabilizado en sociedad 2000"
+    }
+   }
+  ],
+  "slug": "fb60-facturas",
+  "pdf": "Manuales/MANUAL DE USUARIO - CONTABILIZACIÓN DE FACTURAS Y NOTAS DE DÉBITO MANUALES (FB60).pdf"
+ },
+ {
+  "tx": "FB65",
+  "titulo": "Contabilización manual de nota de crédito de acreedor",
+  "sub": "Sin orden de compra",
+  "modulo": "FI",
+  "pasos": [
+   {
+    "g": "1 · Regla de encuadre"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "¿La NC tiene <b>orden de compra</b> relacionada?",
+    "d": "Si la tiene, procesar obligatoriamente por MIRO seleccionando la actividad «Abono». FB65 es solo para NC sin OC.",
+    "crit": 1,
+    "set": {
+     "tcode": "FB65"
+    }
+   },
+   {
+    "g": "2 · Cabecera"
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "bp",
+    "h": "<b>Acreedor:</b> código del proveedor (BP).",
+    "d": "",
+    "set": {
+     "ttl": "Registrar abono de acreedor: Sociedad 2000",
+     "operacion": "G Abono",
+     "bp": "10800",
+     "moneda": "PEN"
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "clasedoc",
+    "h": "<b>Clase de documento:</b> <b>KG</b> (Nota de crédito acreedor).",
+    "d": "",
+    "crit": 1,
+    "set": {
+     "clasedoc": "KG Nota de crédito acreedor"
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "referencia",
+    "h": "<b>Referencia:</b> Nº de documento físico de la nota de crédito.",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "referencia": "NC001-00432",
+     "ffact": "22.07.2026"
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "importe",
+    "h": "<b>Importe:</b> monto total del abono, incluyendo impuestos.",
+    "d": "",
+    "set": {
+     "importe": "354,00"
+    }
+   },
+   {
+    "g": "3 · Reversión del gasto"
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "posgl",
+    "h": "<b>Contrapartida:</b> cuenta de gasto original o de devoluciones (serie 6).",
+    "d": "Mismo centro de costo que recibió el gasto original. Asignación: código BP. Texto: el motivo, coincidiendo con la línea principal.",
+    "set": {
+     "filas": [
+      [
+       "",
+       "631001",
+       {
+        "v": "SERVICIO DE ENERGIA",
+        "t": 1
+       },
+       {
+        "v": "H Haber",
+        "t": 1
+       },
+       {
+        "v": "300,00",
+        "r": 1
+       },
+       "1010",
+       "10800",
+       {
+        "v": "AJUSTE FACTURACION LUZ JULIO",
+        "t": 1
+       }
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "calcimp",
+    "h": "Marcar <b>Calcular impuestos</b> con el indicador de IVA de compras.",
+    "d": "Reversión proporcional del crédito fiscal.",
+    "crit": 1,
+    "set": {
+     "calcimp": "1"
+    }
+   },
+   {
+    "g": "4 · Validación"
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "btn-Contabilizar",
+    "h": "<b>Simular</b> y contabilizar.",
+    "d": "Asiento esperado — Haber: Gasto e IVA · Debe: Proveedor.",
+    "set": {
+     "saldo": "0,00",
+     "msg": "Documento 1900000461 contabilizado en sociedad 2000"
+    }
+   }
+  ],
+  "slug": "fb65-nc",
+  "pdf": "Manuales/MANUAL DE USUARIO - CONTABILIZACIÓN DE NOTAS DE CREDITO MANUALES (FB65).pdf"
+ },
+ {
+  "tx": "FB70",
+  "titulo": "Facturas manuales de deudor",
+  "sub": "Cargos a clientes sin pedido de venta",
+  "modulo": "FI",
+  "pasos": [
+   {
+    "g": "1 · Cabecera"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a <b>FB70</b>.",
+    "d": "Solo para cargos a clientes que no nacen de un pedido de venta.",
+    "set": {
+     "tcode": "FB70"
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "bp",
+    "h": "<b>Deudor:</b> ingresar el código del cliente (BP).",
+    "d": "",
+    "set": {
+     "ttl": "Registrar factura de deudor: Sociedad 2000",
+     "operacion": "R Factura",
+     "bp": "10022",
+     "moneda": "USD"
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "clasedoc",
+    "h": "<b>Clase de documento:</b> <b>DR</b> (Factura deudor).",
+    "d": "",
+    "set": {
+     "clasedoc": "DR Factura deudor"
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "referencia",
+    "h": "<b>Referencia:</b> el Nº de documento físico.",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "crit": 1,
+    "set": {
+     "referencia": "F001-00214",
+     "ffact": "24.07.2026"
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "importe",
+    "h": "<b>Importe:</b> monto total incluyendo impuestos.",
+    "d": "",
+    "set": {
+     "importe": "3.540,00"
+    }
+   },
+   {
+    "g": "2 · Contrapartida"
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "posgl",
+    "h": "<b>Cuenta de ingreso</b> con su centro de beneficio.",
+    "d": "Asignación: código BP del cliente. Texto: el motivo del cargo.",
+    "set": {
+     "filas": [
+      [
+       "",
+       "701001",
+       {
+        "v": "INGRESOS POR SERVICIOS",
+        "t": 1
+       },
+       {
+        "v": "50 Haber",
+        "t": 1
+       },
+       {
+        "v": "3.000,00",
+        "r": 1
+       },
+       "1010",
+       "10022",
+       {
+        "v": "SERVICIO LOGISTICO JULIO 2026",
+        "t": 1
+       }
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "calcimp",
+    "h": "Marcar <b>Calcular impuestos</b> con el indicador de IVA de ventas.",
+    "d": "",
+    "crit": 1,
+    "set": {
+     "calcimp": "1"
+    }
+   },
+   {
+    "g": "3 · Registro"
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "btn-Contabilizar",
+    "h": "<b>Simular</b> y contabilizar.",
+    "d": "Asiento esperado — Debe: Cliente · Haber: Ingreso e IVA.",
+    "set": {
+     "saldo": "0,00",
+     "msg": "Documento 1600000099 contabilizado en sociedad 2000"
+    }
+   }
+  ],
+  "slug": "fb70-deudor",
+  "pdf": "Manuales/MANUAL_DE_USUARIO - FACTURAS MANUALES DE DEUDOR (FB70).pdf"
+ },
+ {
+  "tx": "FB70",
+  "titulo": "Fondo por rendir · entregas a colaboradores",
+  "sub": "Genera cuenta por cobrar al empleado",
+  "modulo": "FI",
+  "pasos": [
+   {
+    "g": "1 · Cabecera"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a <b>FB70</b>.",
+    "d": "Registra la entrega de dinero a un empleado bajo el concepto de fondo por rendir.",
+    "set": {
+     "tcode": "FB70"
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "clasedoc",
+    "h": "<b>Clase de documento:</b> <b>AB</b>.",
+    "d": "Documento contable / ajuste.",
+    "set": {
+     "ttl": "Registrar factura de deudor: Sociedad 2000",
+     "operacion": "R Factura",
+     "clasedoc": "AB Documento contable",
+     "moneda": "PEN"
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "referencia",
+    "h": "<b>Referencia:</b> ingresar obligatoriamente <b>PAGO RENDICION</b>.",
+    "d": "⚠️ Todo texto en Referencia, Asignación y Texto de Posición debe ir en MAYÚSCULAS Y SIN ACENTOS.",
+    "crit": 1,
+    "set": {
+     "referencia": "PAGO RENDICION",
+     "ffact": "26.07.2026"
+    }
+   },
+   {
+    "g": "2 · Línea principal · colaborador"
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "bp",
+    "h": "<b>Cuenta:</b> el código de deudor/BP del empleado.",
+    "d": "Clave de contabilización <b>01</b> (Factura cliente / cargo).",
+    "crit": 1,
+    "set": {
+     "bp": "20015",
+     "importe": "2.500,00"
+    }
+   },
+   {
+    "g": "3 · Contrapartida · banco"
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "posgl",
+    "h": "<b>Cuenta de mayor del banco</b> emisor.",
+    "d": "Asignación: el código BP del empleado. Texto de posición: FONDO POR RENDIR.",
+    "set": {
+     "filas": [
+      [
+       "",
+       "111001",
+       {
+        "v": "BANCO BCP MN",
+        "t": 1
+       },
+       {
+        "v": "50 Haber",
+        "t": 1
+       },
+       {
+        "v": "2.500,00",
+        "r": 1
+       },
+       "",
+       "20015",
+       {
+        "v": "FONDO POR RENDIR",
+        "t": 1
+       }
+      ]
+     ]
+    }
+   },
+   {
+    "g": "4 · Validación"
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "saldo",
+    "h": "El saldo del documento debe ser <b>CERO</b> y coincidir con el egreso bancario.",
+    "d": "",
+    "crit": 1,
+    "set": {
+     "saldo": "0,00"
+    }
+   },
+   {
+    "screen": "fbenjoy",
+    "target": "btn-Contabilizar",
+    "h": "<b>Simular</b> y contabilizar.",
+    "d": "El cargo va a la cuenta del colaborador y el abono al banco.",
+    "set": {
+     "msg": "Documento 1800000212 contabilizado en sociedad 2000"
+    }
+   }
+  ],
+  "slug": "fb70-fondos",
+  "pdf": "Manuales/MANUAL DE USUARIO - CONTABILIZACIÓN DE FONDOS POR RENDIR (FB70).pdf"
+ },
+ {
+  "tx": "ME21N",
+  "titulo": "Gestión de maquila y envasado",
+  "sub": "Subcontratación · clase ZMAQ · posición tipo L",
+  "modulo": "MM",
+  "pasos": [
+   {
+    "g": "1 · Acceso"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a la transacción <b>ME21N</b>.",
+    "d": "Creación de pedido de compra.",
+    "set": {
+     "tcode": "ME21N"
+    }
+   },
+   {
+    "g": "2 · Cabecera"
+   },
+   {
+    "screen": "me21n",
+    "target": "clase",
+    "h": "Clase de pedido: <b>ZMAQ</b>.",
+    "d": "Maquila / subcontratación: transformación o re-envasado por un tercero.",
+    "set": {
+     "ttl": "Crear pedido de compras",
+     "clase": "ZMAQ Maquila"
+    }
+   },
+   {
+    "screen": "me21n",
+    "target": "prov",
+    "h": "<b>Proveedor:</b> el maquilador.",
+    "d": "Quien ejecuta el servicio de transformación.",
+    "set": {
+     "prov": "10613 DISTRIBUIDORA PORTLAND"
+    }
+   },
+   {
+    "screen": "me21n",
+    "tab": "Dat.org.",
+    "target": "orgc",
+    "h": "Completar <b>Org. compras, Grupo compras y Sociedad</b>.",
+    "d": "Estructura legal y contable del documento.",
+    "set": {
+     "orgc": "2000",
+     "orgcd": "PORTLAND PERU",
+     "grpc": "P60",
+     "grpcd": "QUIMICOS IDUSTRIAL",
+     "soc": "2000",
+     "socd": "PORTLAND PERU SAC"
+    }
+   },
+   {
+    "g": "3 · Posición"
+   },
+   {
+    "screen": "me21n",
+    "target": "pos",
+    "h": "Ingresar el <b>producto terminado a recibir</b>, cantidad y centro.",
+    "d": "No se ingresa el granel: eso son los componentes.",
+    "set": {
+     "filas": [
+      [
+       "",
+       "",
+       "10",
+       "",
+       "",
+       "600123",
+       {
+        "v": "POLIOL 5631D IBC 1000 KG",
+        "t": 1
+       },
+       {
+        "v": "20,000",
+        "r": 1
+       },
+       "UN",
+       "30.08.2026",
+       {
+        "v": "85,00",
+        "r": 1
+       },
+       "USD",
+       "2000",
+       "1010"
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "me21n",
+    "target": "pos",
+    "h": "Columna <b>TpoP</b>: seleccionar <b>L</b> (Subcontratación).",
+    "d": "Habilita la lista de componentes en el detalle de la posición.",
+    "crit": 1,
+    "set": {
+     "filas": [
+      [
+       "",
+       "",
+       "10",
+       "",
+       "L",
+       "600123",
+       {
+        "v": "POLIOL 5631D IBC 1000 KG",
+        "t": 1
+       },
+       {
+        "v": "20,000",
+        "r": 1
+       },
+       "UN",
+       "30.08.2026",
+       {
+        "v": "85,00",
+        "r": 1
+       },
+       "USD",
+       "2000",
+       "1010"
+      ]
+     ]
+    }
+   },
+   {
+    "g": "4 · Configuración crítica"
+   },
+   {
+    "screen": "me21npos",
+    "tab": "Entrega",
+    "target": "clval",
+    "h": "Clase de valoración: <b>PRODUCCION</b>.",
+    "d": "⚠️ Obligatorio en maquila. Omitirlo valora el producto como una compra estándar y distorsiona los informes financieros.",
+    "crit": 1,
+    "set": {
+     "selpos": "1 [ 10 ] 600123 , POLIOL 5631D IBC 1000 KG",
+     "tipostock": "Libre utilización",
+     "clval": "PRODUCCION"
+    }
+   },
+   {
+    "g": "5 · Componentes"
+   },
+   {
+    "screen": "me21npos",
+    "tab": "Datos del material",
+    "target": "btncomp",
+    "h": "Pestaña <b>Material</b> → botón <b>Componentes</b>.",
+    "d": "Abre el listado de materiales que Portland entrega al maquilador.",
+    "set": {
+     "material": "600123",
+     "grpart": "10-00024",
+     "btncomp": "Componentes"
+    }
+   },
+   {
+    "screen": "me21npos",
+    "tab": "Datos del material",
+    "target": "comp",
+    "h": "Ingresar manualmente <b>granel y envases</b> con sus cantidades.",
+    "d": "Todos los componentes deben estar extendidos a la clase de valoración PRODUCCION en el centro.",
+    "set": {
+     "comprows": [
+      [
+       "10",
+       "600048",
+       {
+        "v": "POLIOL 5631D GRANEL",
+        "t": 1
+       },
+       {
+        "v": "20.000",
+        "r": 1
+       },
+       "KG",
+       "2000"
+      ],
+      [
+       "20",
+       "700015",
+       {
+        "v": "IBC 1000 LT",
+        "t": 1
+       },
+       {
+        "v": "20",
+        "r": 1
+       },
+       "UN",
+       "2000"
+      ]
+     ]
+    }
+   },
+   {
+    "g": "6 · Precio y grabación"
+   },
+   {
+    "screen": "me21npos",
+    "tab": "Condiciones",
+    "target": "neto",
+    "h": "Ingresar el <b>costo del servicio de maquila</b>.",
+    "d": "No es el precio del material: el costo final es componentes + servicio.",
+    "set": {
+     "cant": "20,000 UN",
+     "neto": "1.700,00 USD",
+     "condrows": [
+      [
+       "",
+       "",
+       "PB00",
+       {
+        "v": "Servicio de maquila",
+        "t": 1
+       },
+       {
+        "v": "85,00",
+        "r": 1
+       },
+       "USD",
+       {
+        "v": "1 UN",
+        "r": 1
+       },
+       {
+        "v": "1.700,00",
+        "r": 1
+       },
+       "USD"
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "me21n",
+    "target": "btn-Grabar",
+    "h": "<b>Verificar</b> y <b>Grabar</b>.",
+    "d": "Genera el número de OC de subcontratación (49XXXXXXXX).",
+    "set": {
+     "msg": "Pedido subcontratación 4900000871 creado",
+     "ttl": "Maquila 4900000871 creado"
+    }
+   }
+  ],
+  "slug": "me21n-maquila",
+  "pdf": "Manuales/MANUAL DE USUARIO - GESTIÓN DE MAQUILA-ENVASADO (ME21N).pdf"
+ },
+ {
+  "tx": "MIGO",
+  "titulo": "Registro de entrada de mercancías",
+  "sub": "Movimiento 101 con referencia a pedido",
+  "modulo": "MM",
+  "pasos": [
+   {
+    "g": "1 · Acceso"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a <b>MIGO</b>.",
+    "d": "Regla de negocio: solo registrar cuando el material ingresó físicamente.",
+    "set": {
+     "tcode": "MIGO"
+    }
+   },
+   {
+    "g": "2 · Selección de operación"
+   },
+   {
+    "screen": "migo",
+    "target": "accion",
+    "h": "Acción: <b>Entrada de mercancías</b>.",
+    "d": "Primer desplegable de la pantalla.",
+    "set": {
+     "ttl": "Entrada de mercancías Pedido",
+     "accion": "A01 Entrada de mercancías"
+    }
+   },
+   {
+    "screen": "migo",
+    "target": "referencia",
+    "h": "Referencia: <b>Pedido</b> e ingresar el <b>Nº de OC</b>.",
+    "d": "El sistema arrastra materiales, cantidades y centro desde el pedido.",
+    "set": {
+     "referencia": "R01 Pedido",
+     "refdoc": "4500000014"
+    }
+   },
+   {
+    "g": "3 · Cabecera"
+   },
+   {
+    "screen": "migo",
+    "target": "pos",
+    "h": "Validar la clase de movimiento <b>101</b> en la columna <b>Cl…</b> de la posición.",
+    "d": "En esta versión la clase de movimiento no es un campo de cabecera: viaja en la grilla de posiciones, junto a la clase de valoración."
+   },
+   {
+    "screen": "migo",
+    "target": "fcont",
+    "h": "Ajustar la <b>Fecha de contabilización</b> a la recepción física real.",
+    "d": "Garantiza la realidad operativa del inventario.",
+    "crit": 1,
+    "set": {
+     "fcont": "26.07.2026"
+    }
+   },
+   {
+    "screen": "migo",
+    "target": "nota",
+    "h": "Ingresar el número de <b>Nota de entrega</b> o guía del proveedor.",
+    "d": "Trazabilidad documental de la recepción.",
+    "set": {
+     "nota": "GR-2026-004512",
+     "filas": [
+      [
+       "1",
+       {
+        "v": "CLORURO METILENO TB 270 KG",
+        "t": 1
+       },
+       "",
+       "43.200",
+       "KG",
+       "",
+       "",
+       "DIST_LO_SO",
+       {
+        "v": "Libre utilización",
+        "t": 1
+       },
+       "2000"
+      ]
+     ]
+    }
+   },
+   {
+    "g": "4 · Posición"
+   },
+   {
+    "screen": "migo",
+    "tab": "Cantidad",
+    "target": "cant",
+    "h": "Verificar la <b>cantidad</b> recibida contra el físico.",
+    "d": "Si difiere de la del pedido, se ajusta aquí.",
+    "set": {
+     "material": "600048 CLORURO METILENO TB 270 KG",
+     "cant": "43.200 KG"
+    }
+   },
+   {
+    "screen": "migo",
+    "tab": "Donde",
+    "target": "almacen",
+    "h": "Indicar el <b>Almacén</b> de destino.",
+    "d": "Determina dónde queda disponible el stock.",
+    "set": {
+     "almacen": "1010",
+     "centro": "2000"
+    }
+   },
+   {
+    "g": "5 · Lote y trazabilidad"
+   },
+   {
+    "screen": "migo",
+    "tab": "Lote",
+    "target": "lote",
+    "h": "Pestaña <b>Lote</b>: asignar el <b>lote interno</b>.",
+    "d": "Es el lote con que Portland identifica la mercancía en su inventario. Determina la clase de valoración con que el material entra a stock.",
+    "set": {
+     "lote": "023251222",
+     "lotecv": "DIST_LO_SO"
+    }
+   },
+   {
+    "screen": "migo",
+    "tab": "Lote",
+    "target": "loteprov",
+    "h": "<b>Lote proveedor:</b> el número de lote del documento del proveedor.",
+    "d": "Campo LICHA. Vincula el lote interno con el que figura en la factura y el certificado de análisis del proveedor. ⚠️ No se puede informar en entradas sin referencia a pedido con movimientos 501, 511 o 561.",
+    "crit": 1,
+    "set": {
+     "loteprov": "CN-2026-0871"
+    }
+   },
+   {
+    "screen": "migo",
+    "tab": "Lote",
+    "target": "lotecv",
+    "h": "<b>Información de origen:</b> se registra en el maestro del lote, no en MIGO.",
+    "d": "⚠️ En el estándar de S/4HANA el país y la región de origen (MCHA-HERKL / HERKR) no son campos de MIGO. Tres vías: como característica del lote con el botón <b>Clasificación</b> de esta misma pestaña · en el maestro de lote con <b>MSC2N</b> tras contabilizar · o de forma automática con la ampliación <b>MBCFC003</b> (user-exit EXIT_SAPMM07M_003) o con segmentación.",
+    "crit": 1,
+    "set": {}
+   },
+   {
+    "screen": "migo",
+    "tab": "Donde",
+    "target": "posok",
+    "h": "Marcar el check <b>Posición OK</b>.",
+    "d": "Conformidad de la línea. Sin esto la posición no se contabiliza.",
+    "crit": 1,
+    "set": {
+     "posok": "1"
+    }
+   },
+   {
+    "g": "5 · Contabilización"
+   },
+   {
+    "screen": "migo",
+    "target": "btn-Contabilizar",
+    "h": "Clic en <b>Contabilizar</b>.",
+    "d": "Genera el Documento de Material y aumenta el stock.",
+    "set": {
+     "msg": "Documento de material 5000001234 contabilizado"
+    }
+   }
+  ],
+  "slug": "migo-101",
+  "pdf": "Manuales/Manual de Usuario-Registro de Entrada de Mercancías (MIGO).pdf"
+ },
+ {
+  "tx": "MIGO",
+  "titulo": "Traspaso entre almacenes",
+  "sub": "Movimiento 311 · un solo paso dentro del mismo centro",
+  "modulo": "MM",
+  "pasos": [
+   {
+    "g": "1 · Pre-check"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Antes de MIGO, validar stock en <b>MMBE</b>.",
+    "d": "Confirmar que el almacén de origen tiene stock suficiente y que el lote es el correcto.",
+    "set": {
+     "tcode": "MMBE"
+    }
+   },
+   {
+    "g": "2 · Configuración en MIGO"
+   },
+   {
+    "screen": "migo",
+    "target": "accion",
+    "h": "Acción: <b>Traspaso</b>.",
+    "d": "Traslado físico entre almacenes de un mismo centro.",
+    "set": {
+     "ttl": "Traspaso Otros",
+     "accion": "A08 Traspaso"
+    }
+   },
+   {
+    "screen": "migo",
+    "target": "referencia",
+    "h": "Referencia: <b>Otros</b>.",
+    "d": "El traspaso 311 no se refiere a ningún documento previo.",
+    "set": {
+     "referencia": "R10 Otros"
+    }
+   },
+   {
+    "screen": "migo",
+    "target": "pos",
+    "h": "Clase de movimiento <b>311</b> en la columna <b>Cl…</b> de la posición.",
+    "d": "Traspaso almacén a almacén dentro del mismo centro.",
+    "crit": 1
+   },
+   {
+    "g": "3 · Ingreso de datos"
+   },
+   {
+    "screen": "migo",
+    "tab": "Material",
+    "target": "material",
+    "h": "Pestaña <b>Material</b>: ingresar el código.",
+    "d": "",
+    "set": {
+     "material": "600048 CLORURO METILENO TB 270 KG",
+     "cant": "5.000 KG",
+     "filas": [
+      [
+       "1",
+       {
+        "v": "CLORURO METILENO TB 270 KG",
+        "t": 1
+       },
+       "",
+       "5.000",
+       "KG",
+       "1010",
+       "L001",
+       "DIST_LO_SO",
+       {
+        "v": "Libre utilización",
+        "t": 1
+       },
+       "2000"
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "migo",
+    "tab": "Donde",
+    "target": "almacen",
+    "h": "Pestaña <b>Donde</b>: almacén de <b>destino</b>.",
+    "d": "El centro es el mismo en ambos lados; cambia solo el almacén. El almacén de origen viaja en la línea de posición.",
+    "set": {
+     "almacen": "TRALSA BODEGA 2",
+     "centro": "2000"
+    }
+   },
+   {
+    "screen": "migo",
+    "tab": "Lote",
+    "target": "lote",
+    "h": "Pestaña <b>Lote</b>: indicar el lote original.",
+    "d": "El traspaso conserva el lote y su clase de valoración.",
+    "set": {
+     "lote": "L001",
+     "lotecv": "DIST_LO_SO"
+    }
+   },
+   {
+    "g": "4 · Validación y auditoría"
+   },
+   {
+    "screen": "migo",
+    "target": "btn-Verificar",
+    "h": "Presionar <b>Verificar</b>: el semáforo debe quedar verde.",
+    "d": "Si hay error, corregir antes de contabilizar.",
+    "set": {
+     "msg": "Documento OK"
+    }
+   },
+   {
+    "screen": "migo",
+    "target": "btn-Contabilizar",
+    "h": "<b>Contabilizar</b> y auditar el resultado.",
+    "d": "Verificar el documento (serie 49/50) en MB51 y confirmar en CKM3 que el costo unitario no varió.",
+    "set": {
+     "msg": "Documento de material 4900002210 contabilizado"
+    }
+   }
+  ],
+  "slug": "migo-311",
+  "pdf": "Manuales/MANUAL DE USUARIO - TRASPASO ENTRE ALMACENES (MIGO).pdf"
+ },
+ {
+  "tx": "MIRO",
+  "titulo": "Registro de facturas logísticas",
+  "sub": "Nacional e importación · con prorrateo COMEX",
+  "modulo": "MM/FI",
+  "pasos": [
+   {
+    "g": "1 · Cabecera"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a <b>MIRO</b>.",
+    "d": "Regla de oro Portland: para materiales y servicios con OC nunca usar FB60.",
+    "set": {
+     "tcode": "MIRO"
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "actividad",
+    "h": "<b>Actividad:</b> Factura, Abono (NC) o Cargo posterior (ND).",
+    "d": "Determina el sentido contable del documento.",
+    "set": {
+     "ttl": "Añadir factura recibida: Sociedad 2000",
+     "actividad": "1 Factura"
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "ffact",
+    "h": "<b>Fecha de factura:</b> la de emisión del documento físico.",
+    "d": "No la fecha de registro en el sistema.",
+    "set": {
+     "ffact": "20.07.2026"
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "referencia",
+    "h": "<b>Referencia:</b> el Nº de documento físico.",
+    "d": "En MAYÚSCULAS Y SIN ACENTOS. Es el control de duplicados.",
+    "crit": 1,
+    "set": {
+     "referencia": "F001-12345"
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "importe",
+    "h": "<b>Importe y moneda:</b> valor total a pagar en la divisa original.",
+    "d": "",
+    "set": {
+     "importe": "22.778,54",
+     "moneda": "USD"
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "calcimp",
+    "h": "Marcar obligatoriamente <b>Calcular impuestos</b>.",
+    "d": "",
+    "crit": 1,
+    "set": {
+     "calcimp": "1",
+     "indimp": "C1 (18% IGV COMPRAS)"
+    }
+   },
+   {
+    "g": "2 · Conexión logística"
+   },
+   {
+    "screen": "miro",
+    "target": "oc",
+    "h": "En <b>Referencia a pedido</b>, ingresar el <b>Nº de OC</b> (45XXXXXXXX).",
+    "d": "El sistema arrastra el número al campo Asignación; validar que sea correcto.",
+    "set": {
+     "tiporef": "1 Pedido/Plan entregas",
+     "oc": "4500000014",
+     "asignacion": "4500000014",
+     "filas": [
+      [
+       "",
+       "10",
+       {
+        "v": "19.483,20",
+        "r": 1
+       },
+       {
+        "v": "43.200",
+        "r": 1
+       },
+       "KG",
+       "4500000014",
+       {
+        "v": "CLORURO METILENO TB 270 KG",
+        "t": 1
+       },
+       "C1",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "g": "3 · Costos indirectos (COMEX)"
+   },
+   {
+    "screen": "miro",
+    "target": "concepto",
+    "h": "En el desplegable elegir <b>Costos indirectos de adquisición planificados</b>.",
+    "d": "Muestra las condiciones Z planificadas en el pedido de importación.",
+    "set": {
+     "concepto": "2 Costes indirectos planificados",
+     "filas": [
+      [
+       "",
+       "10",
+       {
+        "v": "6.200,00",
+        "r": 1
+       },
+       {
+        "v": "43.200",
+        "r": 1
+       },
+       "KG",
+       "4500000014",
+       {
+        "v": "ZFLE Flete internacional",
+        "t": 1
+       },
+       "C1",
+       ""
+      ],
+      [
+       "",
+       "20",
+       {
+        "v": "450,00",
+        "r": 1
+       },
+       {
+        "v": "43.200",
+        "r": 1
+       },
+       "KG",
+       "4500000014",
+       {
+        "v": "ZSEG Seguro internacional",
+        "t": 1
+       },
+       "C1",
+       ""
+      ],
+      [
+       "",
+       "30",
+       {
+        "v": "220,00",
+        "r": 1
+       },
+       {
+        "v": "43.200",
+        "r": 1
+       },
+       "KG",
+       "4500000014",
+       {
+        "v": "ZAGA Agencia aduana",
+        "t": 1
+       },
+       "C1",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "posmiro",
+    "h": "<b>Prorrateo:</b> ajustar la <b>Cantidad</b> de la línea si la factura cubre solo una fracción.",
+    "d": "Así la provisión se rebaja de forma exacta y permite registros posteriores contra la misma OC.",
+    "crit": 1,
+    "set": {
+     "filas": [
+      [
+       "",
+       "10",
+       {
+        "v": "3.100,00",
+        "r": 1
+       },
+       {
+        "v": "21.600",
+        "r": 1
+       },
+       "KG",
+       "4500000014",
+       {
+        "v": "ZFLE Flete internacional",
+        "t": 1
+       },
+       "C1",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "g": "4 · Cuadre y registro"
+   },
+   {
+    "screen": "miro",
+    "target": "saldo",
+    "h": "Verificar que el <b>saldo esté en cero</b> (semáforo verde).",
+    "d": "",
+    "crit": 1,
+    "set": {
+     "saldo": "0,00"
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "btn-Contabilizar",
+    "h": "<b>Simular</b> y contabilizar.",
+    "d": "Genera el documento 51XXXXXXXX. Anotarlo en el físico. Si hay error tras grabar, anular con MR8M — nunca borrar.",
+    "set": {
+     "msg": "Documento 5100000933 contabilizado"
+    }
+   }
+  ],
+  "slug": "miro-facturas",
+  "pdf": "Manuales/MANUAL DE USUARIO - REGISTRO DE FACTURAS (MIRO).pdf"
+ },
+ {
+  "tx": "MIRO",
+  "titulo": "Gestión de diferencias en recepción",
+  "sub": "Limpieza de la cuenta Importaciones en Tránsito",
+  "modulo": "MM/FI",
+  "pasos": [
+   {
+    "g": "1 · Escenario"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Identificar el escenario de la diferencia.",
+    "d": "A: ajuste al proveedor (MIRO) · B: reclamo a seguros (FB65) · C: gasto propio / merma (FB50).",
+    "set": {
+     "tcode": "MIRO"
+    }
+   },
+   {
+    "g": "2 · Escenario A · Ajuste al proveedor"
+   },
+   {
+    "screen": "miro",
+    "target": "actividad",
+    "h": "En MIRO seleccionar la actividad <b>Abono</b>.",
+    "d": "Reduce la deuda con el proveedor por lo no recibido.",
+    "set": {
+     "ttl": "Añadir abono: Sociedad 2000",
+     "actividad": "2 Abono"
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "importe",
+    "h": "Cargar el <b>importe de la diferencia</b>.",
+    "d": "Solo el valor faltante, no el total de la factura.",
+    "set": {
+     "importe": "1.250,00",
+     "moneda": "USD"
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "calcimp",
+    "h": "Marcar <b>Calcular impuestos</b>.",
+    "d": "Ajuste proporcional del IGV.",
+    "crit": 1,
+    "set": {
+     "calcimp": "1",
+     "indimp": "C1 (18% IGV COMPRAS)"
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "oc",
+    "h": "Referenciar el <b>Nº de OC</b> original.",
+    "d": "Vincula el abono al pedido para saldar la cuenta puente.",
+    "set": {
+     "tiporef": "1 Pedido/Plan entregas",
+     "oc": "4500000014",
+     "filas": [
+      [
+       "",
+       "10",
+       {
+        "v": "1.250,00",
+        "r": 1
+       },
+       {
+        "v": "2.400",
+        "r": 1
+       },
+       "KG",
+       "4500000014",
+       {
+        "v": "CLORURO METILENO TB 270 KG",
+        "t": 1
+       },
+       "C1",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "btn-Contabilizar",
+    "h": "<b>Simular</b> y contabilizar.",
+    "d": "Reduce la deuda con el proveedor y salda Importaciones en Tránsito.",
+    "set": {
+     "saldo": "0,00",
+     "msg": "Documento 5100000912 contabilizado"
+    }
+   },
+   {
+    "g": "3 · Escenarios B y C"
+   },
+   {
+    "screen": "miro",
+    "target": "status",
+    "h": "Si la diferencia es un <b>reclamo a seguros</b>, usar <b>FB65</b>.",
+    "d": "Debe: Cuentas por Cobrar Seguros · Haber: Importaciones en Tránsito. En Asignación va el número de póliza y el pedido original.",
+    "set": {
+     "msg": "Ver guía FB65 · Notas de crédito manuales"
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "status",
+    "h": "Si es <b>merma o gasto propio</b>, usar <b>FB50</b>.",
+    "d": "Debe: Gasto por ajuste de inventario con su centro de costo · Haber: Importaciones en Tránsito. Validar en FBL3N que el saldo quede en cero.",
+    "crit": 1,
+    "set": {
+     "msg": "Ver guía FB50 · Contabilización en cuentas de mayor"
+    }
+   }
+  ],
+  "slug": "miro-migo-diferencias",
+  "pdf": "Manuales/MANUAL DE USUARIO - GESTIÓN DE DIFERENCIAS EN RECEPCIÓN FINAL (MIRO-MIGO).pdf"
+ },
+ {
+  "tx": "MIRO",
+  "titulo": "Notas de crédito por ajuste de precio",
+  "sub": "Ajusta el costo unitario sin mover stock",
+  "modulo": "MM/FI",
+  "pasos": [
+   {
+    "g": "1 · Identificación"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Localizar el <b>pedido de compra original</b> de la nota de crédito.",
+    "d": "La NC del proveedor siempre se asocia a la OC que generó el costo.",
+    "set": {
+     "tcode": "MIRO"
+    }
+   },
+   {
+    "g": "2 · Ejecución"
+   },
+   {
+    "screen": "miro",
+    "target": "actividad",
+    "h": "Seleccionar obligatoriamente <b>Abono posterior</b>.",
+    "d": "⚠️ Paso crítico: ajusta el valor, no la cantidad. Con 'Abono' se movería stock.",
+    "crit": 1,
+    "set": {
+     "ttl": "Añadir abono posterior: Sociedad 2000",
+     "actividad": "4 Abono posterior"
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "referencia",
+    "h": "<b>Referencia:</b> el número de la nota de crédito física.",
+    "d": "MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "referencia": "NC001-0087",
+     "ffact": "22.07.2026"
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "oc",
+    "h": "Referenciar el <b>Nº de OC</b> original.",
+    "d": "",
+    "set": {
+     "tiporef": "1 Pedido/Plan entregas",
+     "oc": "4500000014",
+     "asignacion": "4500000014",
+     "filas": [
+      [
+       "",
+       "10",
+       {
+        "v": "0,00",
+        "r": 1
+       },
+       {
+        "v": "0",
+        "r": 1
+       },
+       "KG",
+       "4500000014",
+       {
+        "v": "CLORURO METILENO TB 270 KG",
+        "t": 1
+       },
+       "C1",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "posmiro",
+    "h": "Ingresar el <b>importe neto del descuento</b> en la línea del ítem.",
+    "d": "La cantidad queda en cero: solo se ajusta el valor.",
+    "set": {
+     "importe": "860,00",
+     "filas": [
+      [
+       "",
+       "10",
+       {
+        "v": "860,00",
+        "r": 1
+       },
+       {
+        "v": "0",
+        "r": 1
+       },
+       "KG",
+       "4500000014",
+       {
+        "v": "CLORURO METILENO TB 270 KG",
+        "t": 1
+       },
+       "C1",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "calcimp",
+    "h": "Marcar <b>Calcular impuesto</b>.",
+    "d": "Ajuste proporcional del IGV.",
+    "set": {
+     "calcimp": "1"
+    }
+   },
+   {
+    "g": "3 · Verificación de margen"
+   },
+   {
+    "screen": "miro",
+    "target": "btn-Contabilizar",
+    "h": "Contabilizar y verificar en <b>CKM3N</b>.",
+    "d": "Es mandatorio entrar al Explorador de Precios y confirmar que el Precio Promedio Variable (PPP) bajó tras el abono.",
+    "crit": 1,
+    "set": {
+     "saldo": "0,00",
+     "msg": "Documento 5100000944 contabilizado · verificar PPP en CKM3N"
+    }
+   }
+  ],
+  "slug": "miro-nc-ajuste",
+  "pdf": "Manuales/MANUAL_DE_USUARIO - GESTION DE NOTAS DE CREDITO DE PROVEEDOR (AJUSTE DE PRECIO) EN MIRO.pdf"
+ },
+ {
+  "tx": "MIRO",
+  "titulo": "NC y ajustes de precio a proveedores",
+  "sub": "Variante operativa del ajuste de costo",
+  "modulo": "MM/FI",
+  "pasos": [
+   {
+    "g": "1 · Regla de encuadre"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "¿La NC tiene una <b>OC relacionada</b>?",
+    "d": "Si la tiene, se procesa obligatoriamente por MIRO. Si no, por FB65. Nunca mezclar.",
+    "crit": 1,
+    "set": {
+     "tcode": "MIRO"
+    }
+   },
+   {
+    "g": "2 · Registro en MIRO"
+   },
+   {
+    "screen": "miro",
+    "target": "actividad",
+    "h": "Actividad: <b>Abono</b> si la NC devuelve mercadería; <b>Abono posterior</b> si solo ajusta precio.",
+    "d": "Abono mueve cantidad y valor; Abono posterior solo valor.",
+    "crit": 1,
+    "set": {
+     "ttl": "Añadir abono: Sociedad 2000",
+     "actividad": "2 Abono"
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "referencia",
+    "h": "<b>Referencia:</b> número del documento físico de la NC.",
+    "d": "MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "referencia": "NC002-0143",
+     "ffact": "23.07.2026"
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "importe",
+    "h": "Ingresar el <b>importe</b> del abono.",
+    "d": "",
+    "set": {
+     "importe": "1.980,00",
+     "moneda": "USD"
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "oc",
+    "h": "Referenciar la <b>OC</b> y validar la posición afectada.",
+    "d": "Comparar cantidad e importe contra el documento físico.",
+    "set": {
+     "tiporef": "1 Pedido/Plan entregas",
+     "oc": "4500000014",
+     "asignacion": "4500000014",
+     "filas": [
+      [
+       "",
+       "10",
+       {
+        "v": "1.980,00",
+        "r": 1
+       },
+       {
+        "v": "4.400",
+        "r": 1
+       },
+       "KG",
+       "4500000014",
+       {
+        "v": "CLORURO METILENO TB 270 KG",
+        "t": 1
+       },
+       "C1",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "miro",
+    "target": "textomiro",
+    "h": "En el <b>texto de posición</b>, detallar el motivo del ajuste.",
+    "d": "Obligatorio para NC y ND. MAYÚSCULAS Y SIN ACENTOS.",
+    "set": {
+     "textomiro": "AJUSTE DE PRECIO SEGUN ACUERDO COMERCIAL"
+    }
+   },
+   {
+    "g": "3 · Cierre"
+   },
+   {
+    "screen": "miro",
+    "target": "saldo",
+    "h": "Semáforo en <b>verde</b> (saldo cero) y contabilizar.",
+    "d": "Si tras grabar se detecta un error, anular con MR8M. Nunca borrar.",
+    "set": {
+     "saldo": "0,00",
+     "msg": "Documento 5100000951 contabilizado"
+    }
+   }
+  ],
+  "slug": "miro-nc-proveedores",
+  "pdf": "Manuales/MANUAL_DE_USUARIO - NC Y AJUSTES DE PRECIO A PROVEEDORES (MIRO).pdf"
+ },
+ {
+  "tx": "MM01",
+  "titulo": "Gestión y creación de materiales",
+  "sub": "Vistas logísticas y comerciales · casos A y B",
+  "modulo": "MM",
+  "pasos": [
+   {
+    "g": "1 · Verificación previa"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Buscar primero en <b>MM03</b> por descripción o grupo de artículos.",
+    "d": "Si el sistema informa que el material no está extendido a esos niveles → Caso A (extensión). Si no existe el código → Caso B (creación).",
+    "crit": 1,
+    "set": {
+     "tcode": "MM03"
+    }
+   },
+   {
+    "g": "2 · Pantalla de acceso"
+   },
+   {
+    "screen": "mm01ini",
+    "target": "tipomat",
+    "h": "En <b>MM01</b>: Material, <b>Ramo</b> y <b>Tipo material</b>.",
+    "d": "Tipo de material a crear: Mercadería (HAWA) o Servicio (DIEN). Portland usa además tipos Z (ej. ZH60 Mercadería Químicos Ind).",
+    "crit": 1,
+    "set": {
+     "ttl": "Crear material (Acceso)",
+     "tcode": "MM01",
+     "material": "600048",
+     "ramo": "1 Comercio",
+     "tipomat": "ZH60 Mercadería Quimicos Ind"
+    }
+   },
+   {
+    "screen": "mm01ini",
+    "target": "copiardesde",
+    "h": "Si es <b>extensión</b> (Caso A), indicar el material de referencia en <b>Copiar desde…</b>",
+    "d": "Copia los datos básicos del material existente. En creación nueva (Caso B) se deja vacío.",
+    "set": {}
+   },
+   {
+    "screen": "mm01vistas",
+    "target": "vistas",
+    "h": "Popup <b>Selección de vistas</b>: marcar las vistas a mantener.",
+    "d": "Es una lista con checkbox, no pestañas. Abajo están «Selección de vistas sólo a petición» y «Crear vistas marcadas»; el pie lleva Niveles organización y Datos.",
+    "crit": 1,
+    "set": {
+     "vistasrows": [
+      [
+       "☑",
+       {
+        "v": "Datos básicos 1",
+        "t": 1
+       }
+      ],
+      [
+       "☐",
+       {
+        "v": "Datos básicos 2",
+        "t": 1
+       }
+      ],
+      [
+       "☐",
+       {
+        "v": "Clasificación",
+        "t": 1
+       }
+      ],
+      [
+       "☑",
+       {
+        "v": "Ventas: Datos org.ventas 1",
+        "t": 1
+       }
+      ],
+      [
+       "☑",
+       {
+        "v": "Ventas: Datos org.ventas 2",
+        "t": 1
+       }
+      ],
+      [
+       "☑",
+       {
+        "v": "Ventas: Datos centro/gral.",
+        "t": 1
+       }
+      ],
+      [
+       "☐",
+       {
+        "v": "Datos básicos de SPP ampliado",
+        "t": 1
+       }
+      ],
+      [
+       "☐",
+       {
+        "v": "Comercio exterior: Exportación",
+        "t": 1
+       }
+      ],
+      [
+       "☐",
+       {
+        "v": "Texto comercial",
+        "t": 1
+       }
+      ],
+      [
+       "☑",
+       {
+        "v": "Compras",
+        "t": 1
+       }
+      ],
+      [
+       "☐",
+       {
+        "v": "Comercio exterior: Importación",
+        "t": 1
+       }
+      ],
+      [
+       "☐",
+       {
+        "v": "Texto de pedido de compras",
+        "t": 1
+       }
+      ],
+      [
+       "☐",
+       {
+        "v": "Planif.necesidades 1",
+        "t": 1
+       }
+      ],
+      [
+       "☑",
+       {
+        "v": "Dat.gral.ce./Almacenamiento 1",
+        "t": 1
+       }
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "mm01vistas",
+    "target": "btn-Continuar",
+    "h": "Botón <b>Niveles organización</b>: Centro, Almacén, Org. Ventas y Canal.",
+    "d": "Determina a qué niveles se extiende el material. Es el paso que define si estás creando o extendiendo.",
+    "crit": 1,
+    "set": {}
+   },
+   {
+    "g": "3 · Datos base 1"
+   },
+   {
+    "screen": "mm01",
+    "tab": "Datos base 1",
+    "target": "uom",
+    "h": "<b>Unidad medida base</b> en el grupo Datos generales.",
+    "d": "⚠️ Inmutable una vez que hay stock: cambiarla exige dejar el stock en cero.",
+    "crit": 1,
+    "set": {
+     "ttl": "Visualizar material 600048 (Mercadería Quimicos Ind)",
+     "materiald": "CLORURO METILENO  TB 270 KG NEW CHINA",
+     "uom": "KG",
+     "nroant": "35568",
+     "sector": "60",
+     "grtppos": "NORM"
+    }
+   },
+   {
+    "screen": "mm01",
+    "tab": "Datos base 1",
+    "target": "grpart",
+    "h": "<b>Grupo artículos</b>.",
+    "d": "Ej. 60-0012. Clasifica el material para compras, ventas y contabilidad.",
+    "set": {
+     "grpart": "60-0012"
+    }
+   },
+   {
+    "screen": "mm01",
+    "tab": "Datos base 1",
+    "target": "pesobruto",
+    "h": "Grupo <b>Dimensiones/EAN</b>: pesos y volumen.",
+    "d": "Peso bruto, peso neto y sus unidades. Se usan en la determinación de fletes.",
+    "set": {
+     "pesobruto": "1",
+     "pesoneto": "1",
+     "unpeso": "KG",
+     "volumen": "0,000"
+    }
+   },
+   {
+    "g": "4 · Compras"
+   },
+   {
+    "screen": "mm01",
+    "tab": "Compras",
+    "target": "umpedido",
+    "h": "Pestaña <b>Compras</b>: <b>Unidad medida pedido</b> si difiere de la base.",
+    "d": "",
+    "set": {
+     "centro": "2000",
+     "centrod": "PORTLAND PERU",
+     "umpedido": ""
+    }
+   },
+   {
+    "screen": "mm01",
+    "tab": "Compras",
+    "target": "lotes",
+    "h": "Activar <b>Gestión de lotes</b> y <b>Gestión lotes (centro)</b>.",
+    "d": "⚠️ Ambos checks están en la vista Compras, no en Almacenamiento. Obligatorios en Portland para trazabilidad.",
+    "crit": 1,
+    "set": {
+     "lotes": "1",
+     "lotescentro": "1"
+    }
+   },
+   {
+    "g": "5 · Ventas"
+   },
+   {
+    "screen": "mm01",
+    "tab": "Datos base 1",
+    "target": "tabs-mm",
+    "h": "Vistas de <b>Ventas</b>: Org.ventas 1, Org.ventas 2 y Gral./Centro.",
+    "d": "En Org.ventas 1 van Org. de ventas, Canal (ej. 10 Distribución Local) e indicador de IVA; en Org.ventas 2 el Grupo de imputación; en Gral./Centro los grupos de carga y transporte.",
+    "set": {}
+   },
+   {
+    "g": "6 · Contabilidad"
+   },
+   {
+    "screen": "mm01",
+    "tab": "Contabilidad 1",
+    "target": "catval",
+    "h": "<b>Categoría valoración</b> en el grupo Valoración actual.",
+    "d": "⚠️ En la pantalla el campo se llama Categoría valoración, no «Clase de valoración» como dice el manual. Debe corresponder al negocio.",
+    "crit": 1,
+    "set": {
+     "moneda": "USD",
+     "periodoact": "7  2026",
+     "tipoval": "H",
+     "detprecio": "2",
+     "catval": "1100",
+     "cantbase": "100"
+    }
+   },
+   {
+    "screen": "mm01",
+    "tab": "Contabilidad 1",
+    "target": "ctrlprecio",
+    "h": "<b>Control de precios:</b> usar <b>V</b> (Precio Variable).",
+    "d": "Con V el sistema mantiene el precio medio variable, que es lo que alimenta el costo real.",
+    "crit": 1,
+    "set": {
+     "ctrlprecio": "V",
+     "precio": "66,51",
+     "stocktotal": "11.070",
+     "valortotal": "7.363,15"
+    }
+   },
+   {
+    "screen": "mm01",
+    "tab": "Contabilidad 1",
+    "target": "btn-Grabar",
+    "h": "Grabar el material.",
+    "d": "⚠️ Embalajes distintos (Tambor 250L vs 100L) requieren códigos distintos. El Equipo Central rechazará la creación si el material ya existe con otro nombre.",
+    "set": {
+     "msg": "Material 600048 creado"
+    }
+   }
+  ],
+  "slug": "mm01-materiales",
+  "pdf": "Manuales/MANUAL_DE_USUARIO - GESTIÓN Y CREACIÓN DE MATERIALES (MM01).pdf"
+ },
+ {
+  "tx": "VA01",
+  "titulo": "Gestión de pedidos de venta",
+  "sub": "Z01D · Z01T · Z01I · Z01S",
+  "modulo": "SD",
+  "pasos": [
+   {
+    "g": "1 · Inicio"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a <b>VA01</b>.",
+    "d": "El cliente y el material deben estar previamente extendidos a esta área de ventas.",
+    "set": {
+     "tcode": "VA01"
+    }
+   },
+   {
+    "screen": "selini",
+    "target": "clasepedido",
+    "h": "<b>Clase de Pedido:</b> seleccionar el escenario de negocio.",
+    "d": "Z01D Distribución Local · Z01T Trading · Z01I Indent · Z01S Servicios.",
+    "crit": 1,
+    "set": {
+     "ttl": "Crear documentos de ventas",
+     "btns": [
+      "Continuar",
+      "Crear con referencia"
+     ],
+     "top": [
+      {
+       "lb": "Clase de pedido:",
+       "lw": 150,
+       "req": 1,
+       "k": "clasepedido",
+       "w": 50,
+       "f4": 1
+      }
+     ],
+     "gcampos": [
+      {
+       "lb": "Organización ventas:",
+       "lw": 150,
+       "k": "orgventas",
+       "w": 50
+      },
+      {
+       "lb": "Canal distribución:",
+       "lw": 150,
+       "k": "canal",
+       "w": 36
+      },
+      {
+       "lb": "Sector:",
+       "lw": 150,
+       "k": "sector",
+       "w": 36
+      },
+      {
+       "lb": "Oficina de ventas:",
+       "lw": 150,
+       "k": "oficina",
+       "w": 50
+      },
+      {
+       "lb": "Grupo de vendedores:",
+       "lw": 150,
+       "k": "grupovend",
+       "w": 40
+      }
+     ],
+     "clasepedido": "Z01D"
+    }
+   },
+   {
+    "screen": "selini",
+    "target": "orgventas",
+    "h": "Definir obligatoriamente <b>Org. Ventas, Canal y Sector</b>.",
+    "d": "Es el área de ventas: filial, canal comercial y línea de negocio. Presionar Continuar para pasar a la pantalla de Resumen.",
+    "crit": 1,
+    "set": {
+     "orgventas": "2000",
+     "canal": "10",
+     "sector": "00"
+    }
+   },
+   {
+    "g": "2 · Resumen · cabecera"
+   },
+   {
+    "screen": "sdres",
+    "tab": "Ventas",
+    "target": "solicitante",
+    "h": "<b>Solicitante:</b> el Business Partner que compra.",
+    "d": "Se ingresa en la cabecera de la pantalla de Resumen.",
+    "set": {
+     "ttl": "Crear Distr. Fact. Vta: Resumen",
+     "solicitante": "10022",
+     "solicitanted": "COLCHONES ROMANTIC DEL PERU S.A.C., 150125 DEL ANTIGUO PARADER…",
+     "moneda": "USD"
+    }
+   },
+   {
+    "screen": "sdres",
+    "tab": "Ventas",
+    "target": "destinatario",
+    "h": "<b>Destinatario de Mercancías:</b> quien recibe la carga.",
+    "d": "Clave para impuestos y determinación de ruta.",
+    "set": {
+     "destinatario": "10022",
+     "destinatariod": "COLCHONES ROMANTIC DEL PERU S.A.C., 150125 DEL ANTIGUO PARADER…"
+    }
+   },
+   {
+    "screen": "sdres",
+    "tab": "Ventas",
+    "target": "refcliente",
+    "h": "<b>Referencia Cliente:</b> número y fecha de la OC física del cliente.",
+    "d": "",
+    "set": {
+     "refcliente": "OC C2026-0063",
+     "frefcli": "25.06.2026"
+    }
+   },
+   {
+    "screen": "sdres",
+    "tab": "Ventas",
+    "target": "condpago",
+    "h": "Pestaña <b>Ventas</b>: verificar <b>Condición de pago</b> y <b>Moneda</b>.",
+    "d": "Aquí también se validan la fecha preferente de entrega y los Incoterms si aplican.",
+    "set": {
+     "condpago": "F090",
+     "fentrega": "30.06.2026",
+     "centro": "2000",
+     "fdetprecio": "30.06.2026"
+    }
+   },
+   {
+    "g": "3 · Resumen · posiciones"
+   },
+   {
+    "screen": "sdres",
+    "tab": "Ventas",
+    "target": "posvta",
+    "h": "Ingresar <b>Material, Cantidad</b> y <b>Centro</b> en la grilla de posiciones.",
+    "d": "La grilla está en la misma pantalla de Resumen, debajo del panel de la pestaña activa.",
+    "set": {
+     "neto": "24.200,00",
+     "peso": "11.000",
+     "pesoum": "KG",
+     "filas": [
+      [
+       "",
+       "10",
+       "500023",
+       "",
+       {
+        "v": "11.000",
+        "r": 1
+       },
+       "KG",
+       "",
+       {
+        "v": "POLIOL 5631D IBC 1000 KG NCC",
+        "t": 1
+       },
+       "",
+       "TAN",
+       {
+        "v": "0 D",
+        "r": 1
+       },
+       "30.06.2026",
+       "2000"
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "sdres",
+    "tab": "Resumen de posiciones",
+    "target": "posvta",
+    "h": "La pestaña <b>Resumen de posiciones</b> muestra la misma grilla con columnas de precio.",
+    "d": "Aquí se ven Lote, TpCd, Importe, Precio neto, Valor neto y Status global. No es una pantalla distinta: es otra vista de la misma grilla.",
+    "set": {
+     "filasres": [
+      [
+       "",
+       "10",
+       "500023",
+       {
+        "v": "11.000",
+        "r": 1
+       },
+       "KG",
+       {
+        "v": "POLIOL 5631D IBC 1000 KG NCC",
+        "t": 1
+       },
+       "TAN",
+       "30.06.2026",
+       "2000",
+       "",
+       "PR00",
+       {
+        "v": "2,20",
+        "r": 1
+       },
+       {
+        "v": "2,20",
+        "r": 1
+       },
+       {
+        "v": "24.200,00",
+        "r": 1
+       },
+       "Concluido"
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "sdres",
+    "tab": "Ventas",
+    "target": "posvta",
+    "h": "Doble clic sobre la posición para abrir <b>Datos de posición</b>.",
+    "d": "⚠️ El detalle de la posición es una pantalla propia, no una pestaña de este Resumen. La pestaña «Detalle posición» de arriba solo muestra un extracto.",
+    "crit": 1,
+    "set": {}
+   },
+   {
+    "g": "4 · Datos de posición · lote y valoración"
+   },
+   {
+    "screen": "sdpos",
+    "tab": "Ventas A",
+    "target": "lote",
+    "h": "Pestaña <b>Ventas A</b> → grupo <b>Datos generales ventas</b>: asignar el <b>Lote</b>.",
+    "d": "Esta pantalla tiene su propia barra de 14 pestañas y sus botones de navegación entre posiciones.",
+    "set": {
+     "ttlpos": "Crear Distr. Fact. Vta 1477: Datos de posición",
+     "pospos": "10",
+     "tpos": "TAN",
+     "materialpos": "500023",
+     "materialposd": "POLIOL 5631D IBC 1000 KG NCC",
+     "cantpos": "11.000",
+     "lote": "L2026-014",
+     "neto": "24.200,00",
+     "fdetprecio": "30.06.2026"
+    }
+   },
+   {
+    "screen": "sdpos",
+    "tab": "Ventas A",
+    "target": "clval",
+    "h": "El lote determina la <b>Clase de valoración</b>.",
+    "d": "Nacional o Importado. De ella depende el costo contable con que se descarga la venta.",
+    "crit": 1,
+    "set": {
+     "clval": "DIST_LO_LQ"
+    }
+   },
+   {
+    "g": "5 · Datos de posición · precios"
+   },
+   {
+    "screen": "sdpos",
+    "tab": "Condiciones",
+    "target": "cond",
+    "h": "Pestaña <b>Condiciones</b>: verificar o ingresar <b>PR00</b> (Precio Base).",
+    "d": "",
+    "set": {
+     "impuesto": "4.356,00",
+     "condrows": [
+      [
+       "",
+       "",
+       "PR00",
+       {
+        "v": "Precio",
+        "t": 1
+       },
+       {
+        "v": "2,20",
+        "r": 1
+       },
+       "USD",
+       {
+        "v": "1",
+        "r": 1
+       },
+       "KG",
+       {
+        "v": "24.200,00",
+        "r": 1
+       },
+       "USD",
+       ""
+      ],
+      [
+       "",
+       "",
+       "",
+       {
+        "v": "Importe descuento",
+        "t": 1
+       },
+       {
+        "v": "0,00",
+        "r": 1
+       },
+       "USD",
+       {
+        "v": "1",
+        "r": 1
+       },
+       "KG",
+       {
+        "v": "0,00",
+        "r": 1
+       },
+       "USD",
+       ""
+      ],
+      [
+       "",
+       "",
+       "ZIGV",
+       {
+        "v": "IGV repercutido",
+        "t": 1
+       },
+       {
+        "v": "18,000",
+        "r": 1
+       },
+       "%",
+       "",
+       "",
+       {
+        "v": "4.356,00",
+        "r": 1
+       },
+       "USD",
+       ""
+      ],
+      [
+       "",
+       "",
+       "",
+       {
+        "v": "Importe final",
+        "t": 1
+       },
+       {
+        "v": "2,60",
+        "r": 1
+       },
+       "USD",
+       {
+        "v": "1",
+        "r": 1
+       },
+       "KG",
+       {
+        "v": "28.556,00",
+        "r": 1
+       },
+       "USD",
+       ""
+      ],
+      [
+       "",
+       "",
+       "VPRS",
+       {
+        "v": "Prec.factur.interna",
+        "t": 1
+       },
+       {
+        "v": "238,22",
+        "r": 1
+       },
+       "USD",
+       {
+        "v": "100",
+        "r": 1
+       },
+       "KG",
+       {
+        "v": "26.204,20",
+        "r": 1
+       },
+       "USD",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "sdpos",
+    "tab": "Condiciones",
+    "target": "cond",
+    "h": "Validar el <b>Margen de cobertura</b>.",
+    "d": "No es un campo: es una línea calculada al pie de la grilla de condiciones (precio de venta menos VPRS). Es obligatorio que el ejecutivo lo valide.",
+    "crit": 1,
+    "set": {
+     "condrows": [
+      [
+       "",
+       "",
+       "PR00",
+       {
+        "v": "Precio",
+        "t": 1
+       },
+       {
+        "v": "2,20",
+        "r": 1
+       },
+       "USD",
+       {
+        "v": "1",
+        "r": 1
+       },
+       "KG",
+       {
+        "v": "24.200,00",
+        "r": 1
+       },
+       "USD",
+       ""
+      ],
+      [
+       "",
+       "",
+       "ZIGV",
+       {
+        "v": "IGV repercutido",
+        "t": 1
+       },
+       {
+        "v": "18,000",
+        "r": 1
+       },
+       "%",
+       "",
+       "",
+       {
+        "v": "4.356,00",
+        "r": 1
+       },
+       "USD",
+       ""
+      ],
+      [
+       "",
+       "",
+       "",
+       {
+        "v": "Importe final",
+        "t": 1
+       },
+       {
+        "v": "2,60",
+        "r": 1
+       },
+       "USD",
+       {
+        "v": "1",
+        "r": 1
+       },
+       "KG",
+       {
+        "v": "28.556,00",
+        "r": 1
+       },
+       "USD",
+       ""
+      ],
+      [
+       "",
+       "",
+       "VPRS",
+       {
+        "v": "Prec.factur.interna",
+        "t": 1
+       },
+       {
+        "v": "238,22",
+        "r": 1
+       },
+       "USD",
+       {
+        "v": "100",
+        "r": 1
+       },
+       "KG",
+       {
+        "v": "26.204,20",
+        "r": 1
+       },
+       "USD",
+       ""
+      ],
+      [
+       "",
+       "",
+       "",
+       {
+        "v": "Margen de cobertura",
+        "t": 1
+       },
+       {
+        "v": "0,18-",
+        "r": 1
+       },
+       "USD",
+       {
+        "v": "1",
+        "r": 1
+       },
+       "KG",
+       {
+        "v": "2.004,20-",
+        "r": 1
+       },
+       "USD",
+       ""
+      ]
+     ]
+    }
+   },
+   {
+    "g": "6 · Control de crédito y grabación"
+   },
+   {
+    "screen": "sdres",
+    "tab": "Ventas",
+    "target": "btn-Grabar",
+    "h": "<b>Verificar</b> y grabar.",
+    "d": "Al grabar se valida el límite de crédito. Si el cupo es insuficiente aparece «Verificación de crédito sin éxito»: el pedido se guarda pero queda bloqueado hasta su liberación financiera. Anotar el número para seguimiento en VA05.",
+    "set": {
+     "nrodoc": "1477",
+     "ttl": "Crear Distr. Fact. Vta 1477: Resumen",
+     "msg": "Pedido de venta 1477 grabado"
+    }
+   }
+  ],
+  "slug": "va01-pedidos-venta",
+  "pdf": "Manuales/MANUAL DE USUARIO - GESTIÓN DE PEDIDOS DE VENTA (VA01).pdf"
+ },
+ {
+  "tx": "VF01",
+  "titulo": "Emisión de factura de cliente",
+  "sub": "Referencia a la entrega de salida",
+  "modulo": "SD",
+  "pasos": [
+   {
+    "g": "1 · Referencia"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a <b>VF01</b>.",
+    "d": "La factura se genera con referencia a la Entrega de Salida ya contabilizada.",
+    "set": {
+     "tcode": "VF01"
+    }
+   },
+   {
+    "screen": "selini",
+    "target": "documento",
+    "h": "Ingresar el número de la <b>Entrega de Salida</b>.",
+    "d": "Carga automáticamente los datos comerciales: cliente, materiales, cantidades y precios.",
+    "set": {
+     "ttl": "Crear factura",
+     "btns": [
+      "Ejecutar"
+     ],
+     "gtit": "Documentos a facturar",
+     "top": [
+      {
+       "lb": "Clase de factura:",
+       "lw": 150,
+       "k": "clasefact",
+       "w": 50,
+       "f4": 1
+      }
+     ],
+     "gcampos": [
+      {
+       "lb": "Documento:",
+       "lw": 150,
+       "k": "documento",
+       "w": 110
+      },
+      {
+       "lb": "Fecha factura:",
+       "lw": 150,
+       "k": "ffact",
+       "w": 100
+      }
+     ],
+     "documento": "80001234",
+     "ffact": "31.07.2026"
+    }
+   },
+   {
+    "g": "2 · Verificación"
+   },
+   {
+    "screen": "sdres",
+    "tab": "Resumen de posiciones",
+    "target": "posvta",
+    "h": "Revisar posiciones e importes cargados.",
+    "d": "Deben coincidir con la entrega. Si algo difiere, corregir antes de grabar.",
+    "set": {
+     "ttl": "Crear factura (F2)",
+     "neto": "24.200,00",
+     "moneda": "USD",
+     "solicitante": "10022",
+     "solicitanted": "COLCHONES ROMANTIC DEL PERU S.A.C.",
+     "filas": [
+      [
+       "",
+       "10",
+       "600023",
+       {
+        "v": "11.000",
+        "r": 1
+       },
+       "KG",
+       {
+        "v": "POLIOL 5631D IBC 1000 KG NCC",
+        "t": 1
+       },
+       "TAN",
+       "31.07.2026",
+       "2000"
+      ]
+     ]
+    }
+   },
+   {
+    "g": "3 · Grabación"
+   },
+   {
+    "screen": "sdres",
+    "target": "btn-Grabar",
+    "h": "<b>Grabar</b> la factura.",
+    "d": "Genera el documento de factura y la cuenta por cobrar: registro final del ingreso.",
+    "set": {
+     "nrodoc": "90001188",
+     "msg": "Factura 90001188 grabada"
+    }
+   }
+  ],
+  "slug": "vf01-factura",
+  "pdf": "Manuales/MANUAL DE USUARIO - EMISIÓN DE FACTURA DE CLIENTE (VF01).pdf"
+ },
+ {
+  "tx": "VL01N",
+  "titulo": "Expedición de salida de mercadería",
+  "sub": "Entrega de salida · picking · movimiento 601",
+  "modulo": "SD",
+  "pasos": [
+   {
+    "g": "1 · Creación de la entrega"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a <b>VL01N</b>.",
+    "d": "La entrega siempre se crea con referencia a un pedido de venta.",
+    "set": {
+     "tcode": "VL01N"
+    }
+   },
+   {
+    "screen": "selini",
+    "target": "puesto",
+    "h": "Indicar el <b>Puesto de expedición</b> y el <b>Pedido de venta</b>.",
+    "d": "Genera la Entrega de Salida (80XXXXXX).",
+    "set": {
+     "ttl": "Crear entrega de salida con referencia a pedido",
+     "btns": [
+      "Continuar"
+     ],
+     "gtit": "Documento de ventas",
+     "top": [
+      {
+       "lb": "Puesto de expedición:",
+       "lw": 170,
+       "req": 1,
+       "k": "puesto",
+       "w": 50,
+       "f4": 1
+      }
+     ],
+     "gcampos": [
+      {
+       "lb": "Fecha selección:",
+       "lw": 170,
+       "k": "fsel",
+       "w": 100
+      },
+      {
+       "lb": "Pedido:",
+       "lw": 170,
+       "k": "pedido",
+       "w": 110
+      },
+      {
+       "lb": "Desde posición:",
+       "lw": 170,
+       "k": "desde",
+       "w": 50
+      },
+      {
+       "lb": "Hasta posición:",
+       "lw": 170,
+       "k": "hasta",
+       "w": 50
+      }
+     ],
+     "puesto": "2000",
+     "fsel": "30.07.2026",
+     "pedido": "1477"
+    }
+   },
+   {
+    "g": "2 · Picking"
+   },
+   {
+    "screen": "sdres",
+    "tab": "Resumen de posiciones",
+    "target": "posvta",
+    "h": "En <b>VL02N</b>, pestaña Picking: ingresar la <b>cantidad real cargada</b>.",
+    "d": "La cantidad puede diferir de la del pedido si la carga fue parcial.",
+    "set": {
+     "ttl": "Modificar entrega de salida 80001234",
+     "nrodoc": "80001234",
+     "neto": "24.200,00",
+     "moneda": "USD",
+     "solicitante": "10022",
+     "solicitanted": "COLCHONES ROMANTIC DEL PERU S.A.C.",
+     "filas": [
+      [
+       "",
+       "10",
+       "600023",
+       {
+        "v": "11.000",
+        "r": 1
+       },
+       "KG",
+       {
+        "v": "POLIOL 5631D IBC 1000 KG NCC",
+        "t": 1
+       },
+       "TAN",
+       "30.06.2026",
+       "2000"
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "sdres",
+    "tab": "Resumen de posiciones",
+    "target": "posvta",
+    "h": "Indicar <b>Almacén</b> y <b>Lote</b>.",
+    "d": "Usar MMBE para verificar disponibilidad de stock y lotes en el centro antes de asignar.",
+    "crit": 1,
+    "set": {}
+   },
+   {
+    "g": "3 · Salida de mercancía"
+   },
+   {
+    "screen": "sdres",
+    "target": "btn-Grabar",
+    "h": "Clic en <b>Contabilizar SM</b>.",
+    "d": "Ejecuta el movimiento 601: rebaja el inventario y registra el Costo de Venta (CoMV).",
+    "crit": 1,
+    "set": {
+     "msg": "Entrega 80001234 grabada · movimiento 601 contabilizado"
+    }
+   }
+  ],
+  "slug": "vl01n-expedicion",
+  "pdf": "Manuales/MANUAL DE USUARIO - EXPEDICIÓN DE SALIDA DE MERCADERÍA (VL01N).pdf"
+ },
+ {
+  "slug": "me21n-importacion",
+  "tx": "ME21N",
+  "titulo": "Creación de pedido de compra de importación",
+  "sub": "ZIMP · ZDIR · ZTRA · ZTRF · precio efectivo",
+  "modulo": "MM",
+  "pdf": "Manuales/Manual de Usuario- Creación de Pedido de Compra (ME21N)_v2.pdf",
+  "pasos": [
+   {
+    "g": "1 · Acceso"
+   },
+   {
+    "screen": "easy",
+    "target": "tcode",
+    "h": "Ingresar a la transacción <b>ME21N</b>.",
+    "d": "El pedido de compra define el costo total del inventario: el Precio Efectivo de importación.",
+    "set": {
+     "tcode": "ME21N"
+    }
+   },
+   {
+    "g": "2 · Cabecera — inicio"
+   },
+   {
+    "screen": "me21n",
+    "target": "clase",
+    "h": "<b>Clase de pedido:</b> elegir según el tipo de negocio.",
+    "d": "ZIMP Distribución Local (importación para stock) · ZDIR Despacho Directo · ZTRA Trading Terceros · ZTRF Trading Filiales. La clase determina qué valoración y qué condiciones aplican después.",
+    "crit": 1,
+    "set": {
+     "ttl": "Crear pedido de compras",
+     "clase": "ZIMP P.Distribución Local",
+     "fecha": "26.07.2026"
+    }
+   },
+   {
+    "screen": "me21n",
+    "target": "prov",
+    "h": "<b>Proveedor:</b> el código del proveedor extranjero.",
+    "d": "Debe tener el rol FLVN01 con moneda de pedido definida; si no, el documento no avanza.",
+    "set": {
+     "prov": "10573 INTER-CHEMIE LIMITED"
+    }
+   },
+   {
+    "g": "3 · Datos organizativos"
+   },
+   {
+    "screen": "me21n",
+    "tab": "Dat.org.",
+    "target": "orgc",
+    "h": "Pestaña <b>Dat.org.</b>: <b>Org. compras</b>.",
+    "d": "El sistema exige estos campos antes de continuar: si faltan, arroja «Introduzca Org.compras».",
+    "crit": 1,
+    "set": {
+     "orgc": "2000",
+     "orgcd": "PORTLAND PERU"
+    }
+   },
+   {
+    "screen": "me21n",
+    "tab": "Dat.org.",
+    "target": "grpc",
+    "h": "<b>Grupo de compras</b> y <b>Sociedad</b>.",
+    "d": "Con esto queda definida la estructura legal y contable del documento.",
+    "set": {
+     "grpc": "P60",
+     "grpcd": "QUIMICOS IDUSTRIAL",
+     "soc": "2000",
+     "socd": "PORTLAND PERU SAC"
+    }
+   },
+   {
+    "g": "4 · Incoterms — solo importación"
+   },
+   {
+    "screen": "me21n",
+    "tab": "Incoterms",
+    "target": "inco",
+    "h": "Pestaña <b>Incoterms</b>: la condición pactada.",
+    "d": "FOB, CIF o CFR. En este sistema Incoterms tiene pestaña propia en la cabecera; el manual la ubica dentro de Entrega, que no corresponde.",
+    "crit": 1,
+    "set": {
+     "inco": "CFR"
+    }
+   },
+   {
+    "screen": "me21n",
+    "tab": "Incoterms",
+    "target": "ubic1",
+    "h": "<b>Ubicac.incoterms 1:</b> puerto de embarque.",
+    "d": "Define la estructura de costos y responsabilidades logísticas. Sin esto no se calculan correctamente las condiciones Z.",
+    "crit": 1,
+    "set": {
+     "ubic1": "Shanghai"
+    }
+   },
+   {
+    "g": "5 · Posiciones"
+   },
+   {
+    "screen": "me21n",
+    "tab": "Entrega/Factura",
+    "target": "pos",
+    "h": "Cargar <b>Material, Cantidad, Precio y Centro</b>.",
+    "d": "El precio de la línea es el de la mercancía (PB00); los costos de internación se cargan después como condiciones.",
+    "set": {
+     "condpago": "C120",
+     "moneda": "USD",
+     "tcambio": "1,00000",
+     "filas": [
+      [
+       "",
+       "",
+       "10",
+       "",
+       "",
+       "600048",
+       {
+        "v": "CLORURO METILENO TB 270 KG",
+        "t": 1
+       },
+       {
+        "v": "43.200",
+        "r": 1
+       },
+       "KG",
+       "04.09.2026",
+       {
+        "v": "451,00",
+        "r": 1
+       },
+       "USD",
+       "2000",
+       "1010"
+      ]
+     ]
+    }
+   },
+   {
+    "g": "6 · Clase de valoración — regla crítica"
+   },
+   {
+    "screen": "me21npos",
+    "tab": "Entrega",
+    "target": "clval",
+    "h": "Detalle de posición → pestaña <b>Entrega</b>: <b>Cl.valoración</b>.",
+    "d": "⚠️ Debe corresponder al negocio: DIST_LO_GE general · DIST_LO_LQ granel líquido · DIST_LO_SO granel sólido · DIST_LO_RC rail car. En Despacho Directo son DIRECTO_xx y en Trading, TRADING.",
+    "crit": 1,
+    "set": {
+     "selpos": "1 [ 10 ] 600048 , CLORURO METILENO TB 270 KG",
+     "tipostock": "Libre utilización",
+     "clval": "DIST_LO_SO"
+    }
+   },
+   {
+    "screen": "me21npos",
+    "tab": "Imputación",
+    "target": "catimp",
+    "h": "Excepción: pedidos de <b>insumos (ZINS)</b> o <b>activos fijos (ZACF)</b>.",
+    "d": "En esos casos NO se ingresa clase de valoración: se usa Categoría de imputación K (centro de costo) o A (activo). Mezclar ambas cosas es un error.",
+    "crit": 1,
+    "set": {
+     "catimp": "K",
+     "catimpd": "Centro de coste",
+     "ceco": "1010",
+     "ctamayor": "631001"
+    }
+   },
+   {
+    "g": "7 · Condiciones de precio"
+   },
+   {
+    "screen": "me21npos",
+    "tab": "Condiciones",
+    "target": "cond",
+    "h": "Pestaña <b>Condiciones</b>: cargar las condiciones de importación.",
+    "d": "Básicas PB00/PBXX, ZFLE flete, ZSEG/ZSE2 seguro. Aduana y puerto: ZAGA (Perú 0,25% CIF · Colombia 0,30% CFR), ZCDI, ZTHC, ZTNA, ZUYD/ZCDA. Otros: ZCAN, ZGAT, ZGGR, ZCOM.",
+    "set": {
+     "cant": "43.200 KG",
+     "neto": "19.483,20 USD",
+     "condrows": [
+      [
+       "",
+       "",
+       "PB00",
+       {
+        "v": "Precio base mercancía",
+        "t": 1
+       },
+       {
+        "v": "451,00",
+        "r": 1
+       },
+       "USD",
+       {
+        "v": "100 KG",
+        "r": 1
+       },
+       {
+        "v": "19.483,20",
+        "r": 1
+       },
+       "USD"
+      ],
+      [
+       "",
+       "",
+       "ZFLE",
+       {
+        "v": "Flete internacional",
+        "t": 1
+       },
+       {
+        "v": "471,78",
+        "r": 1
+       },
+       "USD",
+       {
+        "v": "1.000 KG",
+        "r": 1
+       },
+       {
+        "v": "20.380,70",
+        "r": 1
+       },
+       "USD"
+      ],
+      [
+       "",
+       "",
+       "ZSEG",
+       {
+        "v": "Seguro internacional",
+        "t": 1
+       },
+       {
+        "v": "90,00",
+        "r": 1
+       },
+       "USD",
+       {
+        "v": "43.200 KG",
+        "r": 1
+       },
+       {
+        "v": "90,00",
+        "r": 1
+       },
+       "USD"
+      ],
+      [
+       "",
+       "",
+       "ZAGA",
+       {
+        "v": "Agencia aduana",
+        "t": 1
+       },
+       {
+        "v": "65,00",
+        "r": 1
+       },
+       "USD",
+       {
+        "v": "43.200 KG",
+        "r": 1
+       },
+       {
+        "v": "65,00",
+        "r": 1
+       },
+       "USD"
+      ],
+      [
+       "",
+       "",
+       "ZTHC",
+       {
+        "v": "Terminal handling charges",
+        "t": 1
+       },
+       {
+        "v": "190,00",
+        "r": 1
+       },
+       "USD",
+       {
+        "v": "43.200 KG",
+        "r": 1
+       },
+       {
+        "v": "190,00",
+        "r": 1
+       },
+       "USD"
+      ],
+      [
+       "",
+       "",
+       "ZTNA",
+       {
+        "v": "Transporte nacional",
+        "t": 1
+       },
+       {
+        "v": "1.400,00",
+        "r": 1
+       },
+       "PEN",
+       {
+        "v": "43.200 KG",
+        "r": 1
+       },
+       {
+        "v": "418,54",
+        "r": 1
+       },
+       "USD"
+      ],
+      [
+       "",
+       "",
+       "ZGGR",
+       {
+        "v": "Surveyor / control graneles",
+        "t": 1
+       },
+       {
+        "v": "223,72",
+        "r": 1
+       },
+       "USD",
+       {
+        "v": "43.200 KG",
+        "r": 1
+       },
+       {
+        "v": "223,72",
+        "r": 1
+       },
+       "USD"
+      ]
+     ]
+    }
+   },
+   {
+    "screen": "me21npos",
+    "tab": "Condiciones",
+    "target": "neto",
+    "h": "Verificar el <b>Precio Efectivo</b> resultante.",
+    "d": "Es la suma de mercancía más todos los costos de internación, y será el costo unitario con que el material entra a stock. Se audita después en CKM3N.",
+    "crit": 1,
+    "set": {
+     "condrows": [
+      [
+       "",
+       "",
+       "PB00",
+       {
+        "v": "Precio base mercancía",
+        "t": 1
+       },
+       {
+        "v": "451,00",
+        "r": 1
+       },
+       "USD",
+       {
+        "v": "100 KG",
+        "r": 1
+       },
+       {
+        "v": "19.483,20",
+        "r": 1
+       },
+       "USD"
+      ],
+      [
+       "",
+       "",
+       "ZFLE",
+       {
+        "v": "Flete internacional",
+        "t": 1
+       },
+       {
+        "v": "471,78",
+        "r": 1
+       },
+       "USD",
+       {
+        "v": "1.000 KG",
+        "r": 1
+       },
+       {
+        "v": "20.380,70",
+        "r": 1
+       },
+       "USD"
+      ],
+      [
+       "",
+       "",
+       "ZTNA",
+       {
+        "v": "Transporte nacional",
+        "t": 1
+       },
+       {
+        "v": "1.400,00",
+        "r": 1
+       },
+       "PEN",
+       {
+        "v": "43.200 KG",
+        "r": 1
+       },
+       {
+        "v": "418,54",
+        "r": 1
+       },
+       "USD"
+      ],
+      [
+       "",
+       "",
+       "PEFF",
+       {
+        "v": "Precio efectivo",
+        "t": 1
+       },
+       {
+        "v": "527,28",
+        "r": 1
+       },
+       "USD",
+       {
+        "v": "1.000 KG",
+        "r": 1
+       },
+       {
+        "v": "22.778,54",
+        "r": 1
+       },
+       "USD"
+      ]
+     ],
+     "neto": "22.778,54 USD"
+    }
+   },
+   {
+    "g": "8 · Verificación y grabación"
+   },
+   {
+    "screen": "me21n",
+    "tab": "Entrega/Factura",
+    "target": "btn-Grabar",
+    "h": "<b>Verificar</b> y <b>Grabar</b>.",
+    "d": "Genera el número de OC (45XXXXXXXX). Anotarlo: se usa para la entrada de mercancías en MIGO y la factura en MIRO.",
+    "set": {
+     "msg": "Pedido de compras 4500000014 creado",
+     "ttl": "P.Distribución Local 4500000014 creado"
+    }
+   }
+  ]
+ }
+]

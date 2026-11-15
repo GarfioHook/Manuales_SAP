@@ -1,0 +1,1001 @@
+/* ===== catálogo de pantallas base — reconstruidas de las capturas 001–118 ===== */
+const M_PED=["Pedido","Tratar","Pasar a","Entorno","Sistema","Ayuda"];
+const M_DOC=["Documento","Tratar","Ir a","Opciones","Sistema","Ayuda"];
+const M_VTA=["Doc.venta","Editar","Pasar a","Entorno","Sistema","Ayuda"];
+const M_MAT=["Material","Editar","Ir a","Entorno","Sistema","Ayuda"];
+const TB_PED={items:["Resumen documento activo",{t:"📋",ic:1},{t:"☑",ic:1,k:"btn-Verificar"},{t:"Retener",k:"btn-Retener"},"Visualización de impresión",
+  "Mensajes",{t:"ℹ",ic:1},"Configuración personal","Más ⌄"]};
+const T_CAB_BASE=["Entrega/Factura","Condiciones","Textos","Dirección","Comunicación","Interlocutores",
+  "Datos adicionales","Dat.org.","Estado"];
+const T_CAB=()=> D.liberacion ? T_CAB_BASE.concat(["Estrategia liberac.","Incoterms"])
+                              : T_CAB_BASE.concat(["Incoterms"]);
+const T_POS=()=>["Datos del material","Cantidades/Pesos","Repartos","Entrega","Factura","Condiciones",
+  (D.imputacion?"Imputación":"Historial de pedido"),"Textos","Dirección entrega","Confirmaciones",
+  "Control de condición","Comercio","Incoterms"];
+const COLS_PED=[{t:'',w:20},{t:'E…',w:26},{t:'Pos',w:36},{t:'I',w:18},{t:'P',w:18},{t:'Material',w:100},
+  {t:'Txt.brv.',w:150},{t:'Ctd.pedido',w:88},{t:'U…',w:26},{t:'Fe.entrega',w:78},{t:'Prc.neto',w:76},
+  {t:'Mone…',w:44},{t:'Grupo art.',w:96},{t:'Centro',w:120},{t:'Almacén',w:64}];
+const BTN_PED=["🔍","▥","▦","🗑","🔒","🔓","⎘","▤","▽","Val.prop.","Planif.nec.adic."];
+
+const SCREENS={
+
+/* --- SAP Easy Access (captura 001) --- */
+easy:()=>({menus:["Menú","Tratar","Favoritos","Detalles","Sistema","Ayuda"],sistema:"DS4 (1) 120",
+ titulo:"SAP Easy Access",
+ toolbar:{items:[{t:"▤",ic:1},{t:"⎘",ic:1},{t:"⭳",ic:1},{t:"★",ic:1},"Más ⌄"],right:['🔍','🔎','🖨','Finalizar']},
+ regiones:[
+  {tipo:'tree',id:'arbol',nodos:[
+   {t:'Favoritos',ic:'📁',c:'fav'},
+   {t:'Menú SAP',ic:'🗀',ar:'⌄'},
+   {t:'Conector para Multi-Bank Connectivity',ic:'🗀',ar:'›',c:'lv1'},
+   {t:'Oficina',ic:'🗀',ar:'›',c:'lv1'},
+   {t:'Componentes multiaplicaciones',ic:'🗀',ar:'›',c:'lv1'},
+   {t:'Logística',ic:'🗀',ar:'›',c:'lv1'},
+   {t:'Finanzas',ic:'🗀',ar:'›',c:'lv1'},
+   {t:'Recursos Humanos',ic:'🗀',ar:'›',c:'lv1'},
+   {t:'Sistemas info',ic:'🗀',ar:'›',c:'lv1'},
+   {t:'Servicio',ic:'🗀',ar:'›',c:'lv1'},
+   {t:'Herramientas',ic:'🗀',ar:'›',c:'lv1'},
+   {t:'WebClient-UI-Framework',ic:'🗀',ar:'›',c:'lv1'}]},
+  {tipo:'cmdbar',btn:["Ejecutar"]}],
+ status:{sin:1}}),
+
+/* --- MM01/MM03 · pantalla de acceso (captura 065) --- */
+mm01ini:()=>({menus:["Material","Editar","Ir a","Opciones","Sistema","Ayuda"],sistema:"DS4 (1) 120",
+ titulo:"Crear material (Acceso)",tk:'ttl',
+ toolbar:{items:["Selección de vistas","Niveles organización","Datos","Más ⌄"],right:['Finalizar']},
+ regiones:[
+  {tipo:'form',rows:[
+   [{lb:'Material:',lw:120,k:'material',w:400,txt:1,f4:1}],
+   [{lb:'Ramo:',lw:120,type:'select',k:'ramo',w:400,ph:''}],
+   [{lb:'Tipo material:',lw:120,type:'select',k:'tipomat',w:400,ph:''}],
+   [{lb:'Nº modif.:',lw:120,k:'nromodif',w:130}]]},
+  {tipo:'gbox',titulo:'Copiar desde ...',rows:[[{lb:'Material:',lw:120,k:'copiardesde',w:400,txt:1}]]}],
+ status:{mk:'msg',ok:1,btn:["Continuar"]}}),
+
+/* --- MM01 · popup Selección de vistas (captura 066) --- */
+mm01vistas:()=>({menus:["Material","Editar","Ir a","Opciones","Sistema","Ayuda"],sistema:"DS4 (1) 120",
+ titulo:"Crear material (Acceso) — Selección de vistas",tk:'ttl',
+ toolbar:{items:["Selección de vistas","Niveles organización","Datos","Más ⌄"],right:['Finalizar']},
+ regiones:[
+  {tipo:'alv',id:'vistas',min:14,titulo:'Selección de vistas',
+   cols:[{t:'',w:30},{t:'Vista',w:420}],rows:'vistasrows'},
+  {tipo:'form',rows:[[{type:'check',lb:'Selección de vistas sólo a petición'}],
+                     [{type:'check',lb:'Crear vistas marcadas'}]]},
+  {tipo:'buttons',items:["✓","Niveles organización","Datos","▥","▦","💾 Opción estándar","✕"]}],
+ status:{mk:'msg',ok:1,btn:["Continuar"]}}),
+
+/* --- MM01 · popup Niveles de organización (estándar SAP GUI) --- */
+mm01niv:()=>({menus:["Material","Editar","Ir a","Opciones","Sistema","Ayuda"],sistema:"DS4 (1) 120",
+ titulo:"Niveles organizativos",tk:'ttl',toolbar:{items:["Más ⌄"],right:['Finalizar']},
+ regiones:[
+  {tipo:'gcols',cols:[{titulo:'Niveles organizativos',rows:[
+    [{lb:'Centro:',lw:150,k:'nivcentro',w:70,f4:1}],
+    [{lb:'Almacén:',lw:150,k:'nivalm',w:70,f4:1}],
+    [{lb:'Organización ventas:',lw:150,k:'nivorg',w:70,f4:1}],
+    [{lb:'Canal distribución:',lw:150,k:'nivcanal',w:50,f4:1}]]},
+   {titulo:'Copiar de',rows:[
+    [{lb:'Centro:',lw:110,k:'refcentro',w:70}],
+    [{lb:'Almacén:',lw:110,k:'refalm',w:70}],
+    [{lb:'Organización ventas:',lw:150,k:'reforg',w:70}],
+    [{lb:'Canal distribución:',lw:150,k:'refcanal',w:50}]]}]}],
+ status:{mk:'msg',ok:1,btn:["Continuar"]}}),
+
+/* --- MM01/MM03 · vistas del material (capturas 068 · 072 · 077) --- */
+mm01:(tab)=>{
+ const T={
+  'Datos base 1':[
+   {tipo:'gcols',cols:[{titulo:'Datos generales',rows:[
+     [{lb:'Unidad medida base:',lw:170,k:'uom',w:56,ro:1},{type:'txt',lb:'kg'},
+      {lb:'Grupo artículos:',lw:170,k:'grpart',w:110,ro:1}],
+     [{lb:'Nº antiguo material:',lw:170,k:'nroant',w:200,ro:1},{lb:'Grupo art. ext.:',lw:170,k:'grpartext',w:190,ro:1}],
+     [{lb:'Sector:',lw:170,k:'sector',w:44,ro:1},{lb:'Labor./Oficina:',lw:170,k:'labor',w:56,ro:1}],
+     [{lb:'Esquema contingente:',lw:170,k:'esqcont',w:200,ro:1},{lb:'Jquía.productos',lw:170,k:'jerarquia',w:190,ro:1}],
+     [{lb:'Estado mat.vál.p.tod',lw:170,k:'estmat',w:44,ro:1},{lb:'Válido de:',lw:170,k:'validode',w:130,ro:1}],
+     [{type:'check',lb:'Val.parám.validez'},{lb:'Gr.tp.pos.gral.:',lw:170,k:'grtppos',w:56,ro:1},{type:'txt',lb:'Posición normal'}]]}]},
+   {tipo:'gbox',titulo:'Grupo de autoriz. material',rows:[[{lb:'Grupo autorizaciones:',lw:190,k:'grpaut',w:56,ro:1}]]},
+   {tipo:'gcols',cols:[{titulo:'Dimensiones/EAN',rows:[
+     [{lb:'Peso bruto:',lw:170,k:'pesobruto',w:180,ro:1},{lb:'Unidad de peso:',lw:170,k:'unpeso',w:56,ro:1}],
+     [{lb:'Peso neto:',lw:170,k:'pesoneto',w:180,ro:1},{lb:'Unidad volumen:',lw:170,k:'unvol',w:56,ro:1}],
+     [{lb:'Volumen:',lw:170,k:'volumen',w:180,ro:1},{lb:'Tipo EAN:',lw:170,k:'tipoean',w:44,ro:1}],
+     [{lb:'Tamaño/Dimensión:',lw:170,k:'tamano',w:330,ro:1}],
+     [{lb:'Código EAN/UPC:',lw:170,k:'ean',w:200,ro:1}]]}]}],
+  'Compras':[
+   {tipo:'gcols',cols:[{titulo:'Datos generales',rows:[
+     [{lb:'Unidad medida base:',lw:170,k:'uom',w:56,ro:1},{type:'txt',lb:'kg'},
+      {lb:'Unidad medida pedido:',lw:180,k:'umpedido',w:56,ro:1},{lb:'UMP var.:',lw:90,k:'umpvar',w:44,ro:1}],
+     [{lb:'Grupo de compras:',lw:170,k:'grpc',w:56,ro:1},{lb:'Grupo de artículos:',lw:180,k:'grpart',w:110,ro:1}],
+     [{lb:'Est.mat.esp.ce.:',lw:170,k:'estmatce',w:44,ro:1},{lb:'Válido de:',lw:180,k:'validode',w:130,ro:1}],
+     [{lb:'Ident.impuest.mat.:',lw:170,k:'identimp',w:44,ro:1},{lb:'Suscep.bonif.especie:',lw:180,k:'bonif',w:44,ro:1}],
+     [{lb:'Gr.porte mat.:',lw:170,k:'grporte',w:130,ro:1},{type:'check',lb:'Ind ped.autom.'}],
+     [{lb:'Gestión de lotes:',lw:170,type:'check',lb2:'',k:'lotes'}],
+     [{lb:'Gestión lotes (centro):',lw:170,type:'check',k:'lotescentro'}]]}]},
+   {tipo:'gcols',cols:[{titulo:'Valores de compras',rows:[
+     [{lb:'Clave-valores-comp:',lw:170,k:'clvval',w:56,ro:1},{lb:'Normas de envío:',lw:180,k:'normas',w:130,ro:1}],
+     [{lb:'1ª reclamación:',lw:170,k:'rec1',val:'0',w:44,ro:1},{type:'txt',lb:'Días'},
+      {lb:'Toler.faltas sumin.:',lw:180,k:'tolfalta',val:'0,0',w:56,ro:1},{type:'txt',lb:'%'}],
+     [{lb:'2ª reclamación:',lw:170,k:'rec2',val:'0',w:44,ro:1},{type:'txt',lb:'Días'},
+      {lb:'Tol.exc.suministro:',lw:180,k:'tolexc',val:'0,0',w:56,ro:1},{type:'txt',lb:'%'}],
+     [{lb:'3ª reclamación:',lw:170,k:'rec3',val:'0',w:44,ro:1},{type:'txt',lb:'Días'},
+      {lb:'Porc.entrega mínima:',lw:180,k:'porcmin',val:'0,0',w:56,ro:1},{type:'txt',lb:'%'}],
+     [{type:'check',lb:'Exceso sumin.ilim.'}],
+     [{type:'check',lb:'Oblig.confirmación:'}]]}]}],
+  'Ventas: Org.ventas 1':[
+   {tipo:'gbox',titulo:'Datos generales',rows:[
+     [{lb:'Unidad medida base:',lw:180,k:'uom',w:50,ro:1},{lb:'Sector:',lw:80,k:'sector',w:40}],
+     [{lb:'UM de venta:',lw:180,k:'umventa',w:50}],
+     [{lb:'Status mat.vtas.dist.:',lw:180,k:'stvtas',w:40}],
+     [{lb:'Centro suministrador:',lw:180,k:'centrosum',w:60}]]},
+   {tipo:'gbox',titulo:'Clasificación fiscal',rows:[]},
+   {tipo:'alv',id:'clasfiscmm',min:3,cols:[{t:'País',w:50},{t:'Cl.impto.',w:70},{t:'Clase de impuesto',w:200},{t:'Clasif.fiscal',w:80},{t:'Descripción',w:220}],rows:'clasfiscmmrows'}],
+  'Ventas: Org.ventas 2':[
+   {tipo:'gbox',titulo:'Agrupaciones',rows:[
+     [{lb:'Gr.estad.material:',lw:190,k:'grestad',w:40}],
+     [{lb:'Grupo imputación mat.:',lw:190,k:'grpimpmat',w:50},{type:'txt',k:'grpimpmatd',lb:''}],
+     [{lb:'Grupo tipos posición:',lw:190,k:'grtppos',w:60}],
+     [{lb:'Jerarquía productos:',lw:190,k:'jerarquia',w:180}],
+     [{lb:'Producto / Servicio (CO):',lw:190,k:'prodserv',w:120}]]}],
+  'Ventas: Gral./Centro':[
+   {tipo:'gbox',titulo:'Datos de expedición',rows:[
+     [{lb:'Grupo de transporte:',lw:190,k:'grtransp',w:60}],
+     [{lb:'Grupo de carga:',lw:190,k:'grcarga',w:60}],
+     [{lb:'Centro de beneficio:',lw:190,k:'cebe',w:110}]]}],
+  'DatGralCe/Almacenam1':[
+   {tipo:'gbox',titulo:'Datos generales',rows:[
+     [{lb:'Nº sustancia peligrosa (UN):',lw:210,k:'nroun',w:90}],
+     [{lb:'Clase de riesgo:',lw:210,k:'clriesgo',w:60}]]},
+   {tipo:'gbox',titulo:'Datos de conservación',rows:[
+     [{lb:'Duración total conservación:',lw:210,k:'durtotal',w:70},{type:'txt',lb:'días'}],
+     [{lb:'Tiempo mínimo de permanencia:',lw:210,k:'tminperm',w:70},{type:'txt',lb:'días'}]]}],
+  'Clasificación':[
+   {tipo:'gbox',titulo:'Clases',rows:[[{lb:'Tipo de clase:',lw:150,k:'tipoclase',w:50},{lb:'Clase:',lw:60,k:'clase',w:200}]]},
+   {tipo:'alv',id:'caract',min:4,titulo:'Valores',cols:[{t:'Característica',w:260},{t:'Valor',w:200}],rows:'caractrows'}],
+  'Contabilidad 1':[
+   {tipo:'tabs',id:'tabs-periodo',on:'Período 007.2026',items:["Período 007.2026","Período 006.2026","Período 012.2025"]},
+   {tipo:'gcols',cols:[{titulo:'Datos generales',rows:[
+     [{lb:'Unidad medida base:',lw:170,k:'uom',w:56,ro:1},{type:'txt',lb:'kg'},
+      {lb:'Tipo de valoración:',lw:180,k:'tipoval',w:44,ro:1}],
+     [{lb:'Moneda:',lw:170,type:'txt',k:'moneda'},{lb:'Período actual:',lw:180,type:'txt',k:'periodoact'}],
+     [{lb:'Sector:',lw:170,k:'sector',w:44,ro:1},{lb:'Determinación precio',lw:180,k:'detprecio',w:44,ro:1},
+      {type:'check',lb:'LM act.',on:1}]]}]},
+   {tipo:'gcols',cols:[{titulo:'Valoración actual',rows:[
+     [{lb:'Categoría valoración:',lw:180,k:'catval',w:80,ro:1}],
+     [{lb:'CV: Stock ped.clte.:',lw:180,k:'cvstock',w:56,ro:1},{lb:'CatValStockPProyecto:',lw:180,k:'cvproy',w:56,ro:1}],
+     [{lb:'Control de precios:',lw:180,k:'ctrlprecio',w:34,ro:1},{lb:'Cantidad base:',lw:180,k:'cantbase',w:80,ro:1}],
+     [{lb:'Precio variable:',lw:180,k:'precio',w:170,ro:1},{lb:'Precio estándar:',lw:180,k:'precioest',val:'0,00',w:170,ro:1}],
+     [{lb:'Stock total:',lw:180,k:'stocktotal',w:200,ro:1},{lb:'Valor total:',lw:180,k:'valortotal',w:200,ro:1}],
+     [{type:'check',lb:'UM valorada'}],
+     [{lb:'Precio futuro:',lw:180,k:'preciofut',val:'0,00',w:170,ro:1},{lb:'Válido de:',lw:180,k:'validode',w:130,ro:1}]]}]}]
+ };
+ const cuerpo = T[tab] || T['Datos base 1'];
+ const centro = ['Compras','Contabilidad 1','Ventas: Gral./Centro','DatGralCe/Almacenam1'].includes(tab);
+ return {menus:M_MAT,sistema:"DS4 (1) 120",titulo:"Visualizar material",tk:'ttl',
+  toolbar:{items:[{t:"⎘",ic:1},{t:"→ Datos adicionales",k:"btn-Datos adicionales"},"Niveles organización","Más ⌄"],right:['▤⌄','Finalizar']},
+  regiones:[
+   {tipo:'tabs',id:'tabs-mm',on:tab||'Datos base 1',
+    items:["Datos base 1","Datos base 2","Clasificación","Ventas: Org.ventas 1","Ventas: Org.ventas 2","Ventas: Gral./Centro",
+           "Dat.bás.SPP ext.","Com.ext.: Export.","Texto comercial","Compras","Com.ext.: Import.",
+           "Texto pedido compras","Planif.necesidades 1","DatGralCe/Almacenam1","Dat.ce./Almacenam.2",
+           "Contabilidad 1","Contabilidad 2","Stock de centro","Stock almacén"]},
+   {tipo:'form',rows:[
+     [{lb:'Material:',lw:90,k:'material',w:400,ro:1},{type:'btn',lb:'ℹ',w:40}],
+     [{lb:'Descripc.:',lw:90,k:'materiald',w:400,txt:1,ro:1}],
+     ...(centro?[[{lb:'Centro:',lw:90,k:'centro',w:56,ro:1},{type:'txt',k:'centrod',lb:''}]]:[])]},
+   ...cuerpo],
+  status:{mk:'msg',ok:1,btn:["Grabar","Cancelar"]}};
+},
+
+/* --- MIGO (capturas 028 · 031 · 035) --- */
+migo:(tab)=>({menus:["Visualizar Documento de material","Tratar","Opciones","Sistema","Ayuda"],
+ sistema:"DS4 (1) 120",titulo:"Gestión de mercancías",tk:'ttl',
+ toolbar:{items:[{t:"Activar resumen",k:"btn-resumen"},"Más ⌄"],right:['Buscar','▤⌄','Finalizar']},
+ regiones:[
+  {tipo:'head',rows:[[
+    {type:'select',k:'accion',w:200,ph:'A01 Entrada de mercancías'},
+    {type:'select',k:'referencia',w:190,ph:'R01 Pedido'},
+    ...(/^R10/.test(D.referencia||'')?[{k:'clmov',w:60,ph:''},{type:'txt',k:'clmovd',lb:''}]:[{k:'refdoc',w:140},{k:'ejercicio',w:70}]),
+    {type:'btn',lb:'🕐',w:34},{type:'btn',lb:'🔍',w:34},{type:'btn',lb:'▦',w:34}]]},
+  {tipo:'tabs',id:'tabs-cab',on:'General',items:["General","Proveedor","Info doc."]},
+  {tipo:'panel',cols:[
+    [[{lb:'Fecha documento:',lw:130,k:'fdoc',w:110}],
+     [{lb:'Fecha contab.:',lw:130,k:'fcont',w:110}],
+     [{type:'txt',lb:'🖨'},{type:'check',lb:''},{type:'select',k:'vale',w:180,ph:'1 Vale individual'}]],
+    [[{lb:'Nota de entrega:',lw:120,k:'nota',w:170,txt:1}],
+     [{lb:'Carta de porte:',lw:120,k:'porte',w:170,txt:1}]],
+    [[{lb:'Proveedor:',lw:90,k:'provmigo',w:250,txt:1}],
+     [{lb:'Txt.cabec.:',lw:90,k:'txtcab',w:250,txt:1}]]]},
+  {tipo:'alv',id:'pos',min:4,
+   cols:[{t:'Línea',w:44},{t:'Txt.breve mat.',w:240},{t:'G',w:20},{t:'Ctd.en UME',w:92},{t:'U…',w:30},
+         {t:'Almacén',w:106},{t:'CeBe',w:56},{t:'Segmento de stock',w:120},{t:'Lote',w:84},
+         {t:'Cl.valoración',w:92},{t:'Cl…',w:34},{t:'S',w:18},{t:'Tipo de stocks',w:112},{t:'Ce.',w:84}],
+   rows:'filas'},
+  {tipo:'form',rows:[[{type:'btn',lb:'☰',w:40},{type:'btn',lb:'☱',w:40},{type:'btn',lb:'🔍',w:40},
+    {type:'btn',lb:'Repartir cantidades',w:200,k:'btn-repartir'},{type:'btn',lb:'Verificar',w:120,k:'btn-Verificar2'}]]},
+  {tipo:'tabs',id:'tabs-pos',on:tab||'Material',
+   items:["Material","Cantidad","Donde","Datos pedido","Interl.","Lote","Porte","Imputación"]},
+  {tipo:'panel',cols:
+    tab==='Donde'?[[[{lb:'Centro:',lw:150,k:'centro',w:200}],
+       ...((/A08/.test(D.accion||'')&&D.clmov!=='541')?[
+       [{lb:'Almacén procedencia:',lw:150,k:'almorigen',w:200,f4:1}],
+       [{lb:'Almacén destino:',lw:150,k:'almdest',w:200,f4:1}]]:[
+       [{lb:'Almacén:',lw:150,k:'almacen',w:200,f4:1}]]),
+       [{type:'check',lb:'Posición OK',k:'posok'}]],
+      [[{lb:'Tipo de stock:',lw:130,type:'select',k:'tipostockmigo',w:220,ph:'1 Libre utilización'}],
+       [{lb:'Motivo movimiento:',lw:130,k:'motivo',w:150}],
+       [{lb:'Texto:',lw:130,k:'textopos',w:250,txt:1}]]]
+   :tab==='Datos pedido'?[[[{lb:'Pedido:',lw:150,k:'pedref',w:140,ro:1},{k:'pedpos',w:50,ro:1}],
+       [{lb:'Ctd.pendiente:',lw:150,k:'ctdpend',w:140,ro:1}],
+       [{lb:'Entrega final:',lw:150,type:'select',k:'entfinal',w:230,ph:'Fijar automáticamente'}]]]
+   :tab==='Cantidad'?[[[{lb:'Ctd.en UME:',lw:140,k:'cant',w:170},{k:'um',w:44,ro:1}],
+       [{lb:'Ctd.en unidad de entrada:',lw:190,k:'cantent',w:170}]]]
+   :tab==='Lote'?[[[{lb:'Lote:',lw:150,k:'lote',w:150},{type:'btn',lb:'Clasificación',w:170},{type:'btn',lb:'⎘',w:40}],
+       [{lb:'Lote proveedor:',lw:150,k:'loteprov',w:200}],
+       [{type:'check',lb:'Lote unit.',k:'loteunit'}],
+       [{lb:'Clase de valoración:',lw:150,k:'lotecv',w:150,ro:1}]]]
+   :tab==='Interl.'?[[[{lb:'Proveedor:',lw:130,k:'provmigo',w:250,txt:1}],
+       [{lb:'Stock especial:',lw:130,k:'stkesp',w:44},{type:'txt',k:'stkespd',lb:''}]]]
+   :[[[{lb:'Material:',lw:130,k:'materiald',w:400,txt:1,ro:1},{k:'material',w:400,ro:!/^R10/.test(D.referencia||'')}],
+      [{lb:'Nº mater.proveedor:',lw:150,k:'matprov',w:350,ro:1}],
+      [{lb:'Grupo de artículos:',lw:150,k:'grpart',w:110,ro:1}]],
+     [[{lb:'Clase de valoración:',lw:170,k:'clvalmigo',w:130,ro:1}]]]}],
+ status:{mk:'msg',ok:1,btn:["Verificar","Contabilizar"]}}),
+
+/* --- MIRO / MIR4 (capturas 056 · 059 · 063) --- */
+miro:(tab)=>({menus:["Documento de factura","Tratar","Pasar a","Sistema","Ayuda"],sistema:"DS4 (1) 120",
+ titulo:"Añadir factura recibida: Sociedad 2000",tk:'ttl',
+ toolbar:{items:["Estr.pedido activa","Pool trabajo on",{t:"⎘",ic:1},{t:"ℹ Ayuda",ic:1},{t:"NF",ic:1},"Más ⌄"],
+   right:['Finalizar']},
+ regiones:[
+  {tipo:'head',rows:[[{lb:'Actividad:',lw:100,req:1,type:'select',k:'actividad',w:300,ph:'1 Factura'},
+    {type:'txt',lb:'●○○'},{lb:'Saldo:',lw:110,k:'saldo',val:'0,00',w:190,ro:1}]]},
+  {tipo:'tabs',id:'tabs-cab',on:tab||'Dat.básic.',
+   items:["Dat.básic.","Pago","Detalle","Impuestos","Retención","Contactos","Nota"]},
+  {tipo:'panel',cols:[
+    [[{lb:'Fecha factura:',lw:130,k:'ffact',w:110}],
+     [{lb:'Fecha contab.:',lw:130,k:'fcont',w:110}],
+     [{lb:'Importe:',lw:130,k:'importe',w:300},{k:'moneda',w:56}],
+     [{type:'check',lb:'Calc.impuestos',k:'calcimp'}],
+     [{lb:'Impte.impuesto:',lw:130,k:'impimp',w:160},{type:'select',k:'indimp',w:220,ph:''}],
+     [{lb:'Texto:',lw:130,k:'textomiro',w:450,txt:1}],
+     [{lb:'Condic.pago:',lw:130,type:'txt',k:'condpago'}],
+     [{lb:'Fecha base:',lw:130,type:'txt',k:'fbase'}]],
+    [[{lb:'Referencia:',lw:100,k:'referencia',w:170,txt:1}]]]},
+  {tipo:'tabs',id:'tabs-ref',on:'Referencia a pedido',items:["Referencia a pedido","Cuenta de mayor"]},
+  {tipo:'head',rows:[[{type:'select',k:'tiporef',w:230,ph:'1 Pedido/Plan entregas'},
+    {k:'oc',w:150},{k:'ocpos',w:70},{type:'btn',lb:'⎘',w:40},
+    {type:'select',k:'concepto',w:290,ph:''},
+    {lb:'Var.visualiz.:',lw:110,req:1,type:'select',k:'variante',w:250,ph:'7_6310 Información (toda)'}]]},
+  {tipo:'alv',id:'posmiro',min:5,
+   cols:[{t:'',w:20},{t:'Posición',w:64},{t:'Importe',w:110},{t:'Cantidad',w:96},{t:'Un…',w:36},{t:'',w:26},
+         {t:'Pedido',w:100},{t:'Posici…',w:50},{t:'Txt.pedido',w:230},{t:'Ind.impues…',w:80},
+         {t:'S/dto.',w:50},{t:'Imputación',w:110}],rows:'filas'},
+  {tipo:'buttons',items:["▥","▦","☰","☱","Posición:","🔍","0 / 0  Posiciones"]}],
+ status:{mk:'msg',ok:1,btn:["Simular","Contabilizar"]}}),
+
+/* --- FI Enjoy · FB50/FB60/FB65/FB70/FB75 (capturas 102 · 103) --- */
+fbenjoy:(tab)=>({menus:["Documento","Tratar","Ir a","Detalles","Opciones","Entorno","Sistema","Ayuda"],
+ sistema:"DS4 (7) 120",titulo:"Registrar documento",tk:'ttl',
+ toolbar:{items:["Modelos trabajo en","Sociedad","Retener",{t:"Simular",k:"btn-Simular"},"Registrar de forma preliminar",
+   "Opciones tratamiento","Más ⌄"],right:['Finalizar']},
+ regiones:[
+  {tipo:'head',rows:[[{lb:'Operación:',lw:90,type:'select',k:'operacion',w:230,ph:'R Factura'},
+    {lb:'Saldo:',lw:160,k:'saldo',val:'0,00',w:320,ro:1},{type:'txt',lb:'○▲○'}]]},
+  {tipo:'tabs',id:'tabs-cab',on:tab||'Datos básicos',
+   items:["Datos básicos","Pago","Detalle","Impuestos","Retención de impuestos","Nota"]},
+  {tipo:'panel',cols:[
+    [[{lb:'Acreedor:',lw:110,k:'bp',w:190,f4:1}],
+     [{lb:'Fecha factura:',lw:110,k:'ffact',w:110}],
+     [{lb:'Fecha contab.:',lw:110,k:'fcont',w:110}],
+     [{lb:'Clase doc.:',lw:110,req:1,type:'select',k:'clasedoc',w:190,ph:''}],
+     [{lb:'Nº multisoc.:',lw:110,k:'multisoc',w:170}],
+     [{lb:'Importe:',lw:110,k:'importe',w:310},{k:'moneda',w:60}],
+     [{type:'check',lb:'Calc.impuestos',k:'calcimp'}],
+     [{lb:'Impte.impuesto:',lw:110,k:'impimp',w:170},{type:'select',k:'indimp',w:220,ph:''}],
+     [{lb:'Texto:',lw:110,k:'textocab',w:460,txt:1}],
+     [{lb:'Sociedad:',lw:110,type:'txt',k:'sociedadd'}]],
+    [[{lb:'Ind.CME:',lw:80,k:'cme',w:40}],
+     [{lb:'Referencia:',lw:80,k:'referencia',w:190,txt:1}]]]},
+  {tipo:'alv',id:'posgl',min:8,titulo:'0 Posiciones ( Ninguna variante entrada seleccionada )',
+   cols:[{t:'▥',w:24},{t:'Est.',w:34},{t:'Cta.mayor',w:90},{t:'Texto breve',w:120},{t:'D/H',w:70},
+         {t:'Importe moneda doc.',w:150},{t:'Impte.en mon.local',w:150},{t:'I…',w:22},
+         {t:'Cód.domicilio fisc.',w:130},{t:'S',w:18},{t:'Asignación',w:150},{t:'Fecha valor',w:96},
+         {t:'Texto',w:170},{t:'Centro coste',w:100},{t:'Orden',w:80}],rows:'filas'},
+  {tipo:'buttons',items:["🔍","▥","▦","▧","＋","⊕","++","⊖","⎘","▤","☰","☱"]}],
+ status:{mk:'msg',ok:1,btn:["Contabilizar","Cancelar"]}}),
+
+/* --- BP · Datos de segmento de crédito (captura 092) --- */
+bpseg:(tab)=>({menus:["Interlocutor comercial","Editar","Ir a","Detalles","Entorno","Sistema","Ayuda"],
+ sistema:D.sistema||"DS4 (2) 130",titulo:"Visualizar Organización",tk:'ttl',
+ toolbar:{items:["📄 Persona","📄 Organización","📄 Grupo",{t:"🗀",ic:1},{t:"⚖",ic:1},
+   "Datos generales","Relaciones",{t:"▤",ic:1},"Más ⌄"],right:['▤⌄','Finalizar']},
+ regiones:[
+  {tipo:'form',rows:[
+    [{lb:'Interloc.comercial:',lw:160,k:'bpid',w:150,ro:1},{type:'txt',lb:'🏢'},{type:'txt',k:'bpnom',lb:''}],
+    [{lb:'Visual.en función IC',lw:160,req:1,type:'select',k:'rol',w:260,ph:'UKM000 SAP Credit Management',f4:1}]]},
+  {tipo:'gbox',titulo:'',rows:[[{lb:'Segm.crédito:',lw:110,type:'select',k:'segmento',w:300,ph:''}]]},
+  {tipo:'tabs',id:'tabs-seg',on:tab||'Límite de crédito y control',
+   items:["Límite de crédito y control","Ratios del historial de pagos","KPI Comportamiento del pago"]},
+  {tipo:'gcols',cols:[{titulo:'Límite de crédito',rows:[
+    [{lb:'Procedimiento:',lw:140,type:'select',k:'proced',w:250,ph:'STANDARD Regla estándar sin cá…'},
+     {type:'txt',lb:'Sin fórmula p.determinación límite'}],
+    [{type:'txt',lb:'◯ Límite no especific.'}],
+    [{type:'txt',lb:'◉ Límite especificado'},{lb:'Límite',lw:60,k:'limite',w:200,ro:1},
+     {type:'txt',k:'limitemon'},{lb:'Validez a:',lw:90,k:'validez',w:110,ro:1}],
+    [{lb:'Comprometido:',lw:140,type:'txt',k:'comprometido'}],
+    [{lb:'Agotamiento %:',lw:140,type:'txt',k:'agotamiento'}]]}]},
+  {tipo:'gcols',cols:[{titulo:'Control',rows:[
+    [{type:'check',lb:'Bloqueado en gestión créditos',k:'bloqcred'},
+     {lb:'Motivo bloqueo:',lw:130,k:'motbloq',w:44}],
+    [{type:'check',lb:'Atención especial',k:'atesp'}],
+    [{lb:'Nva.presentación el:',lw:160,k:'nvapres',w:110,ro:1}]]}]}],
+ status:{mk:'msg',ok:1,btn:["Introducir"]}}),
+
+/* --- EDOC_COCKPIT · Cockpit de eDocument (captura 128) --- */
+edoc:()=>({menus:["eDocument","Tratar","Pasar a","Variante","Sistema","Ayuda"],sistema:"DS4 (1) 130",
+ titulo:"Cockpit de eDocument",
+ toolbar:{items:[{t:"↻",ic:1},{t:"⎘",ic:1},{t:"ℹ",ic:1},"Más ⌄"],right:['Finalizar']},
+ regiones:[
+  {tipo:'head',rows:[[{lb:'Documento fuente:',lw:150,k:'docfuente',w:190,f4:1},
+    {type:'btn',lb:'✕ Estado ⌄',w:110},{type:'btn',lb:'⎘ Exportar fichero',w:160},
+    {type:'btn',lb:'🔒 Visualizar… ⌄',w:150},{type:'btn',lb:'👤 Cliente… ⌄',w:130},
+    {type:'btn',lb:'▶ Pasar a… ⌄',w:130,k:'btn-pasar'},{type:'btn',lb:'✎ Más… ⌄',w:100},{type:'btn',lb:'ℹ Ayuda',w:90}]]},
+  {tipo:'head',rows:[
+    [{lb:'Variante:',lw:90,type:'select',k:'variante',w:170,ph:'Selección por defecto'},
+     {type:'btn',lb:'✎ Modificar ⌄',w:140},{type:'txt',k:'tipoedoc',lb:''}],
+    [{lb:'Mostrar eDocuments recientes (días):',lw:260,k:'dias',val:'30',w:110,f4:1}]]},
+  {tipo:'alv',id:'resumen',min:4,titulo:'Resumen de resultados',
+   cols:[{t:'',w:260},{t:'Núm.',w:70}],rows:'resumenrows'},
+  {tipo:'alv',id:'edocs',min:8,
+   cols:[{t:'',w:24},{t:'Es…',w:34},{t:'Descripción status',w:170},{t:'Error',w:44},
+         {t:'Clave fte.eDocument',w:170},{t:'Descripción fuente',w:170},{t:'Socied…',w:64},
+         {t:'Descripción de tipo',w:140},{t:'Fe.cr.',w:90},{t:'Creado el',w:80},
+         {t:'Creado por',w:110},{t:'Fe.contabiliz.',w:100},{t:'Sistema lógico',w:110}],rows:'edocrows'}],
+ status:{mk:'msg',ok:1,btn:D.btns||[]}}),
+
+/* --- F110 · Pagos automáticos: Status (captura 107) --- */
+f110:(tab)=>({menus:["Ejecución pago","Tratar","Ir a","Entorno","Sistema","Ayuda"],sistema:"DS4 (2) 130",
+ titulo:"Pagos automáticos: Status",tk:'ttl',
+ toolbar:{items:[{t:"↻ Estado",ic:0},{t:"Propuesta",k:"btn-Propuesta"},{t:"Ejec.pago",k:"btn-Ejecpago"},"Tratar propuesta",{t:"Visualizar propuesta",k:"btn-Visprop"},
+   "Visualizar log de propuestas","Más ⌄"],right:['Finalizar']},
+ regiones:[
+  {tipo:'form',rows:[
+    [{lb:'Día de ejecución:',lw:150,req:1,k:'fejec',w:110,f4:1}],
+    [{lb:'Identificador:',lw:150,req:1,k:'idejec',w:80}]]},
+  {tipo:'tabs',id:'tabs-f110',on:tab||'Estado',
+   items:["Estado","Parámetro","Selección libre","Log adicional","Impresión y sop.datos"]},
+  ...(tab==='Parámetro'?[{tipo:'gcols',cols:[{titulo:'Parámetros de la ejecución',rows:[
+     [{lb:'Sociedades:',lw:150,k:'sociedades',w:220}],
+     [{lb:'Vías de pago:',lw:150,k:'viaspago',w:110}],
+     [{lb:'Fecha próx.ejecución:',lw:150,k:'fproxima',w:110}],
+     [{lb:'Cuentas:',lw:150,k:'cuentas',w:220}]]}]}]
+   :[{tipo:'gcols',cols:[{titulo:'Estado',rows:(D.estadorows||[]).map(t=>[{type:'txt',lb:'🟩 '+t}])}]}])],
+ status:{mk:'msg',ok:1,btn:D.btns||[]}}),
+
+/* --- F110 · Visualizar propuestas de pago (captura 108) --- */
+f110prop:()=>({menus:["Propuesta","Tratar","Ir a","Entorno","Sistema","Ayuda"],sistema:"DS4 (2) 130",
+ titulo:"Visualizar propuestas de pago: Pagos",
+ toolbar:{items:["Selección","Visualizar","Back de búsqueda","Más ⌄"],right:['Buscar','Finalizar']},
+ regiones:[
+  {tipo:'head',rows:[[{lb:'Ejecución el:',lw:110,k:'fejec',w:120,ro:1},{k:'idejec',w:90,ro:1},
+    {lb:'Soc.emis.:',lw:110,k:'socemis',w:70,ro:1}]]},
+  {tipo:'alv',id:'pagos',min:6,titulo:'Pagos / excepciones',
+   cols:[{t:'Cla…',w:36},{t:'Cla…',w:36},{t:'Nombre del receptor del pago',w:230},
+         {t:'Población receptor pago',w:200},{t:'P/R',w:40},{t:'Nº de cta.bancaria recep.',w:160},
+         {t:'Nº cuenta bancaria',w:140},{t:'Importe pagado en ML',w:160},{t:'Código bancario',w:120},
+         {t:'ID cta.',w:70},{t:'Bco.pr…',w:70}],rows:'pagosrows'},
+  {tipo:'gcols',cols:[
+    {titulo:'Posicionamiento',rows:[[{lb:'Cantidad posiciones:',lw:160,k:'cantpos',w:70,ro:1},
+      {type:'txt',lb:'/'},{k:'pospag',w:70,ro:1}]]},
+    {titulo:'Volumen del pago',rows:[[{lb:'Salida de pagos:',lw:150,k:'volumen',w:250,ro:1}]]}]}],
+ status:{mk:'msg',ok:1,btn:[]}}),
+
+/* --- MD04 · Lista de necesidades/stocks (captura 150) --- */
+md04:()=>({menus:["Lista","Tratar","Pasar a","Opciones","Entorno","Sistema","Ayuda"],sistema:"DS4 (1) 130",
+ titulo:"Lista de necesidades/stocks",tk:'ttl',
+ toolbar:{items:["Árbol de materiales on",{t:"↻",ic:1},{t:"▽",ic:1},{t:"✉",ic:1},"Más ⌄"],
+   right:['🔍','🔎','🖨','▤','Finalizar']},
+ regiones:[
+  {tipo:'form',rows:[
+    [{lb:'Material:',lw:120,k:'material',w:400,f4:1}],
+    [{lb:'Descripción:',lw:120,k:'materiald',w:400,txt:1,ro:1}],
+    [{lb:'Área MRP:',lw:120,k:'areamrp',w:100,ro:1},{type:'txt',k:'centrod',lb:''}],
+    [{lb:'Centro:',lw:120,k:'centro',w:70,ro:1},{lb:'Tipo material:',lw:120,k:'tipomat',w:70,ro:1},
+     {lb:'Unidad:',lw:80,k:'uom',w:56,ro:1}]]},
+  {tipo:'buttons',items:["Σ","👓","✎","▥","▦","⌄⌄","⌃⌃","Fe.","EM","MS on","On","Proveedor","Clte."]},
+  {tipo:'alv',id:'md04',min:8,
+   cols:[{t:'',w:26},{t:'F…',w:24},{t:'Fecha',w:96},{t:'Elem.pl…',w:80},{t:'Datos del ElemPlNec',w:210},
+         {t:'Fecha reprogr…',w:110},{t:'E…',w:24},{t:'Entrada/Nec.',w:130},{t:'Ctd.disponible',w:150},
+         {t:'Alm…',w:60}],rows:'md04rows'}],
+ status:{mk:'msg',ok:1,btn:[]}}),
+
+/* --- VL06O · Monitor de entregas de salida (captura 151) --- */
+vl06o:()=>({menus:["Monitor de entregas de salida"],sistema:"DS4 (1) 130",
+ titulo:"Monitor de entregas de salida",
+ toolbar:{items:[{t:"⎘",ic:1},"Visualizar variantes","Sólo entregas entrantes","Entregas (todas)","Más ⌄"],
+   right:['Finalizar']},
+ regiones:[
+  {tipo:'sub',titulo:'Entregas de salida',abierto:1},
+  {tipo:'gbox',titulo:'Cl.selección',rows:[
+    [{type:'btn',lb:'De verificación',w:250,k:'b-verificacion'}],
+    [{type:'btn',lb:'para la distribución',w:250}],
+    [{type:'btn',lb:'para picking',w:250,k:'b-picking'}],
+    [{type:'btn',lb:'p.confirmación',w:250}],
+    [{type:'btn',lb:'para carga',w:250}],
+    [{type:'btn',lb:'p.sal.mercancías',w:250,k:'b-sm'}],
+    [{type:'btn',lb:'p.planific.transporte',w:250}],
+    [{type:'btn',lb:'Lista de entregas de sal',w:250}]]}],
+ status:{mk:'msg',ok:1,btn:[]}}),
+
+/* --- popup de verificación de crédito (captura 042) --- */
+popcred:()=>({menus:[],sistema:"",titulo:"SAP Credit Management: Mensajes de la verificación de crédito",
+ nologo:1,
+ toolbar:{nocmd:1,items:[],right:[]},
+ regiones:[
+  {tipo:'sect',tipo:'form',rows:[[{type:'txt',lb:'<b style="font-size:15px">Verificación de crédito SAP Credit Management sin éxito</b>'}]]},
+  {tipo:'alv',id:'msgcred',min:8,cols:[{t:'Texto de mensaje',w:520}],rows:'msgcredrows'}],
+ status:{mk:'msg',ok:1,btn:[]}}),
+
+/* --- MI01 · Crear documento de inventario: Acceso (captura 110) --- */
+mi01:()=>({menus:["Documento para inventario","Tratar","Pasar a","Entorno","Sistema","Ayuda"],sistema:"DS4 (7) 120",
+ titulo:"Crear documento de inventario: Acceso",
+ toolbar:{items:[{t:"☁",ic:1},{t:"📄",ic:1},{t:"▣",ic:1},"Más ⌄"],right:['🖨','Finalizar']},
+ regiones:[
+  {tipo:'form',rows:[
+    [{lb:'Fecha documento:',lw:170,req:1,k:'fdoc',w:110}],
+    [{lb:'Fecha planif.recuento:',lw:170,req:1,k:'frec',w:110}]]},
+  {tipo:'gbox',titulo:'Lugar del inventario',rows:[
+    [{lb:'Centro:',lw:170,req:1,k:'centro',w:50}],
+    [{lb:'Almacén:',lw:170,k:'almacen',w:220}],
+    [{lb:'Stock especial:',lw:170,k:'stkesp',w:24}]]},
+  {tipo:'gbox',titulo:'Otras especific.',rows:[
+    [{lb:'Bloqueo contabil.:',lw:170,type:'check',k:'bloqcont'},{type:'txt',lb:''}],
+    [{lb:'Fijar stock teórico:',lw:170,type:'check',k:'fijarstock'}],
+    [{lb:'Incluir lotes borrados:',lw:170,type:'check',k:'lotesborr',on:1}],
+    [{lb:'Número de inventario:',lw:170,k:'nroinv',w:170}],
+    [{lb:'Referencia de inventario:',lw:170,k:'refinv',w:170}],
+    [{lb:'Clase agrupación:',lw:170,k:'clagr',w:30}],
+    [{lb:'Descripción docum.inventario',lw:170,k:'descinv',w:240,txt:1}]]}],
+ status:{mk:'msg',ok:1,btn:[]}}),
+
+/* --- MI01 / MI04 / MI07 · lista de posiciones del documento de inventario
+   ⚠️ sin captura: estructura aproximada (pendientes 111–112) --- */
+miinv:()=>({menus:["Documento para inventario","Tratar","Pasar a","Entorno","Sistema","Ayuda"],sistema:"DS4 (7) 120",
+ titulo:"Documento de inventario",tk:'ttl',
+ toolbar:{items:["Más ⌄"],right:['🖨','Finalizar']},
+ regiones:[
+  {tipo:'head',rows:[[{lb:'Doc.inventario:',lw:130,k:'docinv',w:120,ro:1},{lb:'Centro:',lw:70,k:'centro',w:56,ro:1},
+     {lb:'Almacén:',lw:80,k:'almacen',w:220,ro:1},{lb:'Fecha recuento:',lw:120,k:'frec',w:110}]]},
+  {tipo:'alv',id:'posinv',min:6,
+   cols:D.invcols||[{t:'Pos',w:44},{t:'Material',w:110},{t:'Texto breve',w:260},{t:'Lote',w:100},
+     {t:'Cantidad',w:120},{t:'UM',w:40},{t:'Rec.cero',w:70}],rows:'invrows'}],
+ status:{mk:'msg',ok:1,btn:["Grabar"]}}),
+
+/* --- MMBE · Resumen de stocks: Lista base (captura 114) --- */
+mmbe:()=>({menus:["Lista","Tratar","Pasar a","Detalles","Entorno","Sistema","Ayuda"],sistema:"DS4 (7) 120",
+ titulo:"Resumen de stocks: Lista base",
+ toolbar:{items:[{t:"⎘",ic:1},{t:"↻",ic:1},"Más ⌄"],right:['🖨','Finalizar']},
+ regiones:[
+  {tipo:'gbox',titulo:'Selección',rows:[
+    [{lb:'Material:',lw:150,k:'material',w:420,f4:1}],
+    [{lb:'',lw:150,type:'txt',k:'materiald'},{lb:'Fabricante externo:',lw:170,k:'fabext',w:120,ro:1}],
+    [{lb:'Tp.material:',lw:150,type:'txt',k:'tipomat'},{type:'txt',k:'tipomatd',lb:''}],
+    [{lb:'Unidad de medida:',lw:150,k:'uom',w:56,ro:1},{lb:'Unidad medida base',lw:180,type:'txt',k:'uomb'}]]},
+  {tipo:'buttons',items:["⌄⌄","⌃⌃","🔍","🖨","🔎 Visualiz.detallada"]},
+  {tipo:'alv',id:'stocks',min:7,titulo:'Resumen de stocks',
+   cols:[{t:'Mandante / Sociedad / Centro / Almacén / Lote / Stock especial',w:420},
+         {t:'Libre utilización',w:130},{t:'Control calidad',w:110},{t:'Reservado',w:90},
+         {t:'Stock en curso',w:120},{t:'Traslado (centro)',w:120},{t:'Traslado (Alm.)',w:110},
+         {t:'Entrega a cliente',w:120},{t:'Bloqueado',w:100}],rows:'stockrows'}],
+ status:{mk:'msg',ok:1,btn:[]}}),
+
+/* --- popup Detalle de condición (proveedor del costo planificado) --- */
+condprov:()=>({menus:[],sistema:"",titulo:"Detalle de condición",
+ toolbar:{nocmd:1,items:[],right:[]},
+ regiones:[
+  {tipo:'form',rows:[
+    [{lb:'Clase de condición:',lw:170,k:'ccond',w:70,ro:1},{type:'txt',k:'ccondd',lb:''}],
+    [{lb:'Importe:',lw:170,k:'cimporte',w:150,ro:1},{k:'cmoneda',w:56,ro:1}],
+    [{lb:'Proveedor:',lw:170,k:'cprov',w:260,f4:1}],
+    [{lb:'Nº documento condición:',lw:170,k:'cdoc',w:150,ro:1}]]}],
+ status:{mk:'msg',ok:1,btn:["Continuar","Cancelar"]}}),
+
+/* --- reporte / cockpit genérico (ALV de selección + resultado) ---
+   ⚠️ Sin captura de referencia: estructura aproximada de un ALV estándar. --- */
+reporte:()=>({menus:D.menus||["Programa","Tratar","Pasar a","Sistema","Ayuda"],sistema:"DS4 (1) 120",
+ titulo:"Reporte",tk:'ttl',
+ toolbar:{items:(D.tbitems||["Ejecutar","Más ⌄"]),right:['🔍','🖨','Finalizar']},
+ regiones:[
+  ...(D.selcampos?[{tipo:'gbox',titulo:D.seltit||'Selección',rows:(D.selcampos||[]).map(f=>[f])}]:[]),
+  {tipo:'alv',id:'rep',min:8,titulo:D.reptit||'',cols:(D.repcols||[{t:'',w:120}]),rows:'repfilas'},
+  ...(D.repbtns?[{tipo:'buttons',items:D.repbtns}]:[])],
+ status:{mk:'msg',ok:1,btn:D.btns||["Ejecutar"]}}),
+
+/* --- pantalla de selección simple (captura 039 · VA01) --- */
+selini:()=>({menus:D.menus||M_VTA,sistema:"DS4 (1) 120",titulo:"Pantalla inicial",tk:'ttl',
+ toolbar:{items:["Más ⌄"],right:['Finalizar']},
+ regiones:[
+  {tipo:'form',rows:(D.top||[]).map(f=>[f])},
+  {tipo:'gbox',titulo:D.gtit||'Datos organizativos',rows:(D.gcampos||[]).map(f=>[f])}],
+ status:{mk:'msg',ok:1,btn:D.btns||["Continuar"]}}),
+
+me21n:(tab)=>({menus:M_PED,sistema:"DS4 (1) 120",titulo:"Crear pedido de compras",tk:'ttl',toolbar:TB_PED,
+ regiones:[
+  {tipo:'head',rows:[[{type:'select',k:'clase',ph:'',w:190},{k:'nrodoc',w:100,txt:1},
+    {lb:'Proveedor:',lw:110,k:'prov',w:250,txt:1},{lb:'Fecha doc.:',lw:78,k:'fecha',val:'26.07.2026',w:96}]]},
+  {tipo:'tabs',id:'tabs-cab',on:tab||'Entrega/Factura',items:T_CAB()},
+  {tipo:'panel',rows:
+    tab==='Dat.org.'?[[{lb:'Org.compras:',lw:110,k:'orgc',w:50,f4:1,desc:1,dk:'orgcd'}],
+      [{lb:'Grupo compras:',lw:110,k:'grpc',w:44,desc:1,dk:'grpcd'}],
+      [{lb:'Sociedad:',lw:110,k:'soc',w:50,f4:1,desc:1,dk:'socd'}]]
+   :tab==='Estrategia liberac.'?[
+      [{lb:'Grupo de liberación:',lw:150,k:'grpliber',w:34,ro:1},{type:'txt',k:'grpliberd',lb:''}],
+      [{lb:'Estrategia liberac.:',lw:150,k:'estrliber',w:34,ro:1},{type:'txt',k:'estrliberd',lb:''}],
+      [{lb:'Ind.liberación:',lw:150,k:'indliber',w:28,ro:1},{type:'txt',k:'indliberd',lb:''}]]
+   :tab==='Textos'?[[{lb:'Tipo de texto:',lw:130,type:'select',k:'tipotxt',w:260,ph:'Texto de cabecera'}],
+      [{lb:'Texto:',lw:130,k:'txtped',w:620,txt:1}]]
+   :tab==='Incoterms'?[[{lb:'Versión de Incoterms',lw:150,k:'incov',w:50}],
+      [{lb:'Incoterms:',lw:150,k:'inco',w:44}],
+      [{lb:'Ubicac.incoterms 1:',lw:150,k:'ubic1',w:520,txt:1}],
+      [{lb:'Ubic.incoterms 2:',lw:150,w:520,txt:1}]]
+   :[[{lb:'Cond.pago:',lw:130,k:'condpago',w:52,f4:1}],
+      [{lb:'Moneda:',lw:130,k:'moneda',w:52}],
+      [{lb:'Tipo de cambio:',lw:130,k:'tcambio',w:110}]]},
+  ...(tab==='Estrategia liberac.'?[{tipo:'alv',id:'codliber',min:4,
+     cols:[{t:'Cód.',w:50},{t:'Descripción',w:230},{t:'Esta…',w:50},{t:'Posi…',w:50}],rows:'codliberrows'}]:[]),
+  {tipo:'sub',abierto:1},
+  {tipo:'alv',id:'pos',min:6,cols:COLS_PED,rows:'filas'},
+  {tipo:'buttons',items:BTN_PED}],
+ status:{mk:'msg',ok:1,btn:["Grabar","Cancelar"]}}),
+
+me21npos:(tab)=>({menus:M_PED,sistema:"DS4 (1) 120",titulo:"Crear pedido de compras",tk:'ttl',toolbar:TB_PED,
+ regiones:[
+  {tipo:'sub',titulo:'Cabecera'},{tipo:'sub',titulo:'Resumen de posiciones'},
+  {tipo:'head',rows:[[{lb:'Posición:',lw:70,type:'select',k:'selpos',w:430,ph:'1 Posición nueva'}]]},
+  {tipo:'tabs',id:'tabs-pos',on:tab||'Entrega',items:T_POS()},
+  {tipo:'panel',cols:
+    tab==='Datos del material'?[[[{lb:'Material:',lw:110,k:'material',w:180}],
+      [{lb:'Grupo artículos:',lw:110,k:'grpart',w:110}]],
+      [[{lb:'',lw:0,type:'select',w:170,ph:'Componentes',val:'Componentes',k:'btncomp'}]]]
+   :tab==='Condiciones'?[[[{lb:'Cantidad:',lw:80,k:'cant',w:150,ro:1}],
+      [{lb:'Neto:',lw:80,k:'neto',w:170,ro:1}]]]
+   :tab==='Imputación'?[
+     [[{lb:'Tp.imput.:',lw:110,type:'select',k:'catimp',w:160,ph:'K Centro de coste'}],
+      [{lb:'Puesto descarga:',lw:110,k:'puestodesc',w:250,ro:1}],
+      [{lb:'Cta.mayor:',lw:110,k:'ctamayor',w:120,ro:1}],
+      [{lb:'Sociedad CO:',lw:110,k:'socco',val:'CO00',w:60,ro:1}],
+      [{lb:'Centro de coste:',lw:110,k:'ceco',w:120,ro:1}],
+      [{lb:'Fondos:',lw:110,k:'fondos',w:120,ro:1}],
+      [{lb:'Área funcional:',lw:110,k:'areafunc',w:180,ro:1}],
+      [{lb:'Centro gestor:',lw:110,k:'ctrgestor',w:180,ro:1}]],
+     [[{lb:'Distribución:',lw:110,type:'select',k:'distrib',w:220,ph:'Imputación simple'},
+       {lb:'Soc.:',lw:50,type:'select',k:'socimp',w:150,ph:'CO11 Portland…'}],
+      [{lb:'Destinatario:',lw:110,k:'destinatario',w:150,ro:1}],
+      [{lb:'Subvención:',lw:110,k:'subvencion',w:220,ro:1}],
+      [{lb:'PosPre:',lw:110,k:'pospre',w:240,ro:1}]]]
+   :[[[{lb:'Tipo de stocks:',lw:120,type:'select',w:250,k:'tipostock',ph:'Libre utilización'}],
+      [{lb:'Cl.valoración:',lw:120,k:'clval',w:120}]],
+     [[{type:'check',lb:'Entrada mcía.',on:1}],[{type:'check',lb:'Entreg.compl.',on:1}]]]},
+  ...(tab==='Condiciones'?[{tipo:'form',rows:[[{type:'btn',lb:'🔍 Detalle de condiciones',w:210,k:'btn-detcond'},
+     {type:'btn',lb:'＋',w:40},{type:'btn',lb:'－',w:40},{type:'btn',lb:'👓 Reg.condición',w:170},
+     {type:'btn',lb:'▦ Análisis',w:130},{type:'btn',lb:'↻ Actualizar',w:150}]]},
+    {tipo:'alv',id:'cond',min:6,titulo:'Elementos determinación precio',
+     cols:[{t:'',w:20},{t:'I…',w:22},{t:'TpCd',w:50},{t:'Descripción',w:210},{t:'Importe',w:90},
+           {t:'Mon.',w:44},{t:'por',w:74},{t:'Valor condición',w:110},{t:'Mon.',w:44}],rows:'condrows'}]:[]),
+  ...(tab==='Datos del material'?[{tipo:'alv',id:'comp',min:4,titulo:'Componentes (subcontratación)',
+     cols:[{t:'Pos',w:36},{t:'Material',w:100},{t:'Txt.brv.',w:220},{t:'Cantidad',w:90},{t:'UM',w:40},{t:'Centro',w:80}],
+     rows:'comprows'}]:[])],
+ status:{mk:'msg',ok:1,btn:["Grabar","Cancelar"]}}),
+
+/* --- SD · pantalla RESUMEN del documento de ventas (capturas 043–046) --- */
+sdres:(tab)=>({menus:M_VTA,sistema:"DS4 (1) 120",titulo:"Crear pedido de venta",tk:'ttl',
+ toolbar:{items:[{t:"⚖",ic:1},{t:"▤",ic:1},{t:"✂",ic:1},{t:"▣",ic:1},{t:"Σ",ic:1},{t:"☑",ic:1,k:'btn-Verificar'},"Más ⌄"],right:['Finalizar']},
+ regiones:[
+  {tipo:'head',rows:[
+   [{lb:'Pedido:',lw:110,k:'nrodoc',w:110,ro:1},{lb:'Valor neto:',lw:110,k:'neto',w:170,ro:1},{k:'moneda',w:50,ro:1}],
+   [{lb:'Solicitante:',lw:110,k:'solicitante',w:110},{k:'solicitanted',w:430,ro:1,txt:1}],
+   [{lb:'Destinat.mcía.:',lw:110,k:'destinatario',w:110},{k:'destinatariod',w:430,ro:1,txt:1}],
+   [{lb:'Ref.cliente:',lw:110,k:'refcliente',w:230,txt:1},{lb:'Fecha ref.clie.:',lw:110,k:'frefcli',w:110}]]},
+  {tipo:'tabs',id:'tabs-vta',on:tab||'Ventas',
+   items:["Ventas","Resumen de posiciones","Detalle posición","Solicitante","Aprovisionamiento","Expedición","Motivo de rechazo"]},
+  {tipo:'panel',cols:
+   tab==='Resumen de posiciones'
+   ?[[[{lb:'Fe.preferente entrg.:',lw:160,k:'fentregad',val:'D',w:26,ro:1},{k:'fentrega',w:110}]],
+     [[{lb:'Centro suministrador:',lw:160,k:'centro',w:56}]]]
+   :[[[{lb:'Fe.pref.entrg.:',lw:130,k:'fentregad',val:'D',w:26,ro:1},{k:'fentrega',w:110}],
+      [{type:'check',lb:'Entrega compl.',k:'entcompl'}],
+      [{lb:'Bloqueo entrega:',lw:130,type:'select',k:'bloqent',w:200,ph:''}],
+      [{lb:'Bloqueo factura:',lw:130,type:'select',k:'bloqfac',w:200,ph:''}],
+      [{lb:'Condic.pago:',lw:130,k:'condpago',w:56}],
+      [{lb:'Vers.incoterm:',lw:130,k:'versinco',w:44}],
+      [{lb:'Incoterms:',lw:130,k:'inco',w:44}],
+      [{lb:'Ubic.incoterm 1:',lw:130,k:'ubicinco',w:380,txt:1}]],
+     [[{lb:'Centro sumin.:',lw:130,k:'centro',w:56}],
+      [{lb:'Peso total:',lw:130,k:'peso',w:150,ro:1},{k:'pesoum',w:44,ro:1}],
+      [{lb:'Volumen:',lw:130,k:'volumen',val:'0,000',w:150,ro:1}],
+      [{lb:'Fe.det.precios:',lw:130,k:'fdetprecio',w:110,ro:1}]]]},
+  {tipo:'alv',id:'posvta',min:5,titulo:'Posiciones (todas)',
+   cols: tab==='Resumen de posiciones'
+    ?[{t:'',w:20},{t:'Pos.',w:40},{t:'Material',w:88},{t:'Cantidad de pedido',w:112},{t:'UM',w:32},
+      {t:'Descripción de posición',w:210},{t:'TPos',w:44},{t:'1ª fecha',w:82},{t:'Ce.',w:44},{t:'Lote',w:64},
+      {t:'TpCd',w:46},{t:'Importe',w:72},{t:'Prc.neto',w:72},{t:'Valor neto',w:88},{t:'Status global',w:80}]
+    :[{t:'',w:20},{t:'Pos.',w:40},{t:'Material',w:88},{t:'Segm.necesidad',w:110},{t:'Cantidad de pedido',w:112},
+      {t:'UM',w:32},{t:'R',w:24},{t:'Descripción de posición',w:230},{t:'Nº material del cliente',w:150},
+      {t:'TPos',w:46},{t:'PosSup',w:56},{t:'1ª fecha',w:82},{t:'Ce.',w:44}],
+   rows: tab==='Resumen de posiciones'?'filasres':'filas'}],
+ status:{mk:'msg',ok:1,btn:["Grabar"]}}),
+
+/* --- SD · pantalla DATOS DE POSICIÓN (capturas 047–049) --- */
+sdpos:(tab)=>({menus:M_VTA,sistema:"DS4 (1) 120",titulo:"Crear pedido de venta: Datos de posición",tk:'ttlpos',
+ toolbar:{items:[{t:"▤",ic:1},{t:"▣",ic:1},"Más ⌄"],right:['Finalizar']},
+ regiones:[
+  {tipo:'buttons',items:["|‹","‹","›","›|"]},
+  {tipo:'head',rows:[
+   [{lb:'Posición:',lw:110,k:'pospos',val:'10',w:56,ro:1},
+    {lb:'Tipo posición',lw:130,k:'tpos',val:'TAN',w:56,ro:1},{k:'tposd',val:'Posición normal',w:150,ro:1,txt:1}],
+   [{lb:'Material:',lw:110,k:'materialpos',w:380,ro:1},{k:'materialposd',w:280,ro:1,txt:1}]]},
+  {tipo:'tabs',id:'tabs-pos',on:tab||'Ventas A',
+   items:["Ventas A","Ventas B","Expedición","Factura","Condiciones","Imputación","Repartos","Interlocutor",
+          "Textos","Datos de pedido","Status","Estructura","Datos adicionales A","Datos adicionales B"]},
+  ...(tab==='Condiciones'
+   ?[{tipo:'panel',cols:[
+      [[{lb:'Cantidad:',lw:80,k:'cantpos',w:160,ro:1},{k:'cantum',val:'KG',w:40,ro:1}]],
+      [[{lb:'Neto:',lw:70,k:'neto',w:180,ro:1},{k:'moneda',w:50,ro:1}],
+       [{lb:'Impuesto:',lw:70,k:'impuesto',w:180,ro:1}]]]},
+     {tipo:'form',rows:[[{type:'btn',lb:'🔍 Detalle de condiciones',w:210,k:'btn-detcond'},
+        {type:'btn',lb:'＋',w:40},{type:'btn',lb:'－',w:40},{type:'btn',lb:'👓 Reg.condición',w:170},
+        {type:'btn',lb:'▦ Análisis',w:130},{type:'btn',lb:'↻ Actualizar',w:150}]]},
+     {tipo:'alv',id:'cond',min:6,titulo:'Elementos determinación precio',
+      cols:[{t:'',w:20},{t:'I…',w:22},{t:'TpCd',w:50},{t:'Descripción',w:190},{t:'Importe',w:80},
+            {t:'Mon.',w:44},{t:'por',w:58},{t:'UM',w:34},{t:'Valor condición',w:110},{t:'Mon.',w:44},{t:'Status',w:56}],
+      rows:'condrows'}]
+   :[{tipo:'gcols',cols:[
+      {titulo:'Cantidad de pedido y fecha de entrega',rows:[
+       [{lb:'Cantidad de pedido:',lw:150,k:'cantpos',w:160,ro:1},{k:'cantum',val:'KG',w:40,ro:1}],
+       [{lb:'1ª fecha de entrega:',lw:150,k:'fentregad',val:'D',w:26,ro:1},{k:'fentrega',w:110}],
+       [{lb:'Plazo de entrega:',lw:150,type:'select',k:'plazo',w:210,ph:''}]]}]},
+     {tipo:'gcols',cols:[
+      {titulo:'Datos generales ventas',rows:[
+       [{lb:'Valor neto:',lw:150,k:'neto',w:180,ro:1},{k:'moneda',w:50,ro:1},
+        {lb:'Tp.cambio:',lw:100,k:'tcambio',val:'1,00000',w:130,ro:1}],
+       [{lb:'Fecha det.precios:',lw:150,k:'fdetprecio',w:110,ro:1}],
+       [{lb:'Material introducido:',lw:150,k:'materialpos',w:180,ro:1}],
+       [{lb:'Lote:',lw:150,k:'lote',w:150,f4:1},
+        {lb:'Clase de valoración:',lw:150,k:'clval',w:130,ro:1}],
+       [{lb:'Utilización:',lw:150,type:'select',k:'utilizacion',w:210,ph:''}],
+       [{lb:'Motivo de rechazo:',lw:150,type:'select',k:'motrech',w:390,ph:''}]]}]}])],
+ status:{mk:'msg',ok:1,btn:["Grabar"]}}),
+
+/* --- Familia C · operaciones CME (F-47/F-48/F-29/F-36…): cabecera + posición (SAPMF05A estándar) --- */
+cmecab:()=>({menus:M_DOC,sistema:"DS4 (4) 120",titulo:"Datos cabecera",tk:'ttl',
+ toolbar:{items:(D.cmetb||["Nueva posición","Más ⌄"]),right:['Finalizar']},
+ regiones:[
+  {tipo:'cols',cols:[
+   [[{lb:'Fecha documento:',lw:150,req:1,k:'fdoc',w:100,f4:1}],
+    [{lb:'Fecha contab.:',lw:150,req:1,k:'fcont',w:100}],
+    [{lb:'Nº documento:',lw:150,k:'nrodoc',w:100}],
+    [{lb:'Referencia:',lw:150,k:'referencia',w:170,txt:1}],
+    [{lb:'Txt.cab.doc.:',lw:150,k:'txtcab',w:250,txt:1}]],
+   [[{lb:'Clase doc.',lw:90,req:1,k:'clasedoc',w:40},{lb:'Sociedad:',lw:90,req:1,k:'sociedad',w:50}],
+    [{lb:'Período:',lw:90,k:'periodo',val:'7',w:34},{lb:'Moneda/T/C:',lw:90,req:1,k:'moneda',w:56},{k:'tcambio',w:110}],
+    [{lb:'Fe.conversión:',lw:90,k:'fconv',w:110}],
+    [{lb:'Div.interloc.:',lw:90,k:'divint',w:50}]]]},
+  {tipo:'gcols',cols:[{titulo:D.blk||'Acreedor',rows:[
+    [{lb:'Cuenta:',lw:130,req:1,k:'ctacme',w:160,f4:1}],
+    [{lb:'Indicador CME:',lw:130,req:1,k:'cme',w:40}],
+    ...(D.blkextra||[])]}]},
+  ...(D.bancoblk?[{tipo:'gcols',cols:[{titulo:'Banco',rows:[
+    [{lb:'Cuenta:',lw:130,req:1,k:'ctabanco',w:160}],
+    [{lb:'Importe:',lw:130,k:'importebco',w:300}],
+    [{lb:'Fecha valor:',lw:130,k:'fvalor',w:100}],
+    [{lb:'Texto:',lw:130,k:'textobco',w:300,txt:1},{lb:'Asignación:',lw:90,k:'asigbco',w:170}]]}]}]:[])],
+ status:{mk:'msg',ok:1,btn:["Contabilizar"]}}),
+cmepos:()=>({menus:M_DOC,sistema:"DS4 (4) 120",titulo:"Añadir posición",tk:'ttlpos',
+ toolbar:{items:["Más datos","Nueva posición","Más ⌄"],right:['Finalizar']},
+ regiones:[
+  {tipo:'form',rows:[
+    [{lb:(D.blk||'Acreedor')+':',lw:110,k:'ctacme',w:120,ro:1},{type:'txt',k:'ctacmed',lb:''},{lb:'Cuenta de mayor:',lw:130,k:'ctamayorcme',w:120,ro:1}],
+    [{lb:'Sociedad:',lw:110,k:'sociedad',w:60,ro:1},{type:'txt',k:'sociedadd',lb:''}]]},
+  {tipo:'gbox',titulo:'Posición 1 / '+(D.clvtxt||'Solicitud de anticipo')+' / '+(D.cme||''),rows:[
+    [{lb:'Importe:',lw:130,req:1,k:'importe',w:200},{k:'moneda',w:50,ro:1}],
+    [{lb:'Impuesto:',lw:130,k:'impcme',w:200},{lb:'Ind.impuesto:',lw:110,k:'indimp',w:44}],
+    [{lb:'Vencim.el:',lw:130,req:1,k:'venc',w:100},{lb:'Bloq.pago:',lw:110,k:'bloqp',w:30}],
+    [{lb:'Vía de pago:',lw:130,k:'viapago',w:30},{lb:'Pedido:',lw:110,k:'pedidocme',w:120}],
+    ...(D.posextra||[]),
+    [{lb:'Asignación:',lw:130,k:'asignacion',w:200}],
+    [{lb:'Texto:',lw:130,k:'textopos',w:420,txt:1}]]}],
+ status:{mk:'msg',ok:1,btn:["Contabilizar"]}}),
+
+/* --- F-51 Contabilizar con compensación: cabecera con Operación a tratar --- */
+f51cab:()=>({menus:M_DOC,sistema:"DS4 (4) 120",titulo:"Contabilizar con compensación: Datos cabecera",tk:'ttl',
+ toolbar:{items:[{t:"Tratar PAs",k:'btn-TratarPA'},"Más ⌄"],right:['Finalizar']},
+ regiones:[
+  {tipo:'cols',cols:[
+   [[{lb:'Fecha documento:',lw:150,req:1,k:'fdoc',w:100,f4:1}],
+    [{lb:'Fecha contab.:',lw:150,req:1,k:'fcont',w:100}],
+    [{lb:'Nº documento:',lw:150,k:'nrodoc',w:100}],
+    [{lb:'Referencia:',lw:150,k:'referencia',w:170,txt:1}],
+    [{lb:'Txt.cab.doc.:',lw:150,k:'txtcab',w:250,txt:1}],
+    [{lb:'Texto compens.:',lw:150,k:'txtcomp',w:340,txt:1}]],
+   [[{lb:'Clase doc.',lw:90,req:1,k:'clasedoc',w:40},{lb:'Sociedad:',lw:90,req:1,k:'sociedad',w:50}],
+    [{lb:'Período:',lw:90,k:'periodo',val:'7',w:34},{lb:'Moneda/T/C:',lw:90,req:1,k:'moneda',w:56},{k:'tcambio',w:110}],
+    [{lb:'Fe.conversión:',lw:90,k:'fconv',w:110}],
+    [{lb:'Div.interloc.:',lw:90,k:'divint',w:50}]]]},
+  {tipo:'gcols',cols:[
+   {titulo:'Operación a tratar',radios:["Salida de pagos","Pago entrante","Abono","Trasladar y compensar"],sel:(D.operf51??3),k:'operf51'},
+   {titulo:'Primera posición documento',rows:[
+    [{lb:'Clv.cont.:',lw:90,k:'clvcont',w:34},{lb:'Cuenta:',lw:70,k:'ctaprim',w:150,f4:1}],
+    [{lb:'Ind.CME:',lw:90,k:'cmeprim',w:34},{lb:'Cl.mov.:',lw:70,k:'clmov',w:44}]]}]}],
+ status:{mk:'msg',ok:1,btn:["Contabilizar"]}}),
+glpos:()=>({menus:M_DOC,sistema:"DS4 (4) 120",titulo:"Añadir posición de cuenta de mayor",tk:'ttlgl',
+ toolbar:{items:["Más datos","Tratar PAs","Más ⌄"],right:['Finalizar']},
+ regiones:[
+  {tipo:'form',rows:[
+    [{lb:'Cuenta de mayor:',lw:130,k:'ctagl',w:120,ro:1},{type:'txt',k:'ctagld',lb:''}],
+    [{lb:'Sociedad:',lw:130,k:'sociedad',w:60,ro:1},{type:'txt',k:'sociedadd',lb:''}]]},
+  {tipo:'gbox',titulo:'Posición 2 / '+(D.clvgltxt||'Haber')+' / '+(D.clvgl||'50'),rows:[
+    [{lb:'Importe:',lw:130,req:1,k:'importegl',w:200},{k:'moneda',w:50,ro:1}],
+    [{lb:'Fecha valor:',lw:130,k:'fvalor',w:100}],
+    [{lb:'Centro de coste:',lw:130,k:'cecogl',w:120}],
+    [{lb:'Asignación:',lw:130,k:'asignaciongl',w:200}],
+    [{lb:'Texto:',lw:130,k:'textogl',w:420,txt:1}]]}],
+ status:{mk:'msg',ok:1,btn:["Contabilizar"]}}),
+
+/* --- VL01N/VL02N · entrega de salida: resumen (estándar SAP GUI) --- */
+vlres:(tab)=>({menus:["Entrega de salida","Tratar","Pasar a","Detalles","Entorno","Sistema","Ayuda"],sistema:"DS4 (1) 120",
+ titulo:"Modificar Entrega de salida: Resumen",tk:'ttl',
+ toolbar:{items:[{t:"⚖",ic:1},{t:"▤",ic:1},{t:"▣",ic:1},{t:"Contabilizar SM",k:'btn-SM'},"Más ⌄"],right:['Finalizar']},
+ regiones:[
+  {tipo:'head',rows:[
+   [{lb:'Entrega salida:',lw:120,k:'nrodoc',w:110,ro:1},{lb:'Fecha documento:',lw:120,k:'fdoc',w:100,ro:1}],
+   [{lb:'Destinat.mcía.:',lw:120,k:'destinatario',w:110,ro:1},{k:'destinatariod',w:420,ro:1,txt:1}]]},
+  {tipo:'tabs',id:'tabs-vl',on:tab||'Picking',items:["Resumen posiciones","Picking","Carga","Transporte","Status","Mercancía"]},
+  {tipo:'head',rows:[
+   [{lb:'Fe.plan.picking:',lw:130,k:'fpick',w:100},{lb:'Status picking:',lw:120,k:'stpick',w:60,ro:1}],
+   [{lb:'Fe.SM real:',lw:130,k:'fsm',w:100},{lb:'Puesto exped.:',lw:120,k:'puesto',w:60,ro:1}]]},
+  {tipo:'alv',id:'posvl',min:5,cols:[{t:'',w:20},{t:'Pos.',w:44},{t:'Material',w:90},{t:'Ctd.entrega',w:100},{t:'UM',w:34},
+    {t:'Denominación',w:230},{t:'TPos',w:44},{t:'Ce.',w:50},{t:'Alm.',w:64},{t:'Lote',w:100},{t:'Ctd.picking',w:100}],rows:'vlrows'},
+  {tipo:'buttons',items:["🔍","▥","▦","Lotes","Selección de lote"]}],
+ status:{mk:'msg',ok:1,btn:["Grabar"]}}),
+/* --- VF01 · factura: resumen (estándar SAP GUI) --- */
+vfres:()=>({menus:["Factura","Tratar","Pasar a","Detalles","Entorno","Sistema","Ayuda"],sistema:"DS4 (1) 120",
+ titulo:"Crear Factura: Resumen de facturas",tk:'ttl',
+ toolbar:{items:[{t:"▤",ic:1},"Facturas","Contabilidad","Más ⌄"],right:['Finalizar']},
+ regiones:[
+  {tipo:'head',rows:[
+   [{lb:'Factura:',lw:110,k:'nrodoc',w:110,ro:1},{lb:'Valor neto:',lw:100,k:'neto',w:150,ro:1},{k:'moneda',w:50,ro:1}],
+   [{lb:'Responsable pago:',lw:110,k:'solicitante',w:110,ro:1},{k:'solicitanted',w:380,ro:1,txt:1}],
+   [{lb:'Fecha factura:',lw:110,k:'ffact',w:100}]]},
+  {tipo:'alv',id:'posvf',min:5,cols:[{t:'Pos.',w:44},{t:'Denominación',w:240},{t:'Ctd.facturada',w:100},{t:'UM',w:34},
+    {t:'Valor neto',w:110},{t:'Impuesto',w:100},{t:'Material',w:90},{t:'Doc.referencia',w:110}],rows:'vfrows'},
+  {tipo:'buttons',items:["🔍","Condiciones","Interlocutores","▥"]}],
+ status:{mk:'msg',ok:1,btn:["Grabar"]}}),
+
+/* --- Familia C · SAPMF05A (capturas 094 · 098 · 099 · 100) --- */
+f53cab:()=>({menus:M_DOC,sistema:"DS4 (4) 120",titulo:"Contabilizar salida pagos: Datos cabecera",tk:'ttl',
+ toolbar:{items:[{t:"✕ Cancelar selección",red:1},"Tratar PAs","Más ⌄"],right:['Finalizar']},
+ regiones:[
+  {tipo:'cols',cols:[
+   [[{lb:'Fecha documento:',lw:150,req:1,k:'fdoc',w:100,f4:1}],
+    [{lb:'Fecha contab.:',lw:150,req:1,k:'fcont',val:'26.07.2026',w:100}],
+    [{lb:'Nº documento:',lw:150,k:'nrodoc',w:100}],
+    [{lb:'Referencia:',lw:150,k:'referencia',w:170,txt:1}],
+    [{lb:'Txt.cab.doc.:',lw:150,k:'txtcab',w:250,txt:1}],
+    [{lb:'Texto compens.:',lw:150,k:'txtcomp',w:340,txt:1}]],
+   [[{lb:'Clase doc.',lw:90,req:1,k:'clasedoc',w:40},{lb:'Sociedad:',lw:90,req:1,k:'sociedad',val:'2000',w:50}],
+    [{lb:'Período:',lw:90,k:'periodo',val:'7',w:34},{lb:'Moneda/T/C:',lw:90,req:1,k:'moneda',w:56},{k:'tcambio',w:110}],
+    [{lb:'Fe.conversión:',lw:90,k:'fconv',w:110}],
+    [{lb:'Nº multisoc.:',lw:90,k:'multisoc',w:170}],
+    [{lb:'Div.interloc.:',lw:90,k:'divint',w:50}]]]},
+  {tipo:'gcols',cols:[{titulo:'Datos bancarios',rows:[
+    [{lb:'Cuenta:',lw:90,req:1,k:'ctabanco',w:160},{lb:'División:',lw:110,k:'division',w:50}],
+    [{lb:'Importe:',lw:90,k:'importe',w:300}],
+    [{lb:'Importe ML:',lw:90,k:'importeml',w:300}],
+    [{lb:'Gastos:',lw:90,k:'gastos',w:160},{lb:'Gastos en ML:',lw:110,k:'gastosml',w:170}],
+    [{lb:'Fecha valor:',lw:90,k:'fvalor',w:100},{lb:'CeBe:',lw:110,k:'cebe',w:110}],
+    [{lb:'Texto:',lw:90,k:'textopos',w:300,txt:1},{lb:'Asignación:',lw:110,k:'asignacion',w:180}]]}]},
+  {tipo:'gcols',cols:[
+   {titulo:'Selección de partidas abiertas',rows:[
+     [{lb:'Cuenta:',lw:110,k:'ctapa',w:160}],
+     [{lb:'Clase de cuenta:',lw:110,k:'clasecta',val:'K',w:26},{type:'check',lb:'Otras cuentas'}],
+     [{lb:'Indicador CME:',lw:110,k:'cme',w:150},{type:'check',lb:'PAs normales',on:1}],
+     [{type:'check',lb:'Otras cuentas banc.'}],
+     [{lb:'Nº aviso:',lw:110,k:'aviso',w:160}],
+     [{type:'check',lb:'Reparto p/antigüedad'}],
+     [{type:'check',lb:'Búsqueda automática'}]]},
+   {titulo:'Otra selección',radios:["Ning.","Importe","Nº documento","Fecha contabiliz.","Área de reclamación","Otros"],sel:0}]}],
+ status:{mk:'msg',ok:1,btn:["Contabilizar"]}}),
+
+f53pa:(tab)=>({menus:M_DOC,sistema:"DS4 (8) 120",titulo:"Contabilizar salida pagos Procesar partidas abiertas",tk:'ttlpa',
+ toolbar:{items:[{t:"⛰ Desactivar todo",ic:1,k:"btn-Desactivar"},{t:"▣",ic:1},{t:"✎",ic:1},"Repartir dif.","Eliminar diferencias","Opción tratamiento",
+                 "VencDesPrPago","Más ⌄"],right:['▤','Finalizar']},
+ regiones:[
+  {tipo:'tabs',id:'tabs-pa',on:tab||'Estándar',items:["Estándar","Pago parc.","Part.rest.","Retención"]},
+  {tipo:'alv',id:'pa',min:9,titulo:D.patit||'Partida para cuenta 10208 TRANSPORTES Y ALMACENAMIENTO DE LIQ',
+   cols: tab==='Pago parc.'
+    ?[{t:'Nº documento',w:96},{t:'C…',w:30},{t:'Fecha de doc…',w:100},{t:'C…',w:26},{t:'Divis…',w:40},
+      {t:'Días…',w:38},{t:'Importe neto',w:300},{t:'Importe pago',w:300},{t:'Raz',w:36}]
+    :[{t:'Nº documento',w:96},{t:'C…',w:30},{t:'Fecha de doc…',w:100},{t:'C…',w:26},{t:'Divis…',w:40},
+      {t:'Días…',w:38},{t:'USD Bruto',w:300},{t:'Descuento',w:300},{t:'PorDes',w:56}],
+   rows: tab==='Pago parc.'?'pafilaspp':'pafilas'},
+  {tipo:'buttons',items:["▣","▤","▥","▦","☰","☱","🔍","🔎 Impte","Bruto<>Neto","Moneda","Partida","Part.","DPP","DPP"]},
+  {tipo:'gcols',cols:[{titulo:'Status de tratamiento',rows:[
+    [{lb:'Partidas:',lw:170,k:'partidas',val:'40',w:80,ro:1},
+     {lb:'Importe entrado:',lw:170,k:'impentrado',w:300,ro:1}],
+    [{lb:'Visual.desde pos:',lw:170,k:'desdepos',val:'1',w:80,ro:1},
+     {lb:'Asignados:',lw:170,k:'asignados',val:'0,00',w:300,ro:1}],
+    [{lb:'Origen diferencias:',lw:170,k:'origendif',w:44},
+     {lb:'Contabs. diferencias:',lw:170,k:'contabdif',w:300}],
+    [{lb:'Moneda:',lw:170,k:'moneda',w:56,ro:1},
+     {lb:'Sin asignar:',lw:170,k:'sinasignar',w:300,ro:1}]]}]}],
+ status:{mk:'msg',ok:1,btn:["Contabilizar","Cancelar"]}}),
+
+f53res:()=>({menus:["Documento","Tratar","Ir a","Detalles","Opciones","Sistema","Ayuda"],sistema:"DS4 (8) 120",
+ titulo:"Contabilizar salida pagos Visualizar Resumen",tk:'ttlres',
+ toolbar:{items:[{t:"🔍",ic:1},"Moneda de visualización","Impuestos","Reiniciar","Más ⌄"],right:['Finalizar']},
+ regiones:[
+  {tipo:'cols',cols:[
+   [[{lb:'Fecha documento:',lw:140,k:'fdoc',w:110,ro:1}],
+    [{lb:'Fecha contab.:',lw:140,k:'fcont',w:110,ro:1}],
+    [{lb:'Nº documento:',lw:140,k:'nrodocres',val:'INTERNO',w:110,ro:1}],
+    [{lb:'Referencia:',lw:140,k:'referencia',w:170,txt:1}],
+    [{lb:'Txt.cab.doc.:',lw:140,k:'txtcab',w:260,txt:1}]],
+   [[{lb:'Clase doc.:',lw:110,k:'clasedoc',w:40,ro:1},{lb:'Sociedad:',lw:110,k:'sociedad',val:'2000',w:50,ro:1}],
+    [{lb:'Período:',lw:110,k:'periodo',val:'7',w:40,ro:1},{lb:'Moneda:',lw:110,k:'moneda',w:56,ro:1}],
+    [{lb:'Ejercicio:',lw:110,k:'ejercicio',val:'2026',w:56,ro:1},{lb:'Fe.conversión:',lw:110,k:'fconv',w:110,ro:1}],
+    [{lb:'Nº multisoc.:',lw:110,k:'multisoc',w:170}],
+    [{lb:'Div.interloc.:',lw:110,k:'divint',w:50}]]]},
+  {tipo:'alv',id:'asiento',min:5,titulo:'Posiciones en mon.documento',
+   cols:[{t:'',w:44},{t:'CC',w:34},{t:'Div.',w:40},{t:'Cuenta',w:300},{t:'USD',w:56},{t:'Importe',w:120},{t:'Imp-IVA',w:90}],
+   rows:'asientorows'},
+  {tipo:'form',rows:[[{lb:'',lw:0,k:'totd',w:130,ro:1},{lb:'',lw:0,k:'toth',w:130,ro:1},
+                      {lb:'',lw:0,k:'totiva',w:90,ro:1},{lb:'',lw:0,k:'totpos',w:110,ro:1}]]},
+  {tipo:'gcols',cols:[{titulo:'Otra posición de documento',rows:[
+    [{lb:'ClvCT:',lw:60,k:'clvct',w:40,f4:1},{lb:'Cuenta:',lw:70,k:'ctaotra',w:180},
+     {lb:'In.CME:',lw:70,k:'cme2',w:34},{lb:'ClMov:',lw:70,k:'clmov',w:44},
+     {lb:'Soc.nueva:',lw:80,k:'socnueva',w:56}]]}]}],
+ status:{mk:'msg',ok:1,btn:["Contabilizar","Cancelar"]}}),
+
+/* --- BP · reconstruida de las capturas 078–093 --- */
+bp:(tab)=>{
+ const T={
+  'Dirección':[
+   {tipo:'gbox',titulo:'Nombre',rows:[
+     [{lb:'Tratamiento:',lw:170,type:'select',k:'tratamiento',w:300,ph:''}],
+     [{lb:'Nombre:',lw:170,k:'nombre1',w:400,txt:1,ro:1}],
+     [{lb:'',lw:170,k:'nombre2',w:400,txt:1,ro:1}],
+     [{lb:'',lw:170,k:'nombre3',w:400,txt:1,ro:1}],
+     [{lb:'Tratamiento:',lw:170,k:'trat2',w:500,txt:1,ro:1}]]},
+   {tipo:'gbox',titulo:'Conceptos de búsqueda',rows:[
+     [{lb:'Concept.búsq.1:',lw:170,k:'busqueda',w:200,ro:1}],
+     [{lb:'Concept.búsq.2:',lw:170,k:'busqueda2',w:200,ro:1}]]},
+   {tipo:'gbox',titulo:'Dirección estándar',rows:[
+     [{type:'btn',lb:'⎘',w:40},{type:'btn',lb:'🖨 Present.prelim.',w:200}],
+     [{type:'sub',lb:'Dirección calle'}],
+     [{lb:'Calle/Número:',lw:170,k:'calle',w:330,txt:1,ro:1},{k:'numero',w:70,ro:1}],
+     [{lb:'Distrito:',lw:170,k:'distrito',w:400,txt:1,ro:1}],
+     [{lb:'Residencia alt.:',lw:170,k:'ciudad',w:400,txt:1,ro:1}],
+     [{lb:'Código postal/Pobl.:',lw:170,k:'cp',w:130,ro:1},{k:'poblacion',w:400,txt:1,ro:1}],
+     [{lb:'País:',lw:170,k:'pais',w:50,f4:1},{type:'txt',k:'paisd',lb:''},{lb:'Región:',lw:80,k:'region',w:50,f4:1},{type:'txt',k:'regiond',lb:''}]]},
+   {tipo:'gbox',titulo:'Comunicación',rows:[
+     [{lb:'Idioma:',lw:170,k:'idioma',w:120}],
+     [{lb:'Teléfono:',lw:170,k:'tel',w:150},{lb:'Móvil:',lw:80,k:'movil',w:150}],
+     [{lb:'Correo electrónico:',lw:170,k:'email',w:380,txt:1}]]}],
+  'Identificador':[
+   {tipo:'gbox',titulo:'Números de identificación fiscal',rows:[[{type:'check',lb:'Persona física'}],[{type:'sub',lb:'NIF'}]]},
+   {tipo:'alv',id:'nif',min:5,cols:[{t:'',w:26},{t:'Tipo',w:80},{t:'Denominación',w:380},
+     {t:'N.I.F. largo',w:180},{t:'Estado reg.NIF',w:170}],rows:'nifrows'},
+   {tipo:'gbox',titulo:'Trade Compliance',rows:[[{type:'check',lb:'Utiliz. militar'}],[{type:'check',lb:'Sector nuclear'}]]}],
+  'Gestión de cuenta':[
+   {tipo:'gbox',titulo:'Gestión de cuenta',rows:[
+     [{lb:'Cuenta asociada:',lw:180,k:'ctaasoc',w:150,ro:1},{type:'txt',k:'ctaasocd',lb:''}],
+     [{lb:'Central:',lw:180,k:'central',w:150,ro:1}],
+     [{lb:'Nº cuenta anterior:',lw:180,k:'ctaant',w:150}],
+     [{lb:'Clave clasificación:',lw:180,k:'clvclas',w:44,ro:1}],
+     [{lb:'Grupo autorizaciones:',lw:180,k:'grpaut',w:56,ro:1}],
+     [{lb:'Grupo de tesorería:',lw:180,k:'grptes',w:110,ro:1}],
+     [{lb:'Grupo de liberación:',lw:180,k:'grplib',w:56,ro:1}]]},
+   {tipo:'gbox',titulo:'Cálculo de intereses',rows:[
+     [{lb:'Indicador intereses:',lw:180,k:'indint',w:44,ro:1}],
+     [{lb:'Ritmo cálc.int.:',lw:180,k:'ritmo',w:44,ro:1},{type:'txt',lb:'Meses'}],
+     [{lb:'Última fecha clave:',lw:180,k:'ultfecha',w:130,ro:1}]]}],
+  'Pagos':[
+   {tipo:'gbox',titulo:'Datos de pago',rows:[
+     [{lb:'Condición de pago:',lw:180,k:'condpago',w:60,f4:1},{type:'txt',k:'condpagod',lb:''}],
+     [{lb:'Vías de pago:',lw:180,k:'viaspago',w:150}],
+     [{lb:'Bloqueo de pago:',lw:180,type:'select',k:'bloqpago',w:250,ph:''}],
+     [{lb:'Agrupación de pagos:',lw:180,k:'agrpago',w:56}]]},
+   {tipo:'gbox',titulo:'Datos bancarios del interlocutor',rows:[
+     [{lb:'Banco propio:',lw:180,k:'bancoprop',w:110}],
+     [{lb:'Vía de pago prevista:',lw:180,k:'viaprev',w:44}]]}],
+  'Órdenes':[
+   {tipo:'gbox',titulo:'',rows:[
+     [{lb:'Zona de ventas:',lw:180,k:'zonavtas',w:70}],
+     [{lb:'Oficina de ventas:',lw:180,k:'oficina',w:56,ro:1}],
+     [{lb:'Grupo de ventas:',lw:180,k:'grpventas',w:44,ro:1}],
+     [{lb:'Grupo autorizaciones:',lw:180,k:'grpaut',w:56,ro:1}],
+     [{lb:'Cuenta en el deudor:',lw:180,k:'ctadeudor',w:130,ro:1}],
+     [{lb:'Probabilidad pedido:',lw:180,k:'probped',val:'100',w:44,ro:1},{type:'txt',lb:'%'}],
+     [{lb:'Clase ABC:',lw:180,k:'abc',w:44,ro:1}],
+     [{lb:'Moneda:',lw:180,k:'moneda',w:56},{type:'txt',k:'monedad',lb:''}],
+     [{lb:'Grupo de precios:',lw:180,k:'grpprecios',w:44}],
+     [{lb:'Esq.clte.prop.prod.:',lw:180,k:'esquema',w:44}],
+     [{type:'btn',lb:'Atributos producto',w:190}]]}],
+  'Expedición':[
+   {tipo:'gbox',titulo:'Expedición',rows:[
+     [{lb:'Prioridad de entrega:',lw:190,type:'select',k:'prioridad',w:250,ph:''}],
+     [{lb:'Condición de expedición:',lw:190,type:'select',k:'condexp',w:250,ph:''}],
+     [{lb:'Centro suministrador:',lw:190,k:'centrosum',w:56}],
+     [{type:'check',lb:'Agrupamiento de pedidos',k:'agrped'}],
+     [{type:'check',lb:'Entrega completa obligatoria',k:'entcompl'}]]}],
+  'Funciones de interlocutor':[
+   {tipo:'alv',id:'funciones',min:11,titulo:'Funciones de interlocutor',
+    cols:[{t:'',w:26},{t:'OP',w:44},{t:'Función socio',w:200},{t:'Número',w:100},{t:'IC asignado',w:110},
+          {t:'Descripc.',w:230},{t:'Nombre de socio',w:220},{t:'Def',w:44}],rows:'funciones'}],
+  'Perfil de crédito':[
+   {tipo:'gcols',cols:[{titulo:'Cálculo de solvencia',rows:[
+     [{lb:'Procedimiento:',lw:150,type:'select',k:'proced',w:290,ph:'STANDARD Regla estándar sin cálculo autom'},
+      {type:'txt',lb:'Sin fórmula p.determinación solvencia'}],
+     [{lb:'Solvencia int.:',lw:150,k:'solvint',val:'0',w:110,ro:1},
+      {lb:'Validez a:',lw:110,k:'validez',w:110,ro:1}],
+     [{lb:'Clase de riesgo:',lw:150,type:'select',k:'riesgo',w:220,ph:''},
+      {lb:'Modificado el:',lw:110,type:'txt',k:'modif'}],
+     [{lb:'Regla verif.:',lw:150,type:'select',k:'regla',w:290,ph:''},{type:'txt',k:'regla_d',lb:''}],
+     [{lb:'Grupo crédito:',lw:150,type:'select',k:'grpcred',w:220,ph:'0'}]]}]},
+   {tipo:'alv',id:'infoext',min:5,titulo:'Información externa de crédito',
+    cols:[{t:'',w:26},{t:'Proc.valoración',w:130},{t:'Autorización',w:90},{t:'Valoración',w:100},
+          {t:'Tendencia',w:80},{t:'Def.',w:40},{t:'Válido de',w:100},{t:'Validez a',w:100},
+          {t:'Número ID',w:140},{t:'Texto',w:160}],rows:'infoextrows'}],
+  'Datos de compras':[
+   {tipo:'gbox',titulo:'Condiciones',rows:[
+     [{lb:'Moneda de pedido:',lw:200,req:1,k:'monpedido',w:70,f4:1},{type:'txt',k:'monpedidod',lb:''}],
+     [{lb:'Condiciones de pago:',lw:200,k:'condpago',w:60},{type:'txt',k:'condpagod',lb:''}],
+     [{lb:'Versión de incoterms:',lw:200,k:'versinco',w:60}],
+     [{lb:'Incoterms:',lw:200,k:'inco',w:44}],
+     [{lb:'ID ubic.incoterm 1:',lw:200,k:'idubic1',w:200}],
+     [{lb:'Ubicación de incoterms 1:',lw:200,k:'ubic1',w:490,txt:1}],
+     [{lb:'Valor mínimo de pedido:',lw:200,k:'valmin',val:'0,00',w:160}],
+     [{lb:'Prov.grupo esquema:',lw:200,k:'grpesq',w:60}]]},
+   {tipo:'gbox',titulo:'Control',rows:[
+     [{type:'check',lb:'Verificación de factura basada en EM',k:'verifem'}],
+     [{type:'check',lb:'Liquidación automática (ERS)',k:'ers'}]]}],
+  'Factura':[
+   {tipo:'gbox',titulo:'Facturación',rows:[
+     [{type:'check',lb:'Abono posterior',k:'abonopost'}],
+     [{lb:'Fechas factura:',lw:200,k:'fechasfact',w:60}]]},
+   {tipo:'gbox',titulo:'Entrega y condiciones de pago',rows:[
+     [{lb:'Incoterms:',lw:200,k:'inco',w:50},{k:'ubic1',w:300,txt:1}],
+     [{lb:'Condiciones de pago:',lw:200,k:'condpago',w:60},{type:'txt',k:'condpagod',lb:''}]]},
+   {tipo:'gbox',titulo:'Contabilidad',rows:[
+     [{lb:'Grupo imput.cliente:',lw:200,k:'grpimp',w:50},{type:'txt',k:'grpimpd',lb:''}]]},
+   {tipo:'gbox',titulo:'Impuestos de salida',rows:[]},
+   {tipo:'alv',id:'clasfisc',min:3,cols:[{t:'País',w:50},{t:'Nombre',w:140},{t:'Cl.impto.',w:70},{t:'Clase de impuesto',w:200},{t:'Clasif.fiscal',w:80},{t:'Descripción',w:200}],rows:'clasfiscrows'}],
+  'Retención impuestos':[
+   {tipo:'alv',id:'retimp',min:6,titulo:'Retención de impuestos',cols:[{t:'País',w:44},{t:'Tipo',w:44},{t:'Descripción',w:260},{t:'Ind.',w:44},{t:'Sujeto/RetImpto',w:110},{t:'Válido de',w:90},{t:'Válido hasta',w:90}],rows:'retrows'}],
+  'Datos adicionales':[
+   {tipo:'gbox',titulo:'Grupos de clientes',rows:[
+     [{lb:'Grupo de clientes 1:',lw:200,k:'grpcli1',w:50},{type:'txt',k:'grpcli1d',lb:''}],
+     [{lb:'Grupo de clientes 2:',lw:200,k:'grpcli2',w:50}]]}],
+  'PagosGen':[
+   {tipo:'alv',id:'bancos',min:5,titulo:'Datos bancarios',cols:[{t:'ID',w:50},{t:'País',w:44},{t:'Clave bco.',w:80},{t:'Nombre del banco',w:200},{t:'Cuenta bancaria',w:150},{t:'Titular de la cuenta',w:230},{t:'IBAN',w:120}],rows:'bancorows'},
+   {tipo:'gbox',titulo:'Tarjetas de pago',rows:[]}],
+  'Resumen dirección':[
+   {tipo:'alv',id:'usosdir',min:4,titulo:'Usos de dirección',cols:[{t:'Uso de dirección',w:220},{t:'Estándar',w:70},{t:'Válido de',w:90},{t:'Válido hasta',w:90},{t:'Dirección',w:360}],rows:'usosrows'}]
+ };
+ const cuerpo = (tab==='Pagos'&&/^000000/.test(D.rol||'000000'))?T['PagosGen']: T[tab] || T[(tab||'').replace(/^(Deudor|Acreedor|Proveedor):\s*/,'')] || T['Dirección'];
+ return {menus:["Interlocutor comercial","Editar","Ir a","Detalles","Entorno","Sistema","Ayuda"],
+  sistema:D.sistema||"DS4 (1) 120", titulo:"Visualizar Organización", tk:'ttl',
+  toolbar:{items:[{t:"▤",ic:1},"📄 Persona",{t:"📄 Organización",k:"btn-Organización"},"📄 Grupo",{t:"🗀",ic:1},{t:"⚖",ic:1},
+    ...(D.rolext?["Datos generales","Datos ETM"]:[]),"Relaciones",{t:"▤",ic:1},"Más ⌄"],right:['▤⌄','Finalizar']},
+  regiones:[
+   {tipo:'form',rows:[
+     [{lb:'Interloc.comercial:',lw:160,k:'bpid',w:150,ro:1},{type:'txt',lb:'🏢'},{type:'txt',k:'bpnom',lb:''}],
+     [{lb:'Visual.en función IC',lw:160,req:1,type:'select',k:'rol',w:250,ph:'000000 Interloc.cial.general',f4:1}]]},
+   ...(D.orgtit?[{tipo:'gbox',titulo:D.orgtit,rows:(D.orgrows||[]).concat([[
+       {type:'btn',lb:'🔗 '+(D.orgb1||''),w:250,k:'orgb1'},{type:'btn',lb:'⎘ '+(D.orgb2||''),w:250}]])}]:[]),
+   {tipo:'tabs',id:'tabs-bp',on:tab||'Dirección',
+    items:D.tabs||["Dirección","Resumen dirección","Identificador","Control","Pagos","Estado","Textos adicion.","Identificación técnica"]},
+   ...cuerpo],
+  status:{mk:'msg',ok:1,btn:["Introducir"]}};
+}
+
+};
