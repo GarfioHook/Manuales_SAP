@@ -389,7 +389,8 @@ $('#fab').onclick=()=>go('asistente');
 
 /* ============ SOCIEDAD ============ */
 $('#soc').innerHTML=SOCS.map(([c,n,m])=>`<option value="${c}" ${c===SOC?'selected':''}>${c?c+' · '+n:n}${m?' ('+m+')':''}</option>`).join('');
-$('#soc').onchange=e=>{SOC=e.target.value;store.set('simsap_soc',SOC);toast('Sociedad: '+($('#soc').selectedOptions[0].text));};
+$('#soc').onchange=e=>{SOC=e.target.value;store.set('simsap_soc',SOC);const n=$('#soc').selectedOptions[0].text;toast('Sociedad: '+n);
+  if(hist.length>1) addMsg(SOC?`🏢 Sociedad cambiada a **${n}**. Las próximas respuestas usarán sus parámetros.`:'🏢 Sociedad: **según manual** (respuestas generales).','assistant',false);};
 
 /* ============ TARJETAS ============ */
 function card(d){
@@ -523,7 +524,13 @@ async function callAI(){
   }
   return full;
 }
+function socContext(){
+  if(!SOC) return null;
+  const n=$('#soc').selectedOptions[0].text;
+  return {role:'system',content:`CONTEXTO DEL USUARIO: trabaja en la sociedad ${n}. Usa SIEMPRE y SOLO los códigos y parámetros de ${SOC} (tabla B.1 y matrices): sociedad, org. de compras y ventas, centro, almacenes, oficina y grupo de vendedores, segmento de crédito, moneda, retenciones y facturación electrónica. No preguntes la sociedad ni muestres alternativas de otras sociedades salvo que el usuario lo pida; indica al inicio que la respuesta aplica a ${SOC}. Si la consulta depende de otro dato (p. ej. tipo de compra), pregúntalo, pero entrega igualmente el procedimiento con los valores de ${SOC}.`};
+}
 async function callOnce(messages){
+  const ctx=socContext(); if(ctx) messages=[messages[0],ctx,...messages.slice(1)];
   try{
     const r=await fetch(PROXY_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MODEL,messages,temperature:.1,max_tokens:20000})});
     if(!r.ok){const m={403:'🚫 Este dominio no tiene permiso para usar el asistente. Debe abrirse desde el sitio publicado.',429:'⚠️ El servicio está saturado. Intenta de nuevo en unos segundos.',401:'❌ Error de autenticación en el proxy. Contacta al administrador.',402:'❌ La cuenta del servicio de IA no tiene créditos.'};return {err:m[r.status]||`❌ Error del servicio (${r.status}).`};}
