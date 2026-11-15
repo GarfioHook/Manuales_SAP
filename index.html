@@ -527,10 +527,17 @@ async function callAI(){
 function socContext(){
   if(!SOC) return null;
   const n=$('#soc').selectedOptions[0].text;
-  return {role:'system',content:`CONTEXTO DEL USUARIO: trabaja en la sociedad ${n}. Usa SIEMPRE y SOLO los códigos y parámetros de ${SOC} (tabla B.1 y matrices): sociedad, org. de compras y ventas, centro, almacenes, oficina y grupo de vendedores, segmento de crédito, moneda, retenciones y facturación electrónica. No preguntes la sociedad ni muestres alternativas de otras sociedades salvo que el usuario lo pida; indica al inicio que la respuesta aplica a ${SOC}. Si la consulta depende de otro dato (p. ej. tipo de compra), pregúntalo, pero entrega igualmente el procedimiento con los valores de ${SOC}.`};
+  return {role:'system',content:`CONTEXTO DEL USUARIO: trabaja en la sociedad ${n}. Usa SIEMPRE y SOLO los códigos y parámetros de ${SOC} (tabla B.1 y matrices): sociedad, org. de compras y ventas, centro, almacenes, oficina y grupo de vendedores, segmento de crédito, moneda, retenciones y facturación electrónica. La sociedad YA ESTÁ IDENTIFICADA: esto reemplaza la instrucción de preguntar la sociedad. No la preguntes ni muestres alternativas de otras sociedades salvo que el usuario lo pida; indica al inicio que la respuesta aplica a ${SOC}. Si la consulta depende de otro dato (p. ej. tipo de compra), pregúntalo, pero entrega igualmente el procedimiento con los valores de ${SOC}.`};
 }
 async function callOnce(messages){
-  const ctx=socContext(); if(ctx) messages=[messages[0],ctx,...messages.slice(1)];
+  const ctx=socContext();
+  if(ctx){
+    // 1) al final de la instrucción base (prevalece sobre "pregunta la sociedad")
+    messages=[{role:'system',content:messages[0].content+'\n\n---\n## '+ctx.content},...messages.slice(1)];
+    // 2) en la última pregunta del usuario (no se guarda en el historial)
+    for(let i=messages.length-1;i>0;i--) if(messages[i].role==='user'){
+      messages[i]={role:'user',content:`[Sociedad: ${$('#soc').selectedOptions[0].text}. Responde con los códigos de ${SOC}; ya conoces la sociedad, no la preguntes.]\n\n`+messages[i].content};break;}
+  }
   try{
     const r=await fetch(PROXY_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MODEL,messages,temperature:.1,max_tokens:20000})});
     if(!r.ok){const m={403:'🚫 Este dominio no tiene permiso para usar el asistente. Debe abrirse desde el sitio publicado.',429:'⚠️ El servicio está saturado. Intenta de nuevo en unos segundos.',401:'❌ Error de autenticación en el proxy. Contacta al administrador.',402:'❌ La cuenta del servicio de IA no tiene créditos.'};return {err:m[r.status]||`❌ Error del servicio (${r.status}).`};}
