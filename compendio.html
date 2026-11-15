@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Compendio de Manuales Simulados · SAP S/4HANA · Grupo Portland</title>
+<style>
+:root{
+  --pt:#0b2b5c; --pt2:#123f80; --sap:#008FD3; --green:#6bae47;
+  --ink:#1c2733; --muted:#69747f; --line:#e3e8ee; --bg:#f4f7fa; --card:#fff;
+  --ok:#107e3e; --warn:#e9730c; --stop:#bb0000; --grey:#8a97a4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);
+     line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1320px;margin:0 auto;padding:0 28px}
+
+/* ---------- header ---------- */
+header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+.hdr{display:flex;align-items:center;gap:16px;height:64px}
+.brand{display:flex;align-items:center;gap:13px}
+.mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--pt),var(--sap));
+      display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px}
+.brand b{font-size:15px;letter-spacing:-.2px}
+.brand span{display:block;font-size:11px;color:var(--muted);font-weight:400;letter-spacing:.3px}
+.hdr nav{margin-left:auto;display:flex;gap:22px;font-size:13.5px;color:var(--muted)}
+.hdr nav a:hover{color:var(--pt)}
+
+/* ---------- hero ---------- */
+.hero{background:linear-gradient(135deg,var(--pt) 0%,var(--pt2) 55%,#0f5ea8 100%);color:#fff;
+      padding:44px 0 78px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;opacity:.13;
+  background:radial-gradient(circle at 82% 18%,#fff 0,transparent 42%),
+             radial-gradient(circle at 12% 88%,var(--sap) 0,transparent 46%)}
+.hero .wrap{position:relative;z-index:1}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;letter-spacing:1.4px;
+  text-transform:uppercase;background:rgba(255,255,255,.14);padding:6px 13px;border-radius:99px;margin-bottom:16px}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block}
+.hero h1{font-size:2.15rem;font-weight:700;letter-spacing:-.6px;max-width:780px;line-height:1.2}
+.hero p{margin-top:13px;max-width:660px;font-size:15px;opacity:.9}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:-46px;position:relative;z-index:2}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:17px 18px;
+      box-shadow:0 6px 20px rgba(11,43,92,.09)}
+.stat b{display:block;font-size:1.85rem;font-weight:700;letter-spacing:-1px;line-height:1.1}
+.stat small{color:var(--muted);font-size:12px}
+.stat .bar{height:4px;border-radius:99px;background:var(--line);margin-top:10px;overflow:hidden}
+.stat .bar i{display:block;height:100%;border-radius:99px}
+
+/* ---------- filtros ---------- */
+.tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:34px 0 18px}
+.search{flex:1;min-width:230px;position:relative}
+.search input{width:100%;height:42px;border:1px solid var(--line);border-radius:10px;background:#fff;
+  padding:0 14px 0 40px;font-size:14px;font-family:inherit;color:var(--ink)}
+.search input:focus{outline:2px solid rgba(0,143,211,.35);border-color:var(--sap)}
+.search svg{position:absolute;left:13px;top:12px;opacity:.45}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:8px 14px;font-size:12.5px;
+      cursor:pointer;color:var(--muted);white-space:nowrap;font-family:inherit}
+.chip:hover{border-color:var(--sap);color:var(--pt)}
+.chip.on{background:var(--pt);border-color:var(--pt);color:#fff}
+.chip b{font-weight:600}
+
+/* ---------- grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;padding-bottom:22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;
+      display:flex;flex-direction:column;gap:12px;transition:.18s;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--grey)}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(11,43,92,.13);border-color:#cfd9e4}
+.card.simulado::before{background:var(--green)}
+.card.listo::before{background:var(--sap)}
+.card.parcial::before,.card.revisar::before{background:var(--warn)}
+.card.bloqueado::before{background:var(--stop)}
+.card.politica::before{background:var(--grey)}
+.top{display:flex;align-items:flex-start;gap:10px}
+.tx{background:var(--pt);color:#fff;font-family:"Courier New",monospace;font-size:11.5px;font-weight:700;
+    padding:4px 9px;border-radius:6px;letter-spacing:.5px;white-space:nowrap}
+.tx.none{background:var(--grey)}
+.badge{margin-left:auto;font-size:10.5px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;
+       padding:4px 9px;border-radius:99px;white-space:nowrap}
+.b-simulado{background:#e7f5ec;color:var(--ok)}
+.b-listo{background:#e4f2fb;color:#0a6ed1}
+.b-parcial,.b-revisar{background:#fdf1e3;color:var(--warn)}
+.b-bloqueado{background:#fbeaea;color:var(--stop)}
+.b-politica{background:#eef1f4;color:var(--muted)}
+.card h3{font-size:14.5px;font-weight:600;line-height:1.35}
+.metaline{display:flex;gap:14px;font-size:11.5px;color:var(--muted);flex-wrap:wrap;margin-top:-4px}
+.metaline span{display:inline-flex;align-items:center;gap:5px}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--sap);display:inline-block}
+.acts{display:flex;gap:8px;margin-top:auto;padding-top:4px}
+.btn{flex:1;height:36px;border-radius:9px;font-size:12.5px;font-weight:600;display:flex;
+     align-items:center;justify-content:center;gap:7px;border:1px solid var(--line);background:#fff;color:var(--pt)}
+.btn:hover{border-color:var(--sap);background:#f5fbff}
+.btn.primary{background:var(--pt);border-color:var(--pt);color:#fff}
+.btn.primary:hover{background:var(--pt2)}
+.btn.off{opacity:.42;pointer-events:none}
+
+/* ---------- leyenda ---------- */
+.legend{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:8px 0 40px}
+.legend h4{font-size:14px;margin-bottom:14px}
+.legend ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px 26px}
+.legend li{font-size:12.5px;color:var(--muted);display:flex;gap:9px;line-height:1.45}
+.legend li i{width:9px;height:9px;border-radius:50%;flex:0 0 9px;margin-top:5px}
+.legend li b{color:var(--ink);display:block;font-size:12.5px}
+.note{font-size:12px;color:var(--muted);border-top:1px solid var(--line);margin-top:16px;padding-top:14px}
+.empty{text-align:center;padding:56px;color:var(--muted);font-size:14px}
+.socbar{display:flex;gap:22px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid var(--line);
+  border-left:4px solid var(--green);border-radius:12px;padding:15px 18px;margin-top:22px}
+.socbar>div:first-child{flex:1;min-width:260px}
+.socbar b{display:block;font-size:14px}
+.socbar span{font-size:12px;color:var(--muted)}
+.chip.soc.on{background:var(--green);border-color:var(--green)}
+.chip small{opacity:.7;margin-left:4px}
+footer{border-top:1px solid var(--line);background:#fff;padding:22px 0;font-size:12px;color:var(--muted)}
+@media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+
+<header><div class="wrap hdr">
+  <div class="brand"><div class="mark">P</div>
+    <div><b>Grupo Portland</b><span>Simulador de procesos SAP S/4HANA</span></div></div>
+  <nav>
+    <a href="libreria_pantallas_base.html">Librería de pantallas</a>
+    <a href="index.html">Documentación original</a>
+    <a href="plan_capturas_numerado.md">Plan de capturas</a>
+  </nav>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <div class="eyebrow"><i></i>Compendio v3 · noviembre 2026</div>
+  <h1>Manuales transaccionales convertidos en simulaciones interactivas</h1>
+  <p>Cada manual se reconstruye sobre las pantallas reales de SAP GUI, con la secuencia de pasos
+     al costado y el campo activo resaltado. Sin capturas pegadas: pantallas vivas que el sistema
+     rellena según el escenario consultado.</p>
+</div></section>
+
+<div class="wrap">
+  <div class="stats" id="stats"></div>
+
+  <div class="socbar">
+    <div><b>Sociedad operativa</b><span>Las simulaciones usan los parámetros de la sociedad elegida (Parametros_SAP_Grupo_Portland_v2): sociedad, organización de compras y ventas, centro, almacenes, oficina de ventas, moneda y razón social.</span></div>
+    <div class="chips" id="fsoc"></div>
+  </div>
+
+  <div class="tools">
+    <div class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+        <circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" placeholder="Buscar por transacción, proceso o módulo…">
+    </div>
+    <div class="chips" id="fmod"></div>
+    <div class="chips" id="fest"></div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none">Sin resultados para ese filtro.</div>
+
+  <div class="legend">
+    <h4>Cómo leer los estados</h4>
+    <ul>
+      <li><i style="background:var(--green)"></i><span><b>Simulado</b>Guía interactiva publicada y navegable.</span></li>
+      <li><i style="background:var(--sap)"></i><span><b>Listo para simular</b>Las pantallas base de su familia ya están capturadas; falta generar la guía.</span></li>
+      <li><i style="background:var(--warn)"></i><span><b>Parcial / a revisar</b>Faltan pantallas puntuales o no está identificada la transacción del manual.</span></li>
+      <li><i style="background:var(--stop)"></i><span><b>Bloqueado</b>Falta el sub-flujo de partidas abiertas (capturas 095–100). Afecta a las ocho transacciones FI clásicas.</span></li>
+      <li><i style="background:var(--grey)"></i><span><b>Política</b>Documento de procedimiento, no transaccional: no se simula.</span></li>
+    </ul>
+    <div class="note">El estado refleja la disponibilidad de <b>pantallas base</b>, no la calidad del manual.
+      Un manual puede estar impecable y aun así figurar como bloqueado si su transacción depende de capturas pendientes.</div>
+  </div>
+</div>
+
+<footer><div class="wrap">Compendio generado desde la carpeta <b>Manuales</b> · 33 documentos · Grupo Portland</div></footer>
+
+<script>
+const DATA = [
+ {
+  "pdf": "Manuales_v2/MAN-MD-BP-01_Creacion_de_BP_Cliente.pdf",
+  "man": "MAN-MD-BP-01",
+  "tx": "BP",
+  "titulo": "Creación de Business Partner · rol Cliente",
+  "modulo": "Cross",
+  "familia": "MAN-MD-BP-01",
+  "estado": "simulado",
+  "guia": "sim/bp-cliente.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-MD-MAT-01_Gestion_y_Creacion_de_Materiales.pdf",
+  "man": "MAN-MD-MAT-01",
+  "tx": "MM01",
+  "titulo": "Gestión y creación de materiales",
+  "modulo": "MM",
+  "familia": "MAN-MD-MAT-01",
+  "estado": "simulado",
+  "guia": "sim/mm01-materiales.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-MD-BP-02_Creacion_de_BP_Proveedor.pdf",
+  "man": "MAN-MD-BP-02",
+  "tx": "BP",
+  "titulo": "Creación de Business Partner · rol Proveedor",
+  "modulo": "Cross",
+  "familia": "MAN-MD-BP-02",
+  "estado": "simulado",
+  "guia": "sim/bp-proveedor.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-MD-BP-03_Gestion_de_Credito_del_Business_Partner.pdf",
+  "man": "MAN-MD-BP-03",
+  "tx": "BP",
+  "titulo": "Gestión de crédito del interlocutor (UKM000)",
+  "modulo": "Cross",
+  "familia": "MAN-MD-BP-03",
+  "estado": "simulado",
+  "guia": "sim/bp-credito.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-MM-01_Creacion_de_Pedido_de_Compra.pdf",
+  "man": "MAN-MM-01",
+  "tx": "ME21N",
+  "titulo": "Creación de pedido de compra",
+  "modulo": "MM",
+  "familia": "MAN-MM-01",
+  "estado": "simulado",
+  "guia": "sim/me21n-importacion.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-MM-02_Compras_de_Insumos_Servicios_y_Activos_Fijos.pdf",
+  "man": "MAN-MM-02",
+  "tx": "ME21N",
+  "titulo": "Compras de insumos, servicios y activos fijos",
+  "modulo": "MM",
+  "familia": "MAN-MM-02",
+  "estado": "simulado",
+  "guia": "sim/me21n-servicios-insumos.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-MM-03_Liberacion_de_Pedidos_de_Compra.pdf",
+  "man": "MAN-MM-03",
+  "tx": "ME29N",
+  "titulo": "Liberación de pedidos de compra",
+  "modulo": "MM",
+  "familia": "MAN-MM-03",
+  "estado": "simulado",
+  "guia": "sim/me29n-liberacion.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-MM-04_Gestion_de_Maquila_Envasado.pdf",
+  "man": "MAN-MM-04",
+  "tx": "ME21N",
+  "titulo": "Gestión de maquila y envasado",
+  "modulo": "MM",
+  "familia": "MAN-MM-04",
+  "estado": "simulado",
+  "guia": "sim/me21n-maquila.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-MM-05_Reversa_del_Proceso_de_Maquila.pdf",
+  "man": "MAN-MM-05",
+  "tx": "MIGO",
+  "titulo": "Reversa del proceso de maquila",
+  "modulo": "MM",
+  "familia": "MAN-MM-05",
+  "estado": "simulado",
+  "guia": "sim/migo-reversa-maquila.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-MM-06_Registro_de_Entrada_de_Mercancias.pdf",
+  "man": "MAN-MM-06",
+  "tx": "MIGO",
+  "titulo": "Registro de entrada de mercancías",
+  "modulo": "MM",
+  "familia": "MAN-MM-06",
+  "estado": "simulado",
+  "guia": "sim/migo-101.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-MM-07_Traspaso_entre_Almacenes.pdf",
+  "man": "MAN-MM-07",
+  "tx": "MIGO",
+  "titulo": "Traspaso entre almacenes",
+  "modulo": "MM",
+  "familia": "MAN-MM-07",
+  "estado": "simulado",
+  "guia": "sim/migo-311.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-MM-08_Gestion_y_Toma_de_Inventario_Fisico.pdf",
+  "man": "MAN-MM-08",
+  "tx": "MI01",
+  "titulo": "Gestión y toma de inventario físico",
+  "modulo": "MM",
+  "familia": "MAN-MM-08",
+  "estado": "simulado",
+  "guia": "sim/mi01-inventario-fisico.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-MM-09_Registro_de_Facturas_de_Proveedor.pdf",
+  "man": "MAN-MM-09",
+  "tx": "MIRO",
+  "titulo": "Importación: factura antes de la entrada (ZIMP)",
+  "modulo": "MM/FI",
+  "familia": "MAN-MM-09",
+  "estado": "simulado",
+  "guia": "sim/miro-importacion-anticipada.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-MM-09_Registro_de_Facturas_de_Proveedor.pdf",
+  "man": "MAN-MM-09",
+  "tx": "MIRO",
+  "titulo": "Registro de facturas de proveedor",
+  "modulo": "MM/FI",
+  "familia": "MAN-MM-09",
+  "estado": "simulado",
+  "guia": "sim/miro-facturas.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-MM-10_Notas_de_Credito_y_Ajustes_de_Precio_a_Proveedores.pdf",
+  "man": "MAN-MM-10",
+  "tx": "MIRO",
+  "titulo": "NC por ajuste de precio (Abono posterior)",
+  "modulo": "MM/FI",
+  "familia": "MAN-MM-10",
+  "estado": "simulado",
+  "guia": "sim/miro-nc-ajuste.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-MM-10_Notas_de_Credito_y_Ajustes_de_Precio_a_Proveedores.pdf",
+  "man": "MAN-MM-10",
+  "tx": "MIRO",
+  "titulo": "Notas de crédito y ajustes de precio a proveedores",
+  "modulo": "MM/FI",
+  "familia": "MAN-MM-10",
+  "estado": "simulado",
+  "guia": "sim/miro-nc-proveedores.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-MM-11_Gestion_de_Diferencias_en_la_Recepcion.pdf",
+  "man": "MAN-MM-11",
+  "tx": "MIGO/MIRO",
+  "titulo": "Gestión de diferencias en la recepción",
+  "modulo": "MM/FI",
+  "familia": "MAN-MM-11",
+  "estado": "simulado",
+  "guia": "sim/miro-migo-diferencias.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-SD-01_Gestion_de_Pedidos_de_Venta.pdf",
+  "man": "MAN-SD-01",
+  "tx": "VA01",
+  "titulo": "Gestión de pedidos de venta",
+  "modulo": "SD",
+  "familia": "MAN-SD-01",
+  "estado": "simulado",
+  "guia": "sim/va01-pedidos-venta.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-SD-02_Expedicion_de_Salida_de_Mercaderia.pdf",
+  "man": "MAN-SD-02",
+  "tx": "VL10A/VL01N/VL02N",
+  "titulo": "Expedición de salida de mercadería",
+  "modulo": "SD",
+  "familia": "MAN-SD-02",
+  "estado": "simulado",
+  "guia": "sim/vl01n-expedicion.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-SD-03_Emision_de_Factura_de_Cliente.pdf",
+  "man": "MAN-SD-03",
+  "tx": "VF01/VF04",
+  "titulo": "Emisión de factura de cliente",
+  "modulo": "SD",
+  "familia": "MAN-SD-03",
+  "estado": "simulado",
+  "guia": "sim/vf01-factura.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-SD-03_Emision_de_Factura_de_Cliente.pdf",
+  "man": "MAN-SD-03",
+  "tx": "EDOC_COCKPIT",
+  "titulo": "Envío de factura electrónica a la DIAN (Colombia)",
+  "modulo": "SD",
+  "familia": "MAN-SD-03",
+  "estado": "simulado",
+  "guia": "sim/edoc-cockpit.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-SD-04_Notas_de_Credito_a_Clientes.pdf",
+  "man": "MAN-SD-04",
+  "tx": "VA01/VL01N/VF01",
+  "titulo": "Notas de crédito y débito a clientes",
+  "modulo": "SD",
+  "familia": "MAN-SD-04",
+  "estado": "simulado",
+  "guia": "sim/va01-notas-credito.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-FI-00_Estandares_de_Registros_Contables.pdf",
+  "man": "MAN-FI-00",
+  "tx": "—",
+  "titulo": "Estandares de Registros Contables",
+  "modulo": "FI",
+  "familia": "MAN-FI-00",
+  "estado": "politica",
+  "guia": ""
+ },
+ {
+  "pdf": "Manuales_v2/MAN-FI-01_Facturas_y_Notas_de_Debito_Manuales_de_Proveedor.pdf",
+  "man": "MAN-FI-01",
+  "tx": "FB60",
+  "titulo": "Facturación manual y nota de débito de acreedor",
+  "modulo": "FI",
+  "familia": "MAN-FI-01",
+  "estado": "simulado",
+  "guia": "sim/fb60-facturas.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-FI-02_Notas_de_Credito_Manuales_de_Proveedor.pdf",
+  "man": "MAN-FI-02",
+  "tx": "FB65",
+  "titulo": "Contabilización manual de nota de crédito de acreedor",
+  "modulo": "FI",
+  "familia": "MAN-FI-02",
+  "estado": "simulado",
+  "guia": "sim/fb65-nc.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-FI-03_Facturas_Manuales_y_Analisis_de_Cuentas_por_Pagar.pdf",
+  "man": "MAN-FI-03",
+  "tx": "FB60/FBL1N",
+  "titulo": "Facturas manuales y análisis de cuentas por pagar",
+  "modulo": "FI",
+  "familia": "MAN-FI-03",
+  "estado": "simulado",
+  "guia": "sim/fb60-fbl1n-analisis.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-FI-04_Solicitud_de_Anticipo_a_Proveedores.pdf",
+  "man": "MAN-FI-04",
+  "tx": "F-47",
+  "titulo": "Solicitud de anticipo a proveedores",
+  "modulo": "FI",
+  "familia": "MAN-FI-04",
+  "estado": "simulado",
+  "guia": "sim/f47-anticipo-proveedores.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-FI-05_Contabilizacion_con_Compensacion_para_Acreedores.pdf",
+  "man": "MAN-FI-05",
+  "tx": "F-51",
+  "titulo": "Contabilización con compensación para acreedores",
+  "modulo": "FI",
+  "familia": "MAN-FI-05",
+  "estado": "simulado",
+  "guia": "sim/f51-compensacion-acreedores.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-FI-06_Ejecucion_de_Pago_Manual_a_Proveedores.pdf",
+  "man": "MAN-FI-06",
+  "tx": "F-51",
+  "titulo": "Ejecución de pago manual a proveedores",
+  "modulo": "FI",
+  "familia": "MAN-FI-06",
+  "estado": "simulado",
+  "guia": "sim/f51-pago-manual.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-FI-07_Contabilizacion_de_Pagos_a_Acreedores.pdf",
+  "man": "MAN-FI-07",
+  "tx": "F-53",
+  "titulo": "Contabilización de pagos a acreedores",
+  "modulo": "FI",
+  "familia": "MAN-FI-07",
+  "estado": "simulado",
+  "guia": "sim/f53-pagos-acreedores.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-FI-08_Pagos_a_Proveedores.pdf",
+  "man": "MAN-FI-08",
+  "tx": "F110",
+  "titulo": "Pagos a proveedores (F-51 / F110)",
+  "modulo": "FI",
+  "familia": "MAN-FI-08",
+  "estado": "simulado",
+  "guia": "sim/f110-pagos-automaticos.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-FI-09_Registro_y_Canje_de_Letras_de_Cambio.pdf",
+  "man": "MAN-FI-09",
+  "tx": "F-36",
+  "titulo": "Registro y canje de letras de cambio",
+  "modulo": "FI",
+  "familia": "MAN-FI-09",
+  "estado": "simulado",
+  "guia": "sim/f36-letras.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-FI-10_Contabilizacion_de_Pagos_Recibidos.pdf",
+  "man": "MAN-FI-10",
+  "tx": "F-28",
+  "titulo": "Contabilización de pagos recibidos",
+  "modulo": "FI",
+  "familia": "MAN-FI-10",
+  "estado": "simulado",
+  "guia": "sim/f28-pagos-recibidos.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-FI-11_Contabilizacion_de_Anticipos_de_Clientes.pdf",
+  "man": "MAN-FI-11",
+  "tx": "F-29",
+  "titulo": "Contabilizar anticipos de cliente (CME)",
+  "modulo": "FI",
+  "familia": "MAN-FI-11",
+  "estado": "simulado",
+  "guia": "sim/f29-anticipos-clientes.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-FI-12_Contabilizacion_de_Saldos_Pendientes.pdf",
+  "man": "MAN-FI-12",
+  "tx": "F-30",
+  "titulo": "Contabilización de saldos pendientes",
+  "modulo": "FI",
+  "familia": "MAN-FI-12",
+  "estado": "simulado",
+  "guia": "sim/f30-saldos-pendientes.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-FI-13_Facturas_Manuales_de_Deudor.pdf",
+  "man": "MAN-FI-13",
+  "tx": "FB70",
+  "titulo": "Facturas manuales de deudor",
+  "modulo": "FI",
+  "familia": "MAN-FI-13",
+  "estado": "simulado",
+  "guia": "sim/fb70-deudor.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-FI-14_Notas_de_Credito_Manuales_a_Clientes.pdf",
+  "man": "MAN-FI-14",
+  "tx": "FB75",
+  "titulo": "NC manual a clientes (FB75 + MIGO 501)",
+  "modulo": "FI",
+  "familia": "MAN-FI-14",
+  "estado": "simulado",
+  "guia": "sim/fb75-nc-clientes.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-FI-15_Contabilizacion_de_Fondos_por_Rendir.pdf",
+  "man": "MAN-FI-15",
+  "tx": "FB70",
+  "titulo": "Fondo por rendir · entregas a colaboradores",
+  "modulo": "FI",
+  "familia": "MAN-FI-15",
+  "estado": "simulado",
+  "guia": "sim/fb70-fondos.html"
+ },
+ {
+  "pdf": "Manuales_v2/MAN-FI-16_Contabilizacion_en_Cuentas_de_Mayor.pdf",
+  "man": "MAN-FI-16",
+  "tx": "FB50",
+  "titulo": "Contabilización en cuentas de mayor",
+  "modulo": "FI",
+  "familia": "MAN-FI-16",
+  "estado": "simulado",
+  "guia": "sim/fb50-mayor.html"
+ }
+];
+
+
+const SOCS=[["","Según manual",""],["CL11","Distribuidora Portland","CLP"],["CL12","EPOXA","CLP"],
+ ["CL13","Portland Terminales Marítimos","CLP"],["CL14","Perez & Jacard","CLP"],["CL15","DP Noviciado","CLP"],["CL16","PJ Portland","CLP"],
+ ["PE11","Portland Perú","PEN"],["CO11","Portland Colombia","COP"]];
+let SOC=(()=>{try{const q=new URLSearchParams(location.search).get('soc'); if(q!==null) return q;}catch(e){}
+  try{return localStorage.getItem('simsap_soc')||'PE11';}catch(e){return 'PE11';}})();
+function drawSoc(){
+  document.getElementById('fsoc').innerHTML=SOCS.map(([c,n,m])=>
+    `<button class="chip soc ${c===SOC?'on':''}" data-s="${c}">${c?('<b style="display:inline;font-size:12.5px">'+c+'</b> '+n):n}${m?'<small>'+m+'</small>':''}</button>`).join('');
+  document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{SOC=b.dataset.s;
+    try{SOC?localStorage.setItem('simsap_soc',SOC):localStorage.removeItem('simsap_soc');}catch(e){}
+    drawSoc(); draw();});
+}
+const gurl=g=>g+(SOC?('?soc='+SOC):'');
+
+const EST = {simulado:'Simulado', listo:'Listo', parcial:'Parcial', revisar:'A revisar',
+             bloqueado:'Bloqueado', politica:'Política'};
+const ORD = ['simulado','listo','parcial','revisar','bloqueado','politica'];
+let fMod='todos', fEst='todos', q='';
+
+/* --- stats --- */
+const cnt = e => DATA.filter(d=>d.estado===e).length;
+document.getElementById('stats').innerHTML = [
+ ['Procesos',DATA.length,'var(--pt)',100],
+ ['Simulados',cnt('simulado'),'var(--green)',cnt('simulado')/DATA.length*100],
+ ['Pasos interactivos',1034,'var(--sap)',100],
+ ['Pendientes',cnt('parcial')+cnt('revisar'),'var(--warn)',(cnt('parcial')+cnt('revisar'))/DATA.length*100],
+ ['Pantallas base',35,'var(--warn)',100]
+].map(([t,n,c,p])=>`<div class="stat"><b style="color:${c}">${n}</b><small>${t}</small>
+   <div class="bar"><i style="width:${p}%;background:${c}"></i></div></div>`).join('');
+
+/* --- chips --- */
+const mods = ['todos',...new Set(DATA.map(d=>d.modulo))];
+document.getElementById('fmod').innerHTML = mods.map(m=>
+  `<button class="chip ${m==='todos'?'on':''}" data-m="${m}">${m==='todos'?'Todos los módulos':m}</button>`).join('');
+document.getElementById('fest').innerHTML = ['todos',...ORD].map(e=>
+  `<button class="chip ${e==='todos'?'on':''}" data-e="${e}">${e==='todos'?'Todo estado':EST[e]}
+   <b>${e==='todos'?DATA.length:cnt(e)}</b></button>`).join('');
+
+document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{
+  fMod=b.dataset.m; document.querySelectorAll('[data-m]').forEach(x=>x.classList.toggle('on',x===b)); draw();});
+document.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>{
+  fEst=b.dataset.e; document.querySelectorAll('[data-e]').forEach(x=>x.classList.toggle('on',x===b)); draw();});
+document.getElementById('q').oninput = e=>{ q=e.target.value.toLowerCase(); draw(); };
+
+/* --- render --- */
+function draw(){
+  const list = DATA
+    .filter(d=> (fMod==='todos'||d.modulo===fMod) && (fEst==='todos'||d.estado===fEst) &&
+                (!q || (d.tx+d.titulo+d.modulo+d.familia).toLowerCase().includes(q)))
+    .sort((a,b)=> ORD.indexOf(a.estado)-ORD.indexOf(b.estado) || a.titulo.localeCompare(b.titulo));
+
+  document.getElementById('empty').style.display = list.length?'none':'block';
+  document.getElementById('grid').innerHTML = list.map(d=>`
+    <article class="card ${d.estado}">
+      <div class="top">
+        <span class="tx ${d.tx==='—'?'none':''}">${d.tx}</span>
+        <span class="badge b-${d.estado}">${EST[d.estado]}</span>
+      </div>
+      <h3>${d.titulo}</h3>
+      <div class="metaline">
+        <span><i class="dot"></i>${d.modulo}</span>
+        ${d.familia!=='—'?`<span><i class="dot" style="background:var(--grey)"></i>${d.familia}</span>`:''}
+      </div>
+      <div class="acts">
+        <a class="btn primary ${d.guia?'':'off'}" href="${d.guia?gurl(d.guia):'#'}">
+          ${d.guia?'Abrir simulación':'Simulación pendiente'}</a>
+        <a class="btn ${d.pdf?'':'off'}" href="${d.pdf||'#'}" target="_blank">${d.pdf?'Manual PDF':'Sin manual'}</a>
+      </div>
+    </article>`).join('');
+}
+drawSoc();
+draw();
+</script>
+</body>
+</html>

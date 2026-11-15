@@ -1,1526 +1,521 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentación de Procesos SAP S/4HANA - Grupo Portland</title>
-    <!-- Importar fuentes e iconos -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Librería para exportar a PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-    <style>
-        :root {
-            --sap-blue: #008FD3;
-            --sap-dark-blue: #003366;
-            --portland-blue: #0b2b5c;
-            --accent-green: #6bae47;
-            --light-gray: #f4f4f4;
-            --disabled-gray: #b0b0b0;
-            --text-color: #333;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            --card-hover: 0 10px 20px rgba(0, 0, 0, 0.12);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f8f9fa;
-            color: var(--text-color);
-            line-height: 1.5;
-        }
-
-        /* --- Header & Navigation --- */
-        header {
-            background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .logo-img {
-            height: 45px;
-            object-fit: contain;
-        }
-
-        .sap-logo {
-            height: 35px;
-        }
-
-        /* --- Hero Section --- */
-        .hero {
-            position: relative;
-            height: 350px;
-            /* Se usa un degradado sobre la imagen para mejorar legibilidad del texto */
-            background-image: linear-gradient(rgba(11, 43, 92, 0.85), rgba(11, 43, 92, 0.65)), url('Imagenes/Hero_banner_small.png');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: white;
-            padding: 20px;
-        }
-
-        .hero-content {
-            max-width: 900px;
-            animation: fadeIn 1.2s ease;
-        }
-
-        .hero h1 {
-            font-size: 2.2rem;
-            margin-bottom: 15px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .hero p {
-            font-size: 1.1rem;
-            font-weight: 300;
-        }
-
-        .project-logo-hero {
-            height: 200px;
-            margin-bottom: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 10px;
-            border-radius: 50%;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        }
-
-        /* --- Main Content --- */
-        .container {
-            max-width: 1400px;
-            /* Ancho amplio para que quepan las 5 tarjetas */
-            margin: 40px auto;
-            padding: 0 30px;
-        }
-
-        .phase-section {
-            margin-bottom: 60px;
-        }
-
-        .phase-title {
-            color: var(--portland-blue);
-            font-size: 1.6rem;
-            margin-bottom: 25px;
-            padding-bottom: 8px;
-            border-bottom: 3px solid var(--accent-green);
-            display: inline-block;
-        }
-
-        /* --- GRID SYSTEM (La clave para 5 por línea) --- */
-        .process-grid {
-            display: grid;
-            /* Exactamente 5 columnas de igual tamaño */
-            grid-template-columns: repeat(5, 1fr);
-            gap: 30px;
-            /* Espacio entre tarjetas */
-            align-items: stretch;
-            /* Estira las tarjetas para que tengan la misma altura */
-        }
-
-        /* --- Step Card --- */
-        .step-card {
-            background: white;
-            border-radius: 10px;
-            padding: 25px 15px;
-            text-align: center;
-            box-shadow: var(--card-shadow);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            border-top: 5px solid var(--sap-blue);
-
-            /* Flexbox interno para distribuir contenido verticalmente */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
-        }
-
-        .step-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--card-hover);
-        }
-
-        /* Flechas Automáticas entre tarjetas */
-        .step-card::after {
-            content: "\f061";
-            /* Código unicode flecha FontAwesome */
-            font-family: "Font Awesome 6 Free";
-            font-weight: 900;
-            position: absolute;
-            right: -22px;
-            /* Posición en el hueco entre tarjetas */
-            top: 45%;
-            color: #ccc;
-            font-size: 1.2rem;
-            z-index: 1;
-        }
-
-        /* Eliminar flecha del último elemento de la fila */
-        .step-card:last-child::after {
-            display: none;
-        }
-
-        /* En la fase 2, el 4to elemento es el último, quitar su flecha también si no hay 5to */
-        .process-grid:has(.step-card:nth-last-child(1):nth-child(4)) .step-card:nth-child(4)::after {
-            display: none;
-            /* Soporte navegadores modernos */
-        }
-
-        /* --- Card Content --- */
-        .icon-box {
-            font-size: 2.2rem;
-            color: var(--portland-blue);
-            margin-bottom: 15px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .step-title {
-            font-weight: 700;
-            font-size: 1.05rem;
-            margin-bottom: 15px;
-            color: #333;
-            min-height: 3rem;
-            /* Altura mínima para títulos de 2 líneas */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-transform: uppercase;
-        }
-
-        .step-action {
-            margin-top: auto;
-            /* Empuja el botón al fondo */
-            width: 100%;
-        }
-
-        /* --- Buttons --- */
-        .btn-manual {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--sap-dark-blue);
-            color: white;
-            padding: 12px 8px;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            width: 100%;
-            border: none;
-            cursor: pointer;
-            min-height: 65px;
-        }
-
-        .btn-manual:hover {
-            background-color: var(--sap-blue);
-        }
-
-        .btn-text {
-            font-size: 0.9rem;
-            font-weight: 500;
-            margin-bottom: 4px;
-        }
-
-        .btn-code {
-            font-size: 1rem;
-            font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            background: rgba(0, 0, 0, 0.25);
-            padding: 3px 8px;
-            border-radius: 4px;
-        }
-
-        /* Estilo Deshabilitado */
-        .btn-disabled {
-            background-color: #e0e0e0 !important;
-            color: #888 !important;
-            cursor: not-allowed;
-            pointer-events: none;
-            box-shadow: none;
-        }
-
-        .btn-disabled .btn-code {
-            background: rgba(0, 0, 0, 0.05);
-        }
-
-        /* --- Footer --- */
-        footer {
-            background-color: var(--portland-blue);
-            color: white;
-            text-align: center;
-            padding: 30px;
-            margin-top: 50px;
-        }
-
-        footer p {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        /* Estenedor del Chat Flotante */
-        #floatingChat {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: translateY(30px) scale(0.95);
-            opacity: 0;
-            pointer-events: none;
-            position: fixed;
-            bottom: 100px;
-            right: 24px;
-            z-index: 50;
-        }
-
-        #floatingChat.active {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .chat-window {
-            height: 650px;
-            width: 480px;
-            max-width: 95vw;
-        }
-
-        /* Estilos de las burbujas y contenido renderizado */
-        .chat-bubble-content h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #0f172a;
-            border-left: 4px solid #3b82f6;
-            padding-left: 8px;
-            margin: 1rem 0 0.5rem;
-        }
-
-        .chat-bubble-content code {
-            background: #f1f5f9;
-            padding: 2px 5px;
-            border-radius: 4px;
-            font-family: monospace;
-            color: #2563eb;
-        }
-
-        /* Animación de escritura */
-        .typing-dot {
-            width: 6px;
-            height: 6px;
-            background: #3b82f6;
-            border-radius: 50%;
-            display: inline-block;
-            animation: typing 1.4s infinite ease-in-out;
-        }
-
-        .typing-dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .typing-dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes typing {
-
-            0%,
-            80%,
-            100% {
-                transform: translateY(0);
-            }
-
-            40% {
-                transform: translateY(-5px);
-            }
-        }
-
-        /* Animación del botón circular */
-        .pulse-animation {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
-            }
-
-            70% {
-                transform: scale(1.05);
-                box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
-            }
-
-            100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
-            }
-        }
-
-        #chatLabel {
-            pointer-events: none;
-            /* Evita que interfiera con clics */
-            box-shadow: -4px 4px 10px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Estado cuando el chat está abierto (ocultar etiqueta) */
-        #chatLabel.hidden-label {
-            opacity: 0;
-            transform: translateX(20px);
-            pointer-events: none;
-        }
-
-        /* Estilos para tablas dentro del chat */
-        .chat-bubble-content table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 10px 0;
-            font-size: 0.85rem;
-            background: white;
-        }
-
-        .chat-bubble-content th {
-            background-color: #f1f5f9;
-            color: #003366;
-            font-weight: 700;
-            padding: 8px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .chat-bubble-content td {
-            padding: 8px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .chat-bubble-content tr:nth-child(even) {
-            background-color: #f8fafc;
-        }
-
-        /* Espacio superior para el icono de PDF y manejo de tablas */
-        .chat-bubble-content {
-            overflow-x: auto;
-            padding-top: 32px !important;
-            position: relative;
-        }
-
-        /* Estilo del botón PDF dentro de la burbuja */
-        .pdf-export-btn {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            color: #ef4444;
-            /* Rojo */
-            opacity: 0.6;
-            transition: all 0.2s;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.1rem;
-            z-index: 20;
-        }
-
-        .pdf-export-btn:hover {
-            opacity: 1;
-            transform: scale(1.1);
-        }
-
-        /* Estilo forzado para el botón de soporte */
-        .support-btn {
-            display: inline-flex !important;
-            align-items: center;
-            justify-content: center;
-            background-color: #003366 !important;
-            /* Azul Portland */
-            color: white !important;
-            padding: 10px 20px !important;
-            border-radius: 9999px !important;
-            font-size: 12px !important;
-            font-weight: 600 !important;
-            text-decoration: none !important;
-            margin-top: 12px !important;
-            border: none !important;
-            cursor: pointer !important;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-            transition: all 0.2s ease !important;
-        }
-
-        .support-btn:hover {
-            background-color: #004080 !important;
-            transform: translateY(-1px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
-        }
-
-        .support-container {
-            margin-top: 15px;
-            padding: 15px;
-            background-color: #f0f7ff;
-            border: 1px dashed #003366;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        /* Estilo para listas numeradas (Pasos del Proceso) */
-        .chat-bubble-content ol {
-            counter-reset: step-counter;
-            list-style-type: none;
-            padding-left: 0;
-            margin-top: 15px;
-        }
-
-        .chat-bubble-content ol li {
-            position: relative;
-            margin-bottom: 12px;
-            padding: 10px 15px 10px 45px;
-            background: #f8fafc;
-            border-left: 4px solid #003366;
-            border-radius: 4px 8px 8px 4px;
-            font-size: 0.9rem;
-            line-height: 1.4;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.02);
-        }
-
-        /* Burbuja del número del paso */
-        .chat-bubble-content ol li::before {
-            content: counter(step-counter);
-            counter-increment: step-counter;
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: #003366;
-            color: white;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        /* Estilo para listas con viñetas (Puntos clave) */
-        .chat-bubble-content ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .chat-bubble-content ul li::before {
-            content: "•";
-            color: #6bae47;
-            /* Verde Portland */
-            font-weight: bold;
-            display: inline-block;
-            width: 1em;
-            margin-left: 5px;
-        }
-
-        /* --- Responsive Design --- */
-        /* Ajuste para pantallas medianas (Tablets) */
-        @media (max-width: 1200px) {
-            .process-grid {
-                grid-template-columns: repeat(3, 1fr);
-                /* Bajar a 3 columnas */
-                gap: 20px;
-            }
-
-            .step-card::after {
-                display: none;
-                /* Ocultar flechas en layout no lineal */
-            }
-        }
-
-        /* Ajuste para móviles */
-        @media (max-width: 768px) {
-            .process-grid {
-                grid-template-columns: 1fr;
-                /* 1 columna */
-            }
-
-            .hero {
-                height: 300px;
-            }
-
-            header {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .logo-container {
-                margin-bottom: 5px;
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Academia SAP · Grupo Portland</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+:root{
+  --navy:#0b2b5c;--navy-2:#071d40;--navy-3:#0f3a78;--ink:#0f1b2d;--muted:#5b6b82;--line:#e3e8f0;
+  --bg:#f3f6fb;--card:#fff;--green:#6bae47;--green-2:#4f8f30;--sap:#008fd3;--amber:#f2a93b;
+  --r:16px;--shadow:0 1px 2px rgba(15,27,45,.06),0 8px 24px rgba(15,27,45,.06);
+  --mm:#008fd3;--sd:#7b5cff;--fi:#e0662f;--cross:#13a89e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);display:flex;font-size:15px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* Sidebar */
+.side{width:256px;flex-shrink:0;background:linear-gradient(180deg,var(--navy) 0%,var(--navy-2) 100%);color:#dbe5f5;display:flex;flex-direction:column;padding:22px 16px;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:12px;padding:4px 8px 26px}
+.brand .logo{width:42px;height:42px;border-radius:12px;background:#fff;display:grid;place-items:center;overflow:hidden}
+.brand .logo img{width:34px}
+.brand b{display:block;color:#fff;font-size:15.5px;letter-spacing:-.01em}
+.brand span{font-size:11.5px;color:#9fb3d3}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav button{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px;font-weight:600;font-size:14px;color:#b9c8e2;transition:.15s;text-align:left}
+.nav button i{width:20px;text-align:center;font-size:15px}
+.nav button:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav button.on{background:rgba(255,255,255,.1);color:#fff;box-shadow:inset 3px 0 0 var(--green)}
+.nav .count{margin-left:auto;font-size:11px;background:rgba(255,255,255,.12);padding:2px 8px;border-radius:20px}
+.side .soc{margin-top:auto;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px}
+.side .soc label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#9fb3d3;font-weight:700}
+.side select{width:100%;margin-top:8px;background:#0a2550;color:#fff;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:9px 10px;font:inherit;font-size:13px}
+.side .soc small{display:block;margin-top:8px;font-size:11px;color:#8ea3c6;line-height:1.4}
+
+/* Main */
+main{flex:1;min-width:0;height:100vh;overflow-y:auto}
+.top{position:sticky;top:0;z-index:20;background:rgba(243,246,251,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:14px 36px;display:flex;align-items:center;gap:16px}
+.top h2{font-size:17px;font-weight:700;letter-spacing:-.01em}
+.search{margin-left:auto;position:relative;width:min(420px,45vw)}
+.search input{width:100%;padding:11px 14px 11px 40px;border-radius:12px;border:1px solid var(--line);background:#fff;font:inherit;font-size:14px;outline:none;transition:.15s}
+.search input:focus{border-color:var(--sap);box-shadow:0 0 0 4px rgba(0,143,211,.12)}
+.search i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.search kbd{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 6px;background:var(--bg)}
+.wrap{padding:28px 36px 60px;max-width:1360px}
+.view{display:none;animation:fade .25s ease}
+.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;border-radius:24px;padding:44px 44px 40px;color:#fff;
+  background:radial-gradient(900px 400px at 85% -20%,rgba(107,174,71,.45),transparent 60%),radial-gradient(700px 400px at 10% 120%,rgba(0,143,211,.45),transparent 60%),linear-gradient(135deg,var(--navy) 0%,var(--navy-3) 100%)}
+.hero::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:32px 32px;mask-image:linear-gradient(90deg,transparent,#000 70%)}
+.hero>*{position:relative;z-index:1}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);padding:6px 12px;border-radius:30px}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(107,174,71,.3)}
+.hero h1{font-size:clamp(28px,3.4vw,42px);line-height:1.1;letter-spacing:-.025em;margin:18px 0 12px;max-width:720px;font-weight:800}
+.hero p{max-width:620px;color:#c9d7ee;font-size:16px;line-height:1.55}
+.hero .cta{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:12px 18px;border-radius:12px;font-weight:700;font-size:14px;transition:.15s}
+.btn.pri{background:var(--green);color:#fff;box-shadow:0 6px 18px rgba(107,174,71,.35)}
+.btn.pri:hover{background:var(--green-2);transform:translateY(-1px)}
+.btn.gho{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff}
+.btn.gho:hover{background:rgba(255,255,255,.18)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:34px;max-width:760px}
+.stats div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px 16px}
+.stats b{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em}
+.stats span{font-size:12px;color:#b8c9e6}
+
+.sec-h{display:flex;align-items:end;justify-content:space-between;margin:38px 0 16px;gap:16px}
+.sec-h h3{font-size:20px;letter-spacing:-.015em}
+.sec-h p{color:var(--muted);font-size:14px;margin-top:3px}
+.link{color:var(--sap);font-weight:700;font-size:14px;display:inline-flex;gap:6px;align-items:center}
+
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.pillar{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px;box-shadow:var(--shadow);transition:.2s;cursor:pointer;position:relative;overflow:hidden}
+.pillar:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(15,27,45,.12);border-color:#cfd9e8}
+.pillar .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:20px;color:#fff;margin-bottom:18px}
+.pillar h4{font-size:17px;margin-bottom:6px}
+.pillar p{color:var(--muted);font-size:14px;line-height:1.5}
+.pillar .go{margin-top:16px;font-weight:700;font-size:13.5px;color:var(--navy);display:flex;gap:8px;align-items:center}
+.pillar:hover .go i{transform:translateX(4px)}
+.pillar .go i{transition:.2s}
+
+/* Process flows */
+.flow-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.chip{padding:8px 14px;border-radius:30px;border:1px solid var(--line);background:#fff;font-weight:600;font-size:13px;color:var(--muted);transition:.15s;display:inline-flex;gap:8px;align-items:center}
+.chip:hover{border-color:#c4d0e2;color:var(--ink)}
+.chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.chip .n{font-size:11px;opacity:.7}
+.flow{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:var(--shadow);margin-bottom:22px}
+.flow-head{display:flex;align-items:center;gap:14px;margin-bottom:26px}
+.flow-head .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:#fff;font-size:18px}
+.flow-head h4{font-size:18px;letter-spacing:-.01em}
+.flow-head p{font-size:13.5px;color:var(--muted)}
+.flow-head .tag{margin-left:auto}
+.lane{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding:4px 2px 10px}
+.node{flex:1;min-width:170px;display:flex;align-items:center}
+.node .box{flex:1;background:linear-gradient(180deg,#fff,#f8fafd);border:1.5px solid var(--line);border-radius:16px;padding:16px;cursor:pointer;transition:.18s;position:relative;height:100%}
+.node .box:hover{border-color:var(--accent);box-shadow:0 10px 26px rgba(15,27,45,.1);transform:translateY(-2px)}
+.node .num{position:absolute;top:-11px;left:14px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:11.5px;font-weight:800;display:grid;place-items:center;box-shadow:0 0 0 3px #fff}
+.node .nic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:16px;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,#fff);margin:4px 0 12px}
+.node .t{font-weight:700;font-size:14px;line-height:1.3}
+.node .area{font-size:12px;color:var(--muted);margin-top:3px}
+.node .tx{margin-top:12px;display:flex;gap:6px;flex-wrap:wrap}
+.arrow{width:34px;flex-shrink:0;display:grid;place-items:center;color:#b5c2d6}
+.grid-flow{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.grid-flow .node{min-width:0}
+.tag{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+.tag.tx{font-family:'JetBrains Mono',monospace;background:#eef6fc;color:#0a6aa0;border-color:#d4e9f7}
+.mod{font-size:10.5px;font-weight:800;letter-spacing:.05em;padding:3px 8px;border-radius:6px;color:#fff}
+
+/* Library */
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
+.filters .sp{flex:1}
+.seg{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:10px;padding:3px}
+.seg button{padding:6px 10px;border-radius:7px;color:var(--muted)}
+.seg button.on{background:var(--bg);color:var(--ink)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:12px;transition:.18s;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent)}
+.card:hover{box-shadow:0 12px 30px rgba(15,27,45,.1);transform:translateY(-2px)}
+.card .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.card h5{font-size:15.5px;line-height:1.35;letter-spacing:-.005em}
+.card .code{font-size:12px;color:var(--muted)}
+.card .acts{display:flex;gap:8px;margin-top:auto;padding-top:4px}
+.a{flex:1;display:inline-flex;justify-content:center;align-items:center;gap:8px;padding:10px;border-radius:10px;font-weight:700;font-size:13px;transition:.15s}
+.a.sim{background:var(--navy);color:#fff}
+.a.sim:hover{background:var(--navy-3)}
+.a.pdf{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+.a.pdf:hover{border-color:#c4d0e2;background:#fff}
+.a.ask{flex:0 0 42px;background:#f0f8ec;color:var(--green-2);border:1px solid #dcefd1}
+.a.ask:hover{background:#e3f2da}
+.a[disabled]{opacity:.45;pointer-events:none}
+.list .cards{grid-template-columns:1fr}
+.list .card{flex-direction:row;align-items:center;padding:14px 18px}
+.list .card .acts{margin:0;width:330px;flex-shrink:0}
+.list .card .body{flex:1}
+.empty{text-align:center;color:var(--muted);padding:60px 20px}
+.empty i{font-size:34px;margin-bottom:12px;color:#c3cede}
+
+/* Assistant */
+.chat{display:grid;grid-template-columns:1fr 300px;gap:20px;height:calc(100vh - 150px);min-height:520px}
+.chat-main{background:#fff;border:1px solid var(--line);border-radius:20px;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow)}
+.chat-h{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line)}
+.bot{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--green),var(--sap));display:grid;place-items:center;color:#fff;font-size:17px}
+.chat-h b{display:block;font-size:15px}
+.chat-h span{font-size:12px;color:var(--green-2);display:flex;align-items:center;gap:6px}
+.chat-h span::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green)}
+.chat-h .x{margin-left:auto;display:flex;gap:6px}
+.ib{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:var(--muted);border:1px solid var(--line)}
+.ib:hover{background:var(--bg);color:var(--ink)}
+.msgs{flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:16px;background:linear-gradient(180deg,#fbfcfe,#f6f8fc)}
+.m{max-width:82%;padding:13px 16px;border-radius:16px;font-size:14.5px;line-height:1.6}
+.m.u{align-self:flex-end;background:var(--navy);color:#fff;border-bottom-right-radius:4px}
+.m.b{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}
+.m.b p+p,.m.b ul,.m.b ol,.m.b table{margin-top:8px}
+.m.b ul,.m.b ol{padding-left:20px}
+.m.b h1,.m.b h2,.m.b h3{font-size:15px;margin:10px 0 4px}
+.m.b code{font-family:'JetBrains Mono',monospace;background:#eef6fc;color:#0a6aa0;padding:1px 5px;border-radius:5px;font-size:12.5px}
+.m.b table{border-collapse:collapse;font-size:13px;width:100%}
+.m.b th,.m.b td{border:1px solid var(--line);padding:6px 8px;text-align:left}
+.m.b th{background:var(--bg)}
+.typing{display:flex;gap:5px;padding:16px}
+.typing i{width:7px;height:7px;border-radius:50%;background:#9fb0c8;animation:bl 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes bl{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.composer{padding:14px;border-top:1px solid var(--line);display:flex;gap:10px;background:#fff}
+.composer textarea{flex:1;resize:none;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font:inherit;font-size:14.5px;outline:none;max-height:140px}
+.composer textarea:focus{border-color:var(--sap);box-shadow:0 0 0 4px rgba(0,143,211,.12)}
+.send{width:48px;border-radius:12px;background:var(--green);color:#fff;font-size:16px}
+.send:hover{background:var(--green-2)}
+.aside{display:flex;flex-direction:column;gap:14px;overflow-y:auto}
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px}
+.panel h6{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:12px}
+.sugg{display:flex;flex-direction:column;gap:8px}
+.sugg button{text-align:left;padding:10px 12px;border-radius:10px;border:1px solid var(--line);font-size:13px;line-height:1.4;transition:.15s}
+.sugg button:hover{border-color:var(--sap);background:#f4faff}
+.panel p{font-size:13px;color:var(--muted);line-height:1.5}
+.panel .btn{margin-top:12px;width:100%;justify-content:center;background:var(--bg);border:1px solid var(--line);color:var(--ink)}
+
+/* Drawer & viewer */
+.scrim{position:fixed;inset:0;background:rgba(7,29,64,.45);backdrop-filter:blur(3px);z-index:50;opacity:0;pointer-events:none;transition:.2s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(460px,92vw);background:#fff;z-index:60;transform:translateX(100%);transition:.28s cubic-bezier(.3,.7,.2,1);display:flex;flex-direction:column;box-shadow:-20px 0 50px rgba(0,0,0,.15)}
+.drawer.on{transform:none}
+.dr-h{padding:24px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,var(--navy),var(--navy-3));color:#fff}
+.dr-h .ib{border-color:rgba(255,255,255,.2);color:#fff;float:right}
+.dr-h small{font-size:12px;color:#a9bcdc;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.dr-h h4{font-size:21px;margin:6px 0 4px;letter-spacing:-.015em}
+.dr-h p{color:#c9d7ee;font-size:13.5px}
+.dr-b{padding:20px 24px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:12px}
+.dr-b .card{box-shadow:none}
+.viewer{position:fixed;inset:18px;z-index:70;background:#fff;border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transform:scale(.97);opacity:0;pointer-events:none;transition:.22s;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.viewer.on{transform:none;opacity:1;pointer-events:auto}
+.vw-h{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);background:#fafbfd}
+.vw-h b{font-size:14.5px}
+.vw-h .tag{margin-left:4px}
+.vw-h .x{margin-left:auto;display:flex;gap:8px}
+.viewer iframe{flex:1;border:0;width:100%;background:#eef1f6}
+
+.fab{position:fixed;right:26px;bottom:26px;z-index:40;width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,var(--green),var(--sap));color:#fff;font-size:22px;box-shadow:0 12px 30px rgba(0,143,211,.4);transition:.2s}
+.fab:hover{transform:translateY(-2px) scale(1.03)}
+.toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:11px 18px;border-radius:12px;font-size:13.5px;opacity:0;transition:.25s;z-index:90;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+footer{margin-top:50px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:12.5px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+@media (max-width:1100px){.pillars{grid-template-columns:1fr}.chat{grid-template-columns:1fr}.aside{display:none}.stats{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:820px){
+  body{flex-direction:column}
+  .side{width:100%;height:auto;position:static;flex-direction:row;align-items:center;padding:10px 14px;gap:10px;overflow-x:auto}
+  .brand{padding:0}.brand div:last-child{display:none}
+  .nav{flex-direction:row}.nav button span,.nav .count{display:none}
+  .side .soc{margin:0 0 0 auto;padding:6px}.side .soc label,.side .soc small{display:none}.side select{margin:0}
+  main{height:auto}.top{padding:12px 16px}.top h2{display:none}.search{width:100%}
+  .wrap{padding:18px 16px 80px}.hero{padding:28px 22px}
+  .list .card{flex-direction:column;align-items:stretch}.list .card .acts{width:auto}
+  .lane{flex-direction:column}.arrow{transform:rotate(90deg);height:28px;width:auto}
+}
+</style>
 </head>
-
 <body>
 
-    <!-- Header -->
-    <header>
-        <div class="logo-container">
-            <img src="Imagenes/Logo_Portland.png" alt="Grupo Portland" class="logo-img">
-        </div>
-        <img src="Imagenes/Logo_SAP.jpeg" alt="SAP" class="logo-img sap-logo">
-    </header>
+<aside class="side">
+  <div class="brand">
+    <div class="logo"><img src="Imagenes/Logo_Portland.png" alt="Portland" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'GP',style:'color:#0b2b5c'}))"></div>
+    <div><b>Academia SAP</b><span>Grupo Portland · S/4HANA</span></div>
+  </div>
+  <nav class="nav">
+    <button data-v="inicio" class="on"><i class="fa-solid fa-house"></i><span>Inicio</span></button>
+    <button data-v="procesos"><i class="fa-solid fa-diagram-project"></i><span>Procesos</span><em class="count" id="cProc"></em></button>
+    <button data-v="biblioteca"><i class="fa-solid fa-layer-group"></i><span>Manuales y simulador</span><em class="count" id="cLib"></em></button>
+    <button data-v="asistente"><i class="fa-solid fa-wand-magic-sparkles"></i><span>Asistente virtual</span></button>
+  </nav>
+  <div class="soc">
+    <label><i class="fa-solid fa-building"></i> Sociedad</label>
+    <select id="soc"></select>
+    <small>Las simulaciones se cargan con los parámetros de esta sociedad.</small>
+  </div>
+</aside>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <img src="Imagenes/Logo_Proyecto.png" alt="Proyecto SAP S4" class="project-logo-hero">
-        <div class="hero-content">
-            <h1>Manuales de Usuario SAP S/4HANA</h1>
-            <p>Acceso centralizado a la documentación operativa estándar para el Grupo Portland.</p>
+<main id="main">
+  <div class="top">
+    <h2 id="vTitle">Inicio</h2>
+    <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="q" placeholder="Buscar transacción, proceso o manual…"><kbd>/</kbd></div>
+  </div>
+
+  <div class="wrap">
+    <!-- INICIO -->
+    <section class="view on" id="v-inicio">
+      <div class="hero">
+        <span class="eyebrow"><span class="dot"></span> Centro de capacitación</span>
+        <h1>Aprende los procesos SAP de Grupo Portland, paso a paso.</h1>
+        <p>Recorre los flujos de negocio de punta a punta, practica cada transacción en un simulador de SAP GUI y resuelve tus dudas con el asistente virtual. Todo en un solo lugar.</p>
+        <div class="cta">
+          <button class="btn pri" data-go="procesos"><i class="fa-solid fa-diagram-project"></i> Explorar procesos</button>
+          <button class="btn gho" data-go="biblioteca"><i class="fa-solid fa-play"></i> Abrir simulador</button>
+          <button class="btn gho" data-go="asistente"><i class="fa-solid fa-comments"></i> Preguntar al asistente</button>
         </div>
+        <div class="stats">
+          <div><b id="sFlows">4</b><span>Flujos de proceso</span></div>
+          <div><b id="sMan">36</b><span>Manuales oficiales</span></div>
+          <div><b id="sSim">38</b><span>Guías simuladas</span></div>
+          <div><b>9</b><span>Sociedades</span></div>
+        </div>
+      </div>
+
+      <div class="sec-h"><div><h3>¿Por dónde empiezo?</h3><p>Tres formas de aprender, conectadas entre sí.</p></div></div>
+      <div class="pillars">
+        <div class="pillar" data-go="procesos"><div class="ic" style="background:var(--sap)"><i class="fa-solid fa-diagram-project"></i></div><h4>Diagramas de proceso</h4><p>Visualiza cada flujo — Aprovisionamiento, Venta, Registros contables y Procesos clave — con el área responsable y la transacción de cada paso.</p><div class="go">Ver diagramas <i class="fa-solid fa-arrow-right"></i></div></div>
+        <div class="pillar" data-go="biblioteca"><div class="ic" style="background:var(--navy)"><i class="fa-solid fa-display"></i></div><h4>Manuales + simulador</h4><p>Lee el manual oficial MAN-XX y practícalo en una réplica interactiva de SAP GUI con el campo activo resaltado en cada paso.</p><div class="go">Ir a la biblioteca <i class="fa-solid fa-arrow-right"></i></div></div>
+        <div class="pillar" data-go="asistente"><div class="ic" style="background:var(--green)"><i class="fa-solid fa-wand-magic-sparkles"></i></div><h4>Asistente virtual</h4><p>Pregunta en lenguaje natural sobre transacciones, campos o políticas contables, y escala al equipo de soporte cuando lo necesites.</p><div class="go">Conversar <i class="fa-solid fa-arrow-right"></i></div></div>
+      </div>
+
+      <div class="sec-h"><div><h3>Flujos principales</h3><p>Haz clic en un paso para ver sus manuales y simulaciones.</p></div><button class="link" data-go="procesos">Todos los procesos <i class="fa-solid fa-arrow-right"></i></button></div>
+      <div id="homeFlows"></div>
+
+      <footer><span>© Grupo Portland · Programa de implementación SAP S/4HANA</span><span>Los datos de ejemplo de las simulaciones son referenciales.</span></footer>
     </section>
 
-    <!-- Main Content -->
-    <div class="container">
+    <!-- PROCESOS -->
+    <section class="view" id="v-procesos">
+      <div class="flow-tabs" id="flowTabs"></div>
+      <div id="flows"></div>
+    </section>
 
-        <!-- FASE 1: Aprovisionamiento -->
-        <div class="phase-section">
-            <h2 class="phase-title">Proceso de Aprovisionamiento</h2>
+    <!-- BIBLIOTECA -->
+    <section class="view" id="v-biblioteca">
+      <div class="filters">
+        <div id="modChips" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+        <span class="sp"></span>
+        <div class="seg"><button data-l="grid" class="on" title="Tarjetas"><i class="fa-solid fa-grip"></i></button><button data-l="list" title="Lista"><i class="fa-solid fa-list"></i></button></div>
+      </div>
+      <div id="lib"></div>
+    </section>
 
-            <!-- Grid de 5 Columnas -->
-            <div class="process-grid">
-
-                <!-- Paso 1 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-ship"></i></div>
-                    <div class="step-title">Compra y Costeo <br> (Comercial) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="ME21N">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">ME21N</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Paso 2 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-file-signature"></i></div>
-                    <div class="step-title">Aprobación <br> (Gerencia) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="ME29N">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">ME29N</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Paso 3 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-warehouse"></i></div>
-                    <div class="step-title">Recepción de Mercancía <br> (Logística) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="MIGO">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">MIGO</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Paso 4 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-magnifying-glass-dollar"></i></div>
-                    <div class="step-title">Verificación/Contabilización de Factura <br> (Contabilidad) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="MIRO">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">MIRO</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Paso 5 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-money-bill-transfer"></i></div>
-                    <div class="step-title">Pago a Proveedores <br> (Tesorería) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="F110">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">F110</span>
-                        </a>
-                    </div>
-                </div>
-
-            </div>
+    <!-- ASISTENTE -->
+    <section class="view" id="v-asistente">
+      <div class="chat">
+        <div class="chat-main">
+          <div class="chat-h"><div class="bot"><i class="fa-solid fa-robot"></i></div><div><b>Asistente SAP Portland</b><span>En línea</span></div>
+            <div class="x"><button class="ib" id="mailBtn" title="Enviar a soporte"><i class="fa-solid fa-envelope"></i></button><button class="ib" id="clearBtn" title="Nueva conversación"><i class="fa-solid fa-rotate-left"></i></button></div></div>
+          <div class="msgs" id="msgs"></div>
+          <form class="composer" id="form"><textarea id="inp" rows="1" placeholder="Escribe tu consulta sobre SAP…"></textarea><button class="send" type="submit"><i class="fa-solid fa-paper-plane"></i></button></form>
         </div>
-
-        <!-- FASE 2: Ventas -->
-        <div class="phase-section">
-            <h2 class="phase-title">Proceso de Venta y Distribución </h2>
-
-            <div class="process-grid">
-
-                <!-- Paso 1 -->
-                <div class="step-card" style="border-top-color: var(--accent-green);">
-                    <div class="icon-box"><i class="fa-solid fa-file-contract"></i></div>
-                    <div class="step-title">Pedido de Venta <br> (Comercial) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="VA01">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">VA01</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Paso 2 -->
-                <div class="step-card" style="border-top-color: var(--accent-green);">
-                    <div class="icon-box"><i class="fa-solid fa-truck-fast"></i></div>
-                    <div class="step-title">Despacho y Entrega <br> (Logística) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="VL01N">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">VL01N</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Paso 3 -->
-                <div class="step-card" style="border-top-color: var(--accent-green);">
-                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
-                    <div class="step-title">Facturación <br> (Credito) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="VF01">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">VF01</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Paso 4 -->
-                <div class="step-card" style="border-top-color: var(--accent-green);">
-                    <div class="icon-box"><i class="fa-solid fa-building-columns"></i></div>
-                    <div class="step-title">Cobro <br> (Cobranzas)</div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="F28">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">F-28</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- El espacio 5 queda vacío automáticamente para mantener la estructura de grilla -->
-
-            </div>
+        <div class="aside">
+          <div class="panel"><h6>Prueba preguntando</h6><div class="sugg" id="sugg"></div></div>
+          <div class="panel"><h6>¿No resolviste tu duda?</h6><p>Envía tu última consulta al equipo de soporte SAP por correo.</p><button class="btn" id="mailBtn2"><i class="fa-solid fa-envelope"></i> Contactar soporte</button></div>
         </div>
-
-
-        <!-- FASE 3: Procesos Contables -->
-        <div class="phase-section">
-            <h2 class="phase-title">Registros Contables</h2>
-
-            <div class="process-grid">
-                <!-- Paso 3.1 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
-                    <div class="step-title">Normas de Aplicación de Registros Contables</div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="EST">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">NORMAS</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 3.2 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
-                    <div class="step-title">ANTICIPOS DE CLIENTES<br> (Contabilidad) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="F-29">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">F-29</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 3.3 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
-                    <div class="step-title">PAGOS DE CLIENTES<br> (Contabilidad) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="F-28">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">F-28</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 3.4 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
-                    <div class="step-title">SALDOS PENDIENTES<br> (Contabilidad) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="F-30">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">F-30</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 3.5 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
-                    <div class="step-title">FONDOS POR RENDIR<br> (Contabilidad) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="FB70">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">FB70</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 3.6 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
-                    <div class="step-title">SOLICITUD DE ANTICIPO<br> (Contabilidad) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="F-47">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">F-47</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 3.7 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
-                    <div class="step-title">PAGOS A ACREEDORES<br> (Contabilidad) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="F-51">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">F-51</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 3.7 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
-                    <div class="step-title">PAGO CONFIRMING<br> (Contabilidad) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="F-53">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">F-53</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 3.8 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
-                    <div class="step-title">FONDOS POR RENDIR<br> (Contabilidad) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="FB70">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">FB70</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 3.9 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
-                    <div class="step-title">LETRAS DE CAMBIO<br> (Contabilidad) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="F-36">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">F-36</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 3.10 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
-                    <div class="step-title">FACTURAS Y ND MANUALES<br> (Contabilidad) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="FB60">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">FB60</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 3.10 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
-                    <div class="step-title">NOTAS DE CREDITO MANUALES<br> (Contabilidad) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="FB65">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">FB65</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 3.11 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
-                    <div class="step-title">CUENTAS DE MAYOR<br> (Contabilidad) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="FB50">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">FB50</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 3.12 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
-                    <div class="step-title">NC AJUSTE DE PRECIO<br> (Contabilidad) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="NC-AJUSTE">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">MIRO</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 3.13 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
-                    <div class="step-title">DIFERENCIAS MIGO-MIRO<br> (Contabilidad) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="DIF-MIGO-MIRO">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">MIRO</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- El espacio 5 queda vacío automáticamente para mantener la estructura de grilla -->
-
-            </div>
-        </div>
-        <!-- FASE 4: Otros Procesos -->
-        <div class="phase-section">
-            <h2 class="phase-title">Otros Procesos Clave</h2>
-
-            <div class="process-grid">
-
-                <!-- Paso 4.1 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-industry"></i></div>
-                    <div class="step-title">Maquila <br> (Logística) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="MAQ">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">ME21N</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 4.2 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-industry"></i></div>
-                    <div class="step-title">Reversa/Anulacion de Maquila <br> (Logística) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="REVMAQ">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">MIGO</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 4.2.1 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-truck-fast"></i></div>
-                    <div class="step-title">TRASPASO ENTRE ALMACENES <br> (Logística) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="TRASPASO">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">MIGO</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 4.3 -->
-                <div class="step-card">
-                    <div class="icon-box"><i class="fa-solid fa-warehouse"></i></div>
-                    <div class="step-title">Inventario <br> (Logística/Contabilidad) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="INV">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">MI04</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Paso 4.4 -->
-                <div class="step-card" style="border-top-color: var(--accent-green);">
-                    <div class="icon-box"><i class="fa-solid fa-user-tie"></i></div>
-                    <div class="step-title">Creación Socio de Negocio Tipo Proveedor <br> (TI) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="BP1">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">BP</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 4.5 -->
-                <div class="step-card" style="border-top-color: var(--accent-green);">
-                    <div class="icon-box"><i class="fa-solid fa-users"></i></div>
-                    <div class="step-title">Creación Socio de Negocio Tipo Cliente <br> (TI) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="BP2">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">BP</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 4.6 -->
-                <div class="step-card" style="border-top-color: var(--accent-green);">
-                    <div class="icon-box"><i class="fa-solid fa-cubes"></i></div>
-                    <div class="step-title">Gestión de Materiales <br> (TI) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="MM01">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">MM01</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- Paso 4.2 -->
-                <div class="step-card" style="border-top-color: var(--accent-green);">
-                    <div class="icon-box"><i class="fa-solid fa-credit-card"></i></div>
-                    <div class="step-title">Gestión de Crédito <br> (Credito) </div>
-                    <div class="step-action">
-                        <a href="#" class="btn-manual" data-manual="BP3">
-                            <span class="btn-text">Ver Manual</span>
-                            <span class="btn-code">BP</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- El espacio 5 queda vacío automáticamente para mantener la estructura de grilla -->
-
-            </div>
-        </div>
-
-        <div id="floatingChat">
-            <div
-                class="chat-window bg-white rounded-[2.5rem] shadow-2xl border border-slate-200 flex flex-col overflow-hidden">
-                <div class="bg-[#003366] p-5 text-white flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-11 h-11 bg-blue-500 rounded-full flex items-center justify-center"><i
-                                class="fas fa-robot"></i></div>
-                        <div>
-                            <h4 class="font-bold text-sm">Asistente IA de Portland</h4>
-                        </div>
-                    </div>
-                    <div class="flex space-x-1">
-                        <button onclick="clearChat()" class="p-2 hover:bg-white/10 rounded-xl"><i
-                                class="fas fa-eraser text-xs"></i></button>
-                        <button onclick="toggleChat()" class="p-2 hover:bg-white/10 rounded-xl"><i
-                                class="fas fa-times"></i></button>
-                    </div>
-                </div>
-
-                <div id="chatBox" class="flex-grow overflow-y-auto p-6 space-y-6 bg-slate-50/50" style="height: 400px;">
-                </div>
-
-                <div id="typingIndicator" class="hidden px-6 py-2">
-                    <div class="flex space-x-2 bg-white border p-2.5 w-20 justify-center rounded-full">
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                    </div>
-                </div>
-
-                <div class="p-4 bg-white border-t">
-                    <form id="chatForm" class="flex items-center space-x-3">
-                        <input type="text" id="userInput" placeholder="Escribe tu consulta..."
-                            class="flex-grow p-4 bg-slate-100 rounded-[1.5rem] focus:outline-none text-sm">
-                        <button type="submit"
-                            class="bg-[#003366] text-white w-12 h-12 rounded-2xl hover:bg-blue-800 transition-all"><i
-                                class="fas fa-paper-plane"></i></button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div id="chatButtonContainer" class="fixed bottom-6 right-6 flex items-center z-50">
-            <span id="chatLabel"
-                class="bg-[#003366] text-white px-4 py-2 rounded-l-full mr-[-20px] pr-8 shadow-lg text-sm font-medium transition-all duration-300 transform translate-x-0 opacity-100">
-                Pregúntale al Asistente
-            </span>
-            <button id="chatToggleBtn" onclick="toggleChat()"
-                class="w-16 h-16 bg-[#003366] text-white rounded-full shadow-2xl flex items-center justify-center pulse-animation relative z-10">
-                <i class="fas fa-comment-dots text-2xl" id="toggleIcon"></i>
-            </button>
-        </div>
-
-    </div>
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 Grupo Portland. Todos los derechos reservados.</p>
-        <p>Proyecto SAP S/4HANA</p>
-    </footer>
-
-    <!-- SCRIPT DE FUNCIONALIDAD -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-
-            // --- CONFIGURACIÓN DE ESTADO DE MANUALES ---
-            // Cambia 'existe: true' a 'false' para deshabilitar botones.
-            const configuracionManuales = {
-                "ME21N": { archivo: "Manuales/MAN-MM-01_Creacion_de_Pedido_de_Compra.pdf", existe: true },
-                "ME29N": { archivo: "Manuales/MAN-MM-03_Liberacion_de_Pedidos_de_Compra.pdf", existe: true },
-                "MIGO": { archivo: "Manuales/MAN-MM-06_Registro_de_Entrada_de_Mercancias.pdf", existe: true }, // Ejemplo: Pendiente
-                "MAQ": { archivo: "Manuales/MAN-MM-04_Gestion_de_Maquila_Envasado.pdf", existe: true },
-                "REVMAQ": { archivo: "Manuales/MAN-MM-05_Reversa_del_Proceso_de_Maquila.pdf", existe: true },
-                "MIRO": { archivo: "Manuales/MAN-MM-09_Registro_de_Facturas_de_Proveedor.pdf", existe: true },
-                "F110": { archivo: "Manuales/MAN-FI-08_Pagos_a_Proveedores.pdf", existe: true },
-                "VA01": { archivo: "Manuales/MAN-SD-01_Gestion_de_Pedidos_de_Venta.pdf", existe: true },
-                "VL01N": { archivo: "Manuales/MAN-SD-02_Expedicion_de_Salida_de_Mercaderia.pdf", existe: true },
-                "VF01": { archivo: "Manuales/MAN-SD-03_Emision_de_Factura_de_Cliente.pdf", existe: true }, // Ejemplo: Pendiente
-                "F28": { archivo: "Manuales/MAN-FI-10_Contabilizacion_de_Pagos_Recibidos.pdf", existe: true },
-                "BP1": { archivo: "Manuales/MAN-MD-BP-02_Creacion_de_BP_Proveedor.pdf", existe: true },
-                "BP2": { archivo: "Manuales/MAN-MD-BP-01_Creacion_de_BP_Cliente.pdf", existe: true },
-                "BP3": { archivo: "Manuales/MAN-MD-BP-03_Gestion_de_Credito_del_Business_Partner.pdf", existe: true },
-                "INV": { archivo: "Manuales/MAN-MM-08_Gestion_y_Toma_de_Inventario_Fisico.pdf", existe: true },
-                "MM01": { archivo: "Manuales/MAN-MD-MAT-01_Gestion_y_Creacion_de_Materiales.pdf", existe: true },
-                "EST": { archivo: "Manuales/MAN-FI-00_Estandares_de_Registros_Contables.pdf", existe: true },
-                "F-29": { archivo: "Manuales/MAN-FI-11_Contabilizacion_de_Anticipos_de_Clientes.pdf", existe: true },
-                "F-28": { archivo: "Manuales/MAN-FI-10_Contabilizacion_de_Pagos_Recibidos.pdf", existe: true },
-                "F-30": { archivo: "Manuales/MAN-FI-12_Contabilizacion_de_Saldos_Pendientes.pdf", existe: true },
-                "F-47": { archivo: "Manuales/MAN-FI-04_Solicitud_de_Anticipo_a_Proveedores.pdf", existe: true },
-                "F-51": { archivo: "Manuales/MAN-FI-05_Contabilizacion_con_Compensacion_para_Acreedores.pdf", existe: true },
-                "F-53": { archivo: "Manuales/MAN-FI-07_Contabilizacion_de_Pagos_a_Acreedores.pdf", existe: true },
-                "FB70": { archivo: "Manuales/MAN-FI-15_Contabilizacion_de_Fondos_por_Rendir.pdf", existe: true },
-                "F-36": { archivo: "Manuales/MAN-FI-09_Registro_y_Canje_de_Letras_de_Cambio.pdf", existe: true },
-                "FB60": { archivo: "Manuales/MAN-FI-01_Facturas_y_Notas_de_Debito_Manuales_de_Proveedor.pdf", existe: true },
-                "FB65": { archivo: "Manuales/MAN-FI-02_Notas_de_Credito_Manuales_de_Proveedor.pdf", existe: true },
-                "FB50": { archivo: "Manuales/MAN-FI-16_Contabilizacion_en_Cuentas_de_Mayor.pdf", existe: true },
-                "NC-AJUSTE": { archivo: "Manuales/MAN-MM-10_Notas_de_Credito_y_Ajustes_de_Precio_a_Proveedores.pdf", existe: true },
-                "DIF-MIGO-MIRO": { archivo: "Manuales/MAN-MM-11_Gestion_de_Diferencias_en_la_Recepcion.pdf", existe: true },
-                "TRASPASO": { archivo: "Manuales/MAN-MM-07_Traspaso_entre_Almacenes.pdf", existe: true },
-
-            };
-
-            const botones = document.querySelectorAll('.btn-manual');
-
-            botones.forEach(boton => {
-                const codigo = boton.getAttribute('data-manual');
-                const config = configuracionManuales[codigo];
-
-                if (config) {
-                    if (config.existe) {
-                        boton.href = config.archivo;
-                        boton.target = "_blank";
-                        boton.title = "Abrir documento PDF";
-                    } else {
-                        boton.classList.add('btn-disabled');
-                        boton.href = "javascript:void(0)";
-                        boton.removeAttribute('target');
-                        boton.title = "Documentación en proceso";
-
-                        // Modificar visualmente el botón si está deshabilitado
-                        const iconSpan = boton.querySelector('.btn-text');
-                        if (iconSpan) iconSpan.innerHTML = '<i class="fa-solid fa-lock"></i> Pendiente';
-                    }
-                }
-            });
-        });
-    </script>
-
-    <script>
-        // URL del Cloudflare Worker Proxy
-        const PROXY_URL = "https://sap-chatbot-proxy.pjypl.workers.dev";
-        const modelID = "deepseek/deepseek-v4.1-flash-1017"; // Verificado funcional ✅
-        //        const modelID = "google/gemma-4-31b-it:free"; // Alternativa (puede estar rate-limited)
-        //        const modelID = "nex-agi/deepseek-v3.1-nex-n1:free";
-        //        const manualURL = "https://garfiohook.github.io/Manuales_SAP/Manuales/Manual_de_Usuario_Consolidado.pdf";
-        const supportEmail = "gsalinas@pjportland.cl";
-
-        let systemPrompt = ""; // Se llenará mediante fetch
-
-        const chatBox = document.getElementById('chatBox');
-        const chatForm = document.getElementById('chatForm');
-        const userInput = document.getElementById('userInput');
-        const typingIndicator = document.getElementById('typingIndicator');
-        const floatingChat = document.getElementById('floatingChat');
-        const toggleIcon = document.getElementById('toggleIcon');
-        const chatToggleBtn = document.getElementById('chatToggleBtn');
-
-        let isChatOpen = false;
-        let conversationHistory = [];
-
-        // --- RENDERIZADO MEJORADO ---
-        function cleanRender(text) {
-            let html = text
-                .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-                .replace(/^## (.*$)/gm, '<h3>$1</h3>')
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                .replace(/`(.*?)`/g, '<code>$1</code>')
-                .replace(/^\s*[-*+]\s+(.*)/gm, '<li>$1</li>')
-                .replace(/(<li>.*<\/li>)+/gs, (match) => `<ul class="list-disc ml-5 my-3">${match}</ul>`)
-                .replace(/^\s*\d+\.\s+(.*)/gm, '<li>$1</li>')
-                .replace(/(<li>.*<\/li>)+/gs, (match) => match.includes('list-disc') ? match : `<ol class="list-decimal ml-5 my-3">${match}</ol>`)
-                .replace(/\n\n/g, '</p><p>')
-                .replace(/\n/g, '<br>');
-
-            return `<div class="chat-bubble-content">${html}</div>`;
-        }
-
-        // --- PERSISTENCIA ---
-        function saveSession() {
-            sessionStorage.setItem('portland_chat_session', JSON.stringify(conversationHistory));
-        }
-
-        async function fetchSystemPrompt() {
-            try {
-                // Añadimos un timestamp para evitar que el navegador guarde en caché versiones viejas del prompt
-                const response = await fetch('system_prompt.txt?v=' + Date.now());
-                if (!response.ok) throw new Error("No se pudo cargar el system prompt");
-                systemPrompt = await response.text();
-                console.log("System Prompt cargado correctamente.");
-            } catch (error) {
-                console.error("Error cargando el prompt:", error);
-                // Prompt de respaldo por si falla la red
-                systemPrompt = "Eres un asistente de SAP para Grupo Portland.";
-            }
-        }
-
-        // Modifica la función loadSession para que sea asíncrona
-        async function loadSession() {
-            // 1. Primero cargamos el archivo externo
-            await fetchSystemPrompt();
-
-            const saved = sessionStorage.getItem('portland_chat_session');
-            if (saved) {
-                conversationHistory = JSON.parse(saved);
-                // Actualizamos el primer mensaje del historial (el system prompt) con el nuevo contenido del archivo
-                if (conversationHistory.length > 0 && conversationHistory[0].role === 'system') {
-                    conversationHistory[0].content = systemPrompt;
-                }
-                renderHistory();
-            } else {
-                conversationHistory = [{ role: "system", content: systemPrompt }];
-                addMessage("¡Hola! Soy el asistente de SAP para el Grupo Portland. Estoy para ayudarte con tus procesos.", 'assistant', false);
-            }
-        }
-
-
-        function renderHistory() {
-            chatBox.innerHTML = '';
-            conversationHistory.forEach(msg => {
-                if (msg.role !== 'system') {
-                    addMessage(msg.content, msg.role, false);
-                }
-            });
-        }
-
-        function toggleChat() {
-            isChatOpen = !isChatOpen;
-            const chat = document.getElementById('floatingChat');
-            const icon = document.getElementById('toggleIcon');
-            const btn = document.getElementById('chatToggleBtn');
-            const label = document.getElementById('chatLabel'); // Nueva referencia
-
-            if (isChatOpen) {
-                chat.classList.add('active');
-                label.classList.add('hidden-label'); // Oculta el texto
-                icon.className = "fas fa-chevron-down text-2xl";
-                btn.classList.remove('pulse-animation');
-            } else {
-                chat.classList.remove('active');
-                label.classList.remove('hidden-label'); // Muestra el texto
-                icon.className = "fas fa-comment-dots text-2xl";
-                btn.classList.add('pulse-animation');
-            }
-        }
-
-        function addMessage(text, role, save = true) {
-            const chatBox = document.getElementById('chatBox');
-            const wrapper = document.createElement('div');
-            wrapper.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} mb-4 animate-fade-in`;
-
-            const bubble = document.createElement('div');
-            // Mantenemos 'relative' para posicionar el botón de PDF arriba a la derecha
-            bubble.className = `p-4 rounded-2xl max-w-[85%] shadow-sm relative ${role === 'user'
-                ? 'bg-[#003366] text-white rounded-tr-none'
-                : 'bg-white border border-gray-200 text-gray-800 rounded-tl-none chat-bubble-content'
-                }`;
-
-            if (role === 'assistant') {
-                // --- 1. REINCORPORACIÓN DEL BOTÓN PDF ---
-                const pdfBtn = document.createElement('button');
-                pdfBtn.className = "pdf-export-btn";
-                pdfBtn.innerHTML = '<i class="fas fa-file-pdf"></i>';
-                // Usamos una función anónima para pasar el 'text' original que contiene el Markdown
-                pdfBtn.onclick = (e) => {
-                    e.stopPropagation(); // Evita que otros eventos interfieran
-                    exportToPDF(text);
-                };
-                bubble.appendChild(pdfBtn);
-
-                // --- 2. RENDERIZADO DE CONTENIDO (Markdown + Soporte) ---
-                const contentDiv = document.createElement('div');
-                let htmlContent = marked.parse(text);
-
-                // Lógica de detección para el botón de soporte por correo
-                const noInfoKeywords = ["no tengo información", "no se encuentra documentado", "Enviar consulta a soporte", "Si tienes dudas"];
-                if (noInfoKeywords.some(k => text.toLowerCase().includes(k.toLowerCase()))) {
-                    const lastUserMsg = conversationHistory.filter(m => m.role === 'user').pop()?.content || "";
-                    const safeQuestion = lastUserMsg.replace(/'/g, "\\'").replace(/"/g, "&quot;");
-                    htmlContent += `
-                <div class="support-container" style="margin-top: 15px; padding: 15px; background-color: #f0f7ff; border: 1px dashed #003366; border-radius: 12px; text-align: center;">
-                    <p style="font-size: 11px; color: #003366; margin-bottom: 8px; font-weight: bold;">¿Deseas soporte adicional?</p>
-                    <button onclick="sendToSupport('${safeQuestion}')" class="support-btn">
-                        <i class="fas fa-envelope mr-2"></i> Enviar consulta a gsalinas@pjportland.cl
-                    </button>
-                </div>`;
-                }
-
-                contentDiv.innerHTML = htmlContent;
-                bubble.appendChild(contentDiv);
-            } else {
-                bubble.textContent = text;
-            }
-
-            wrapper.appendChild(bubble);
-            chatBox.appendChild(wrapper);
-
-            // --- 3. CORRECCIÓN DEL SCROLL (Lectura desde el inicio) ---
-            // Si es un mensaje corto del usuario, hacemos scroll al final.
-            // Si es una respuesta larga de la IA, el scroll se queda quieto para permitir leer el inicio.
-            if (role === 'user') {
-                chatBox.scrollTop = chatBox.scrollHeight;
-            } else {
-                // Solo hacemos un pequeño ajuste para asegurar que el mensaje sea visible,
-                // pero NO forzamos el scroll al final de la tabla/texto largo.
-                wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-
-            if (save) {
-                conversationHistory.push({ role, content: text });
-                sessionStorage.setItem('portland_chat_session', JSON.stringify(conversationHistory));
-            }
-        }
-
-        /**
-         * Función auxiliar para abrir Outlook con la pregunta precargada
-         */
-        function sendToSupport(userQuestion) {
-            const email = "gsalinas@pjportland.cl";
-            const subject = "Pregunta SAP";
-
-            // Limpieza de texto para evitar errores en el enlace mailto
-            const cleanQuestion = userQuestion.replace(/[\r\n]+/g, " ").trim();
-            const body = `Hola Soporte,\n\nTengo la siguiente duda respecto a los procesos SAP:\n\n"${cleanQuestion}"\n\nQuedo atento a sus comentarios.`;
-
-            // Generar link y redireccionar
-            const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.location.href = mailtoLink;
-        }
-
-        // Función auxiliar para gestionar el envío a Outlook
-        function sendToSupport(userQuestion) {
-            const email = "gsalinas@pjportland.cl";
-            const subject = "Pregunta SAP";
-
-            // Limpiamos la pregunta de saltos de línea extra o caracteres que bloquean el mailto
-            const cleanQuestion = userQuestion
-                .replace(/[\r\n]+/g, " ") // Quita saltos de línea
-                .trim();
-
-            const body = `Hola Soporte,\n\nTengo la siguiente duda respecto a los procesos SAP:\n\n"${cleanQuestion}"\n\nQuedo atento a sus comentarios.`;
-
-            // Usamos el constructor de URLSearchParams para asegurar una codificación perfecta
-            const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-            window.location.href = mailtoLink;
-        }
-
-        async function callOpenRouter() {
-            const payload = {
-                model: modelID,
-                messages: conversationHistory,
-                temperature: 0.1,
-                max_tokens: 1500
-            };
-
-            try {
-                const response = await fetch(PROXY_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                // Manejo de errores HTTP
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    const errorMsg = errorData?.error?.message || '';
-                    if (response.status === 403) {
-                        return "🚫 Acceso no autorizado (403): Este dominio no tiene permisos para comunicarse con el asistente de IA.";
-                    } else if (response.status === 429) {
-                        return "⚠️ El servicio de IA está temporalmente saturado. Por favor, espera unos segundos y vuelve a intentarlo.";
-                    } else if (response.status === 401) {
-                        return "❌ Error de autenticación en el proxy con el servicio de IA. Contacta al administrador.";
-                    } else if (response.status === 402) {
-                        return "❌ La cuenta del servicio de IA no tiene créditos suficientes. Contacta al administrador.";
-                    } else if (response.status === 500 || response.status === 502) {
-                        return "❌ Error en el servidor proxy de IA (500/502). Por favor, contacta al administrador o intenta más tarde.";
-                    } else {
-                        return `❌ Error del servicio (${response.status})${errorMsg ? ': ' + errorMsg : '. Por favor, intenta de nuevo.'}`;
-                    }
-                }
-
-                const data = await response.json();
-                const content = data.choices?.[0]?.message?.content;
-                if (!content) {
-                    console.error('Respuesta inesperada de la API:', data);
-                    return "No se pudo obtener una respuesta. Por favor, intenta de nuevo.";
-                }
-                return content;
-            } catch (e) {
-                console.error('Error de red al conectar con el proxy:', e);
-                return "⚠️ No se pudo conectar con el asistente de IA. Verifica tu conexión a internet o la configuración del proxy.";
-            }
-        }
-
-        chatForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const text = userInput.value.trim();
-            if (!text) return;
-
-            addMessage(text, 'user');
-            userInput.value = '';
-            typingIndicator.classList.remove('hidden');
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            const response = await callOpenRouter();
-            typingIndicator.classList.add('hidden');
-            addMessage(response, 'assistant');
-        });
-
-        function triggerEmailEscalation(btn) {
-            const nameInput = btn.parentElement.querySelector('#ticketName');
-            const userName = nameInput.value.trim();
-            if (!userName) { nameInput.classList.add('border-red-500'); return; }
-
-            const userQuestion = conversationHistory[conversationHistory.length - 2].content;
-            const subject = encodeURIComponent("SOPORTE SAP PORTLAND: Duda no resuelta por Manual");
-            const body = encodeURIComponent(`Equipo de Proyecto,\n\nSe requiere soporte para el siguiente caso:\n\nUsuario: ${userName}\nConsulta: ${userQuestion}\n\nNota: Consulta generada desde el Portal de Capacitación.`);
-
-            window.location.href = `mailto:${supportEmail}?subject=${subject}&body=${body}`;
-            btn.parentElement.innerHTML = '<p class="text-blue-600 font-bold text-center py-2 text-xs"><i class="fas fa-check-circle mr-2"></i> Mail preparado con éxito.</p>';
-        }
-
-        function exportToPDF(text) {
-            // 1. Crear el contenedor virtual
-            const element = document.createElement('div');
-            const contentHtml = marked.parse(text);
-
-            // 2. Aplicar estilos de reseteo total al contenedor
-            // Importante: padding: 0 y margin: 0 para que html2pdf empiece en el tope
-            element.style.width = '190mm'; // Ancho A4 aproximado
-            element.style.margin = '0';
-            element.style.padding = '0';
-            element.style.backgroundColor = 'white';
-
-            element.innerHTML = `
-        <div style="padding: 20px; font-family: 'Segoe UI', Arial, sans-serif; color: #333;">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #003366; padding-bottom: 10px; margin-bottom: 20px;">
-                <div>
-                    <div style="color: #003366; font-weight: 800; font-size: 20px;">GRUPO PORTLAND</div>
-                    <div style="color: #6bae47; font-weight: 600; font-size: 11px;">MANUAL DE PROCESOS SAP S/4HANA</div>
-                </div>
-                <div style="text-align: right; color: #666; font-size: 10px;">
-                    Generado el: ${new Date().toLocaleDateString()}<br>
-                    ID: ${Math.floor(Math.random() * 1000000)}
-                </div>
-            </div>
-
-            <style>
-                /* Estilos para evitar saltos y espacios */
-                .pdf-body { width: 100%; margin: 0; padding: 0; }
-                ol { counter-reset: step-counter; list-style-type: none; padding-left: 0; margin: 10px 0; }
-                ol li { 
-                    position: relative; margin-bottom: 10px; padding: 10px 10px 10px 45px; 
-                    background-color: #f1f5f9; border-radius: 6px; border-left: 5px solid #003366;
-                    font-size: 11px; page-break-inside: avoid;
-                }
-                ol li::before { 
-                    content: counter(step-counter); counter-increment: step-counter; 
-                    position: absolute; left: 10px; top: 50%; transform: translateY(-50%); 
-                    background-color: #003366; color: white; width: 22px; height: 22px; 
-                    border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-                    font-weight: bold; font-size: 10px;
-                }
-                table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-                th { background-color: #003366; color: white; padding: 8px; border: 1px solid #003366; text-align: left; font-size: 10px; }
-                td { padding: 6px; border: 1px solid #cbd5e1; font-size: 9px; }
-                tr:nth-child(even) { background-color: #f8fafc; }
-                h1, h2, h3 { color: #003366; margin-top: 15px; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px; }
-                p { font-size: 11px; line-height: 1.5; margin-bottom: 8px; }
-            </style>
-
-            <div class="pdf-body">
-                ${contentHtml}
-            </div>
-            <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 10px; text-align: center; font-size: 8px; color: #999;">
-                Documento de consulta rápida - Portland SAP S/4HANA
-            </div>
-        </div>
-    `;
-
-            // 3. Configuración CLAVE para eliminar los saltos iniciales
-            const opt = {
-                margin: [10, 10, 10, 10],
-                filename: 'Guia_Proceso_Portland.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: {
-                    scale: 2,
-                    useCORS: true,
-                    scrollY: 0, // FUERZA a empezar en el tope del elemento, no del scroll del chat
-                    scrollX: 0,
-                    windowHeight: element.scrollHeight, // Limita el alto al contenido real
-                    y: 0 // Asegura coordenada Y inicial cero
-                },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak: { mode: ['css', 'legacy'] }
-            };
-
-            // 4. Ejecutar (sin añadir al body para evitar interferencias de scroll)
-            html2pdf().set(opt).from(element).save();
-        }
-        function clearChat() {
-            if (confirm("¿Estás seguro de que deseas borrar todo el historial de esta sesión?")) {
-                sessionStorage.removeItem('portland_chat_session');
-                conversationHistory = [{ role: "system", content: systemPrompt }];
-                chatBox.innerHTML = '';
-                addMessage("Historial borrado. Estoy listo para una nueva consulta.", 'assistant', false);
-            }
-        }
-
-        // Inicialización
-        window.onload = loadSession;
-    </script>
-
+      </div>
+    </section>
+  </div>
+</main>
+
+<button class="fab" id="fab" title="Asistente virtual"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+<div class="scrim" id="scrim"></div>
+<div class="drawer" id="drawer"><div class="dr-h" id="drH"></div><div class="dr-b" id="drB"></div></div>
+<div class="viewer" id="viewer"><div class="vw-h"><b id="vwT"></b><span class="tag" id="vwK"></span><div class="x"><a class="ib" id="vwOpen" target="_blank" title="Abrir en pestaña nueva"><i class="fa-solid fa-up-right-from-square"></i></a><button class="ib" id="vwX" title="Cerrar"><i class="fa-solid fa-xmark"></i></button></div></div><iframe id="vwF" title="Visor"></iframe></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ DATOS ============ */
+const DATA = [{"pdf": "Manuales_v2/MAN-MD-BP-01_Creacion_de_BP_Cliente.pdf", "man": "MAN-MD-BP-01", "tx": "BP", "titulo": "Creación de Business Partner · rol Cliente", "modulo": "Cross", "familia": "MAN-MD-BP-01", "estado": "simulado", "guia": "sim/bp-cliente.html"}, {"pdf": "Manuales_v2/MAN-MD-MAT-01_Gestion_y_Creacion_de_Materiales.pdf", "man": "MAN-MD-MAT-01", "tx": "MM01", "titulo": "Gestión y creación de materiales", "modulo": "MM", "familia": "MAN-MD-MAT-01", "estado": "simulado", "guia": "sim/mm01-materiales.html"}, {"pdf": "Manuales_v2/MAN-MD-BP-02_Creacion_de_BP_Proveedor.pdf", "man": "MAN-MD-BP-02", "tx": "BP", "titulo": "Creación de Business Partner · rol Proveedor", "modulo": "Cross", "familia": "MAN-MD-BP-02", "estado": "simulado", "guia": "sim/bp-proveedor.html"}, {"pdf": "Manuales_v2/MAN-MD-BP-03_Gestion_de_Credito_del_Business_Partner.pdf", "man": "MAN-MD-BP-03", "tx": "BP", "titulo": "Gestión de crédito del interlocutor (UKM000)", "modulo": "Cross", "familia": "MAN-MD-BP-03", "estado": "simulado", "guia": "sim/bp-credito.html"}, {"pdf": "Manuales_v2/MAN-MM-01_Creacion_de_Pedido_de_Compra.pdf", "man": "MAN-MM-01", "tx": "ME21N", "titulo": "Creación de pedido de compra", "modulo": "MM", "familia": "MAN-MM-01", "estado": "simulado", "guia": "sim/me21n-importacion.html"}, {"pdf": "Manuales_v2/MAN-MM-02_Compras_de_Insumos_Servicios_y_Activos_Fijos.pdf", "man": "MAN-MM-02", "tx": "ME21N", "titulo": "Compras de insumos, servicios y activos fijos", "modulo": "MM", "familia": "MAN-MM-02", "estado": "simulado", "guia": "sim/me21n-servicios-insumos.html"}, {"pdf": "Manuales_v2/MAN-MM-03_Liberacion_de_Pedidos_de_Compra.pdf", "man": "MAN-MM-03", "tx": "ME29N", "titulo": "Liberación de pedidos de compra", "modulo": "MM", "familia": "MAN-MM-03", "estado": "simulado", "guia": "sim/me29n-liberacion.html"}, {"pdf": "Manuales_v2/MAN-MM-04_Gestion_de_Maquila_Envasado.pdf", "man": "MAN-MM-04", "tx": "ME21N", "titulo": "Gestión de maquila y envasado", "modulo": "MM", "familia": "MAN-MM-04", "estado": "simulado", "guia": "sim/me21n-maquila.html"}, {"pdf": "Manuales_v2/MAN-MM-05_Reversa_del_Proceso_de_Maquila.pdf", "man": "MAN-MM-05", "tx": "MIGO", "titulo": "Reversa del proceso de maquila", "modulo": "MM", "familia": "MAN-MM-05", "estado": "simulado", "guia": "sim/migo-reversa-maquila.html"}, {"pdf": "Manuales_v2/MAN-MM-06_Registro_de_Entrada_de_Mercancias.pdf", "man": "MAN-MM-06", "tx": "MIGO", "titulo": "Registro de entrada de mercancías", "modulo": "MM", "familia": "MAN-MM-06", "estado": "simulado", "guia": "sim/migo-101.html"}, {"pdf": "Manuales_v2/MAN-MM-07_Traspaso_entre_Almacenes.pdf", "man": "MAN-MM-07", "tx": "MIGO", "titulo": "Traspaso entre almacenes", "modulo": "MM", "familia": "MAN-MM-07", "estado": "simulado", "guia": "sim/migo-311.html"}, {"pdf": "Manuales_v2/MAN-MM-08_Gestion_y_Toma_de_Inventario_Fisico.pdf", "man": "MAN-MM-08", "tx": "MI01", "titulo": "Gestión y toma de inventario físico", "modulo": "MM", "familia": "MAN-MM-08", "estado": "simulado", "guia": "sim/mi01-inventario-fisico.html"}, {"pdf": "Manuales_v2/MAN-MM-09_Registro_de_Facturas_de_Proveedor.pdf", "man": "MAN-MM-09", "tx": "MIRO", "titulo": "Importación: factura antes de la entrada (ZIMP)", "modulo": "MM/FI", "familia": "MAN-MM-09", "estado": "simulado", "guia": "sim/miro-importacion-anticipada.html"}, {"pdf": "Manuales_v2/MAN-MM-09_Registro_de_Facturas_de_Proveedor.pdf", "man": "MAN-MM-09", "tx": "MIRO", "titulo": "Registro de facturas de proveedor", "modulo": "MM/FI", "familia": "MAN-MM-09", "estado": "simulado", "guia": "sim/miro-facturas.html"}, {"pdf": "Manuales_v2/MAN-MM-10_Notas_de_Credito_y_Ajustes_de_Precio_a_Proveedores.pdf", "man": "MAN-MM-10", "tx": "MIRO", "titulo": "NC por ajuste de precio (Abono posterior)", "modulo": "MM/FI", "familia": "MAN-MM-10", "estado": "simulado", "guia": "sim/miro-nc-ajuste.html"}, {"pdf": "Manuales_v2/MAN-MM-10_Notas_de_Credito_y_Ajustes_de_Precio_a_Proveedores.pdf", "man": "MAN-MM-10", "tx": "MIRO", "titulo": "Notas de crédito y ajustes de precio a proveedores", "modulo": "MM/FI", "familia": "MAN-MM-10", "estado": "simulado", "guia": "sim/miro-nc-proveedores.html"}, {"pdf": "Manuales_v2/MAN-MM-11_Gestion_de_Diferencias_en_la_Recepcion.pdf", "man": "MAN-MM-11", "tx": "MIGO/MIRO", "titulo": "Gestión de diferencias en la recepción", "modulo": "MM/FI", "familia": "MAN-MM-11", "estado": "simulado", "guia": "sim/miro-migo-diferencias.html"}, {"pdf": "Manuales_v2/MAN-SD-01_Gestion_de_Pedidos_de_Venta.pdf", "man": "MAN-SD-01", "tx": "VA01", "titulo": "Gestión de pedidos de venta", "modulo": "SD", "familia": "MAN-SD-01", "estado": "simulado", "guia": "sim/va01-pedidos-venta.html"}, {"pdf": "Manuales_v2/MAN-SD-02_Expedicion_de_Salida_de_Mercaderia.pdf", "man": "MAN-SD-02", "tx": "VL10A/VL01N/VL02N", "titulo": "Expedición de salida de mercadería", "modulo": "SD", "familia": "MAN-SD-02", "estado": "simulado", "guia": "sim/vl01n-expedicion.html"}, {"pdf": "Manuales_v2/MAN-SD-03_Emision_de_Factura_de_Cliente.pdf", "man": "MAN-SD-03", "tx": "VF01/VF04", "titulo": "Emisión de factura de cliente", "modulo": "SD", "familia": "MAN-SD-03", "estado": "simulado", "guia": "sim/vf01-factura.html"}, {"pdf": "Manuales_v2/MAN-SD-03_Emision_de_Factura_de_Cliente.pdf", "man": "MAN-SD-03", "tx": "EDOC_COCKPIT", "titulo": "Envío de factura electrónica a la DIAN (Colombia)", "modulo": "SD", "familia": "MAN-SD-03", "estado": "simulado", "guia": "sim/edoc-cockpit.html"}, {"pdf": "Manuales_v2/MAN-SD-04_Notas_de_Credito_a_Clientes.pdf", "man": "MAN-SD-04", "tx": "VA01/VL01N/VF01", "titulo": "Notas de crédito y débito a clientes", "modulo": "SD", "familia": "MAN-SD-04", "estado": "simulado", "guia": "sim/va01-notas-credito.html"}, {"pdf": "Manuales_v2/MAN-FI-00_Estandares_de_Registros_Contables.pdf", "man": "MAN-FI-00", "tx": "—", "titulo": "Estandares de Registros Contables", "modulo": "FI", "familia": "MAN-FI-00", "estado": "politica", "guia": ""}, {"pdf": "Manuales_v2/MAN-FI-01_Facturas_y_Notas_de_Debito_Manuales_de_Proveedor.pdf", "man": "MAN-FI-01", "tx": "FB60", "titulo": "Facturación manual y nota de débito de acreedor", "modulo": "FI", "familia": "MAN-FI-01", "estado": "simulado", "guia": "sim/fb60-facturas.html"}, {"pdf": "Manuales_v2/MAN-FI-02_Notas_de_Credito_Manuales_de_Proveedor.pdf", "man": "MAN-FI-02", "tx": "FB65", "titulo": "Contabilización manual de nota de crédito de acreedor", "modulo": "FI", "familia": "MAN-FI-02", "estado": "simulado", "guia": "sim/fb65-nc.html"}, {"pdf": "Manuales_v2/MAN-FI-03_Facturas_Manuales_y_Analisis_de_Cuentas_por_Pagar.pdf", "man": "MAN-FI-03", "tx": "FB60/FBL1N", "titulo": "Facturas manuales y análisis de cuentas por pagar", "modulo": "FI", "familia": "MAN-FI-03", "estado": "simulado", "guia": "sim/fb60-fbl1n-analisis.html"}, {"pdf": "Manuales_v2/MAN-FI-04_Solicitud_de_Anticipo_a_Proveedores.pdf", "man": "MAN-FI-04", "tx": "F-47", "titulo": "Solicitud de anticipo a proveedores", "modulo": "FI", "familia": "MAN-FI-04", "estado": "simulado", "guia": "sim/f47-anticipo-proveedores.html"}, {"pdf": "Manuales_v2/MAN-FI-05_Contabilizacion_con_Compensacion_para_Acreedores.pdf", "man": "MAN-FI-05", "tx": "F-51", "titulo": "Contabilización con compensación para acreedores", "modulo": "FI", "familia": "MAN-FI-05", "estado": "simulado", "guia": "sim/f51-compensacion-acreedores.html"}, {"pdf": "Manuales_v2/MAN-FI-06_Ejecucion_de_Pago_Manual_a_Proveedores.pdf", "man": "MAN-FI-06", "tx": "F-51", "titulo": "Ejecución de pago manual a proveedores", "modulo": "FI", "familia": "MAN-FI-06", "estado": "simulado", "guia": "sim/f51-pago-manual.html"}, {"pdf": "Manuales_v2/MAN-FI-07_Contabilizacion_de_Pagos_a_Acreedores.pdf", "man": "MAN-FI-07", "tx": "F-53", "titulo": "Contabilización de pagos a acreedores", "modulo": "FI", "familia": "MAN-FI-07", "estado": "simulado", "guia": "sim/f53-pagos-acreedores.html"}, {"pdf": "Manuales_v2/MAN-FI-08_Pagos_a_Proveedores.pdf", "man": "MAN-FI-08", "tx": "F110", "titulo": "Pagos a proveedores (F-51 / F110)", "modulo": "FI", "familia": "MAN-FI-08", "estado": "simulado", "guia": "sim/f110-pagos-automaticos.html"}, {"pdf": "Manuales_v2/MAN-FI-09_Registro_y_Canje_de_Letras_de_Cambio.pdf", "man": "MAN-FI-09", "tx": "F-36", "titulo": "Registro y canje de letras de cambio", "modulo": "FI", "familia": "MAN-FI-09", "estado": "simulado", "guia": "sim/f36-letras.html"}, {"pdf": "Manuales_v2/MAN-FI-10_Contabilizacion_de_Pagos_Recibidos.pdf", "man": "MAN-FI-10", "tx": "F-28", "titulo": "Contabilización de pagos recibidos", "modulo": "FI", "familia": "MAN-FI-10", "estado": "simulado", "guia": "sim/f28-pagos-recibidos.html"}, {"pdf": "Manuales_v2/MAN-FI-11_Contabilizacion_de_Anticipos_de_Clientes.pdf", "man": "MAN-FI-11", "tx": "F-29", "titulo": "Contabilizar anticipos de cliente (CME)", "modulo": "FI", "familia": "MAN-FI-11", "estado": "simulado", "guia": "sim/f29-anticipos-clientes.html"}, {"pdf": "Manuales_v2/MAN-FI-12_Contabilizacion_de_Saldos_Pendientes.pdf", "man": "MAN-FI-12", "tx": "F-30", "titulo": "Contabilización de saldos pendientes", "modulo": "FI", "familia": "MAN-FI-12", "estado": "simulado", "guia": "sim/f30-saldos-pendientes.html"}, {"pdf": "Manuales_v2/MAN-FI-13_Facturas_Manuales_de_Deudor.pdf", "man": "MAN-FI-13", "tx": "FB70", "titulo": "Facturas manuales de deudor", "modulo": "FI", "familia": "MAN-FI-13", "estado": "simulado", "guia": "sim/fb70-deudor.html"}, {"pdf": "Manuales_v2/MAN-FI-14_Notas_de_Credito_Manuales_a_Clientes.pdf", "man": "MAN-FI-14", "tx": "FB75", "titulo": "NC manual a clientes (FB75 + MIGO 501)", "modulo": "FI", "familia": "MAN-FI-14", "estado": "simulado", "guia": "sim/fb75-nc-clientes.html"}, {"pdf": "Manuales_v2/MAN-FI-15_Contabilizacion_de_Fondos_por_Rendir.pdf", "man": "MAN-FI-15", "tx": "FB70", "titulo": "Fondo por rendir · entregas a colaboradores", "modulo": "FI", "familia": "MAN-FI-15", "estado": "simulado", "guia": "sim/fb70-fondos.html"}, {"pdf": "Manuales_v2/MAN-FI-16_Contabilizacion_en_Cuentas_de_Mayor.pdf", "man": "MAN-FI-16", "tx": "FB50", "titulo": "Contabilización en cuentas de mayor", "modulo": "FI", "familia": "MAN-FI-16", "estado": "simulado", "guia": "sim/fb50-mayor.html"}];
+const SOCS=[["","Según manual",""],["CL11","Distribuidora Portland","CLP"],["CL12","EPOXA","CLP"],["CL13","Portland Terminales Marítimos","CLP"],["CL14","Perez & Jacard","CLP"],["CL15","DP Noviciado","CLP"],["CL16","PJ Portland","CLP"],["PE11","Portland Perú","PEN"],["CO11","Portland Colombia","COP"]];
+const MODS={MM:{c:'var(--mm)',n:'Materiales'},'MM/FI':{c:'var(--mm)',n:'Logística-Finanzas'},SD:{c:'var(--sd)',n:'Ventas'},FI:{c:'var(--fi)',n:'Finanzas'},Cross:{c:'var(--cross)',n:'Datos maestros'}};
+const modColor=m=>(MODS[m]||{c:'var(--muted)'}).c;
+// Flujos (migrados del portal de Manuales). fam = familia de manual MAN-XX
+const FLOWS=[
+ {id:'apro',t:'Proceso de Aprovisionamiento',d:'Del pedido de compra al pago del proveedor',ic:'fa-ship',c:'var(--mm)',seq:true,steps:[
+  ['fa-ship','Compra y costeo','Comercial','MAN-MM-01','ME21N'],['fa-file-signature','Aprobación','Gerencia','MAN-MM-03','ME29N'],
+  ['fa-warehouse','Recepción de mercancía','Logística','MAN-MM-06','MIGO'],['fa-magnifying-glass-dollar','Verificación de factura','Contabilidad','MAN-MM-09','MIRO'],
+  ['fa-money-bill-transfer','Pago a proveedores','Tesorería','MAN-FI-08','F110']]},
+ {id:'venta',t:'Proceso de Venta y Distribución',d:'Del pedido del cliente a la cobranza',ic:'fa-cart-shopping',c:'var(--sd)',seq:true,steps:[
+  ['fa-file-contract','Pedido de venta','Comercial','MAN-SD-01','VA01'],['fa-truck-fast','Despacho y entrega','Logística','MAN-SD-02','VL01N'],
+  ['fa-file-invoice','Facturación','Crédito','MAN-SD-03','VF01'],['fa-building-columns','Cobro','Cobranzas','MAN-FI-10','F-28']]},
+ {id:'cont',t:'Registros Contables',d:'Normas y contabilizaciones manuales en FI',ic:'fa-scale-balanced',c:'var(--fi)',steps:[
+  ['fa-book','Normas de registros contables','Contabilidad','MAN-FI-00','—'],['fa-hand-holding-dollar','Anticipos de clientes','Contabilidad','MAN-FI-11','F-29'],
+  ['fa-money-check-dollar','Pagos de clientes','Contabilidad','MAN-FI-10','F-28'],['fa-scale-unbalanced','Saldos pendientes','Contabilidad','MAN-FI-12','F-30'],
+  ['fa-receipt','Facturas manuales de deudor','Contabilidad','MAN-FI-13','FB70'],['fa-wallet','Fondos por rendir','Contabilidad','MAN-FI-15','FB70'],
+  ['fa-file-import','Solicitud de anticipo','Contabilidad','MAN-FI-04','F-47'],['fa-arrows-left-right','Compensación acreedores','Contabilidad','MAN-FI-05','F-51'],
+  ['fa-hand-holding-hand','Pago manual a proveedores','Tesorería','MAN-FI-06','F-51'],['fa-credit-card','Pago confirming','Contabilidad','MAN-FI-07','F-53'],
+  ['fa-scroll','Letras de cambio','Contabilidad','MAN-FI-09','F-36'],['fa-file-invoice-dollar','Facturas y ND manuales','Contabilidad','MAN-FI-01','FB60'],
+  ['fa-file-circle-minus','NC manuales de proveedor','Contabilidad','MAN-FI-02','FB65'],['fa-magnifying-glass-chart','Análisis cuentas por pagar','Contabilidad','MAN-FI-03','FBL1N'],
+  ['fa-rotate-left','NC manual a clientes','Contabilidad','MAN-FI-14','FB75'],['fa-book-open','Cuentas de mayor','Contabilidad','MAN-FI-16','FB50'],
+  ['fa-tags','NC ajuste de precio','Contabilidad','MAN-MM-10','MIRO'],['fa-not-equal','Diferencias MIGO-MIRO','Contabilidad','MAN-MM-11','MIGO/MIRO']]},
+ {id:'otros',t:'Otros Procesos Clave',d:'Producción, inventario y datos maestros',ic:'fa-gears',c:'var(--cross)',steps:[
+  ['fa-industry','Maquila y envasado','Logística','MAN-MM-04','ME21N'],['fa-arrow-rotate-left','Reversa de maquila','Logística','MAN-MM-05','MIGO'],
+  ['fa-dolly','Traspaso entre almacenes','Logística','MAN-MM-07','MIGO'],['fa-boxes-stacked','Inventario físico','Logística / Contabilidad','MAN-MM-08','MI01'],
+  ['fa-basket-shopping','Compras de insumos y servicios','Comercial','MAN-MM-02','ME21N'],['fa-user-tie','BP Proveedor','TI','MAN-MD-BP-02','BP'],
+  ['fa-users','BP Cliente','TI','MAN-MD-BP-01','BP'],['fa-cubes','Gestión de materiales','TI','MAN-MD-MAT-01','MM01'],
+  ['fa-shield-halved','Gestión de crédito','Crédito','MAN-MD-BP-03','UKM_BP']]}
+];
+
+/* ============ ESTADO ============ */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const store={get(k,d){try{return localStorage.getItem(k)??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+let SOC=store.get('simsap_soc','PE11'), MOD='todos', LAYOUT=store.get('portal_layout','grid'), Q='', FLOW='todos';
+const byFam=f=>DATA.filter(d=>d.familia===f);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm=s=>String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+const gurl=g=>g+(SOC?('?soc='+SOC):'');
+const VIEWS={inicio:'Inicio',procesos:'Diagramas de proceso',biblioteca:'Manuales y simulador',asistente:'Asistente virtual'};
+
+/* ============ NAV ============ */
+function go(v){
+  $$('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+  $$('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+v));
+  $('#vTitle').textContent=VIEWS[v]; $('#fab').style.display=v==='asistente'?'none':'';
+  $('#main').scrollTop=0; if(location.hash!=='#'+v) history.replaceState(null,'','#'+v);
+  if(v==='asistente') setTimeout(()=>$('#inp').focus(),50);
+}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]'); if(g) go(g.dataset.go);});
+$$('.nav button').forEach(b=>b.onclick=()=>go(b.dataset.v));
+$('#fab').onclick=()=>go('asistente');
+
+/* ============ SOCIEDAD ============ */
+$('#soc').innerHTML=SOCS.map(([c,n,m])=>`<option value="${c}" ${c===SOC?'selected':''}>${c?c+' · '+n:n}${m?' ('+m+')':''}</option>`).join('');
+$('#soc').onchange=e=>{SOC=e.target.value;store.set('simsap_soc',SOC);toast('Sociedad: '+($('#soc').selectedOptions[0].text));};
+
+/* ============ TARJETAS ============ */
+function card(d){
+  const sim=d.guia&&d.estado!=='politica';
+  return `<div class="card" style="--accent:${modColor(d.modulo)}">
+   <div class="body"><div class="row"><span class="mod" style="background:${modColor(d.modulo)}">${esc(d.modulo)}</span><span class="tag tx">${esc(d.tx)}</span><span class="code mono">${esc(d.man)}</span></div>
+   <h5 style="margin-top:10px">${esc(d.titulo)}</h5></div>
+   <div class="acts">
+    <button class="a sim" ${sim?'':'disabled'} onclick="openV('${esc(d.guia)}','sim','${esc(d.titulo).replace(/'/g,"\\'")}','${esc(d.tx)}')"><i class="fa-solid fa-play"></i> ${sim?'Simular':'Sin simulación'}</button>
+    <button class="a pdf" ${d.pdf?'':'disabled'} onclick="openV('${esc(d.pdf)}','pdf','${esc(d.titulo).replace(/'/g,"\\'")}','${esc(d.man)}')"><i class="fa-regular fa-file-pdf"></i> Manual</button>
+    <button class="a ask" title="Preguntar al asistente" onclick="askAbout('${esc(d.tx)}','${esc(d.titulo).replace(/'/g,"\\'")}')"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+   </div></div>`;
+}
+
+/* ============ BIBLIOTECA ============ */
+function renderLib(){
+  const mods=['todos',...new Set(DATA.map(d=>d.modulo))];
+  $('#modChips').innerHTML=mods.map(m=>`<button class="chip ${m===MOD?'on':''}" data-m="${m}">${m==='todos'?'Todos':m+' · '+(MODS[m]?.n||'')}<span class="n">${m==='todos'?DATA.length:DATA.filter(d=>d.modulo===m).length}</span></button>`).join('');
+  $$('#modChips .chip').forEach(b=>b.onclick=()=>{MOD=b.dataset.m;renderLib();});
+  $$('.seg button').forEach(b=>{b.classList.toggle('on',b.dataset.l===LAYOUT);b.onclick=()=>{LAYOUT=b.dataset.l;store.set('portal_layout',LAYOUT);renderLib();}});
+  const q=norm(Q);
+  const list=DATA.filter(d=>(MOD==='todos'||d.modulo===MOD)&&(!q||norm(d.titulo+' '+d.tx+' '+d.man+' '+d.modulo).includes(q)));
+  $('#lib').className=LAYOUT==='list'?'list':'';
+  $('#lib').innerHTML=list.length?`<div class="cards">${list.map(card).join('')}</div>`:`<div class="empty"><i class="fa-solid fa-magnifying-glass"></i><p>No hay resultados para “${esc(Q)}”.</p></div>`;
+}
+
+/* ============ PROCESOS ============ */
+function node(s,i,f){
+  const [ic,t,area,fam,tx]=s;
+  return `<div class="node"><div class="box" style="--accent:${f.c}" onclick="openStep('${f.id}',${i})">
+    ${f.seq?`<span class="num">${i+1}</span>`:''}<div class="nic"><i class="fa-solid ${ic}"></i></div>
+    <div class="t">${t}</div><div class="area"><i class="fa-regular fa-user"></i> ${area}</div>
+    <div class="tx"><span class="tag tx">${tx}</span><span class="tag">${byFam(fam).length} guía${byFam(fam).length===1?'':'s'}</span></div></div></div>`;
+}
+function flowHTML(f,q){
+  let steps=f.steps.map((s,i)=>({s,i}));
+  if(q) steps=steps.filter(({s})=>norm(s.join(' ')).includes(q));
+  if(!steps.length) return '';
+  const body=f.seq&&!q
+    ? `<div class="lane">${steps.map(({s,i},k)=>(k?'<div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>':'')+node(s,i,f)).join('')}</div>`
+    : `<div class="grid-flow">${steps.map(({s,i})=>node(s,i,f)).join('')}</div>`;
+  return `<div class="flow"><div class="flow-head"><div class="ic" style="background:${f.c}"><i class="fa-solid ${f.ic}"></i></div><div><h4>${f.t}</h4><p>${f.d}</p></div><span class="tag">${f.steps.length} pasos</span></div>${body}</div>`;
+}
+function renderFlows(){
+  $('#flowTabs').innerHTML=[['todos','Todos los procesos'],...FLOWS.map(f=>[f.id,f.t])].map(([id,t])=>`<button class="chip ${id===FLOW?'on':''}" data-f="${id}">${t}</button>`).join('');
+  $$('#flowTabs .chip').forEach(b=>b.onclick=()=>{FLOW=b.dataset.f;renderFlows();});
+  const q=norm(Q);
+  const html=FLOWS.filter(f=>FLOW==='todos'||f.id===FLOW).map(f=>flowHTML(f,q)).join('');
+  $('#flows').innerHTML=html||`<div class="empty"><i class="fa-solid fa-diagram-project"></i><p>Ningún paso coincide con “${esc(Q)}”.</p></div>`;
+  $('#homeFlows').innerHTML=FLOWS.filter(f=>f.seq).map(f=>flowHTML(f,'')).join('');
+}
+function openStep(fid,i){
+  const f=FLOWS.find(x=>x.id===fid), [ic,t,area,fam,tx]=f.steps[i], g=byFam(fam);
+  $('#drH').innerHTML=`<button class="ib" onclick="closeD()"><i class="fa-solid fa-xmark"></i></button><small>${f.t}${f.seq?' · Paso '+(i+1):''}</small><h4>${t}</h4><p><i class="fa-regular fa-user"></i> ${area} · <span class="mono">${tx}</span> · <span class="mono">${fam}</span></p>`;
+  $('#drB').innerHTML=(g.length?g.map(card).join(''):'<p class="empty">Aún no hay material para este paso.</p>')+
+   (f.seq&&i<f.steps.length-1?`<button class="btn" style="background:var(--bg);border:1px solid var(--line);justify-content:center" onclick="openStep('${fid}',${i+1})">Siguiente paso: ${f.steps[i+1][1]} <i class="fa-solid fa-arrow-right"></i></button>`:'');
+  $('#drawer').classList.add('on');$('#scrim').classList.add('on');
+}
+function closeD(){$('#drawer').classList.remove('on');if(!$('#viewer').classList.contains('on'))$('#scrim').classList.remove('on');}
+
+/* ============ VISOR ============ */
+function openV(src,kind,title,code){
+  const url=kind==='sim'?gurl(src):src;
+  $('#vwT').textContent=title;$('#vwK').textContent=kind==='sim'?('Simulador · '+code+(SOC?' · '+SOC:'')):('Manual · '+code);
+  $('#vwF').src=url;$('#vwOpen').href=url;$('#viewer').classList.add('on');$('#scrim').classList.add('on');
+}
+function closeV(){$('#viewer').classList.remove('on');$('#vwF').src='about:blank';if(!$('#drawer').classList.contains('on'))$('#scrim').classList.remove('on');}
+$('#vwX').onclick=closeV;
+$('#scrim').onclick=()=>{closeV();closeD();};
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeV();closeD();}
+  if(e.key==='/'&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA'){e.preventDefault();$('#q').focus();}
+});
+
+/* ============ BÚSQUEDA ============ */
+$('#q').addEventListener('input',e=>{
+  Q=e.target.value.trim();
+  const cur=$$('.view').find(v=>v.classList.contains('on')).id;
+  if(Q&&(cur==='v-inicio'||cur==='v-asistente')) go('biblioteca');
+  renderLib();renderFlows();
+});
+
+/* ============ ASISTENTE ============ */
+const PROXY_URL="https://sap-chatbot-proxy.pjypl.workers.dev";
+const MODEL="deepseek/deepseek-v4.1-flash-1017";
+const SUPPORT="gsalinas@pjportland.cl";
+let systemPrompt="Eres el asistente SAP del Grupo Portland. Responde en español de forma clara y paso a paso.", hist=[], lastQ='';
+const SUGG=['¿Cómo creo un pedido de compra en ME21N?','¿Qué clase de movimiento uso para un traspaso entre almacenes?','¿Cuál es la diferencia entre F-51 y F110?','¿Cómo registro un anticipo de cliente con F-29?','¿Qué hago si hay diferencias entre MIGO y MIRO?'];
+$('#sugg').innerHTML=SUGG.map(s=>`<button>${s}</button>`).join('');
+$$('#sugg button').forEach(b=>b.onclick=()=>send(b.textContent));
+const render=t=>window.marked?marked.parse(t):esc(t).replace(/\n/g,'<br>');
+function addMsg(t,who,save=true){
+  const el=document.createElement('div');el.className='m '+(who==='user'?'u':'b');
+  el.innerHTML=who==='user'?esc(t):render(t);$('#msgs').appendChild(el);$('#msgs').scrollTop=1e9;
+  if(save){try{sessionStorage.setItem('portland_chat_session',JSON.stringify(hist));}catch(e){}}
+}
+async function initChat(){
+  try{const r=await fetch('system_prompt.txt?v='+Date.now());if(r.ok)systemPrompt=await r.text();}catch(e){}
+  let saved=null;try{saved=JSON.parse(sessionStorage.getItem('portland_chat_session'));}catch(e){}
+  if(saved&&saved.length>1){hist=saved;hist.slice(1).forEach(m=>addMsg(m.content,m.role,false));}
+  else{hist=[{role:'system',content:systemPrompt}];addMsg('¡Hola! 👋 Soy el asistente SAP del **Grupo Portland**. Pregúntame sobre cualquier transacción, campo o proceso y te guío paso a paso.','assistant',false);}
+}
+async function callAI(){
+  try{
+    const r=await fetch(PROXY_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MODEL,messages:hist,temperature:.1,max_tokens:1500})});
+    if(!r.ok){const m={403:'🚫 Este dominio no tiene permiso para usar el asistente. Debe abrirse desde el sitio publicado.',429:'⚠️ El servicio está saturado. Intenta de nuevo en unos segundos.',401:'❌ Error de autenticación en el proxy. Contacta al administrador.',402:'❌ La cuenta del servicio de IA no tiene créditos.'};return m[r.status]||`❌ Error del servicio (${r.status}).`;}
+    const d=await r.json();return d.choices?.[0]?.message?.content||'No se obtuvo respuesta. Intenta de nuevo.';
+  }catch(e){return '⚠️ No se pudo conectar con el asistente. Revisa tu conexión a internet.';}
+}
+async function send(text){
+  text=(text||'').trim();if(!text)return;
+  if($('#v-asistente').classList.contains('on')===false)go('asistente');
+  lastQ=text;addMsg(text,'user');hist.push({role:'user',content:text});$('#inp').value='';autosize();
+  const t=document.createElement('div');t.className='m b typing';t.innerHTML='<i></i><i></i><i></i>';$('#msgs').appendChild(t);$('#msgs').scrollTop=1e9;
+  const ans=await callAI();t.remove();hist.push({role:'assistant',content:ans});addMsg(ans,'assistant');
+}
+function askAbout(tx,titulo){closeV();closeD();send(`Explícame el proceso "${titulo}" (transacción ${tx}): pasos principales, campos clave y errores frecuentes.`);}
+$('#form').onsubmit=e=>{e.preventDefault();send($('#inp').value);};
+const autosize=()=>{const i=$('#inp');i.style.height='auto';i.style.height=Math.min(i.scrollHeight,140)+'px';};
+$('#inp').addEventListener('input',autosize);
+$('#inp').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send($('#inp').value);}});
+$('#clearBtn').onclick=()=>{hist=[{role:'system',content:systemPrompt}];$('#msgs').innerHTML='';try{sessionStorage.removeItem('portland_chat_session')}catch(e){};addMsg('Conversación reiniciada. ¿En qué te ayudo?','assistant',false);};
+const mail=()=>{const q=lastQ||'(escribe aquí tu consulta)';location.href=`mailto:${SUPPORT}?subject=${encodeURIComponent('Pregunta SAP')}&body=${encodeURIComponent('Hola Soporte,\n\nTengo la siguiente duda respecto a los procesos SAP:\n\n"'+q+'"\n\nQuedo atento a sus comentarios.')}`;};
+$('#mailBtn').onclick=mail;$('#mailBtn2').onclick=mail;
+
+/* ============ UTIL ============ */
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),1800);}
+
+/* ============ INIT ============ */
+$('#cLib').textContent=DATA.length;$('#cProc').textContent=FLOWS.length;
+$('#sMan').textContent=new Set(DATA.map(d=>d.familia)).size;$('#sSim').textContent=DATA.filter(d=>d.estado!=='politica').length;$('#sFlows').textContent=FLOWS.length;
+renderLib();renderFlows();initChat();
+const h=location.hash.slice(1);if(VIEWS[h])go(h);
+</script>
 </body>
-
 </html>
