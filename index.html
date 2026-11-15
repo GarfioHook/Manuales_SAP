@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,18 +12,18 @@
     <!-- Librería para exportar a PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    
+
     <style>
         :root {
             --sap-blue: #008FD3;
             --sap-dark-blue: #003366;
-            --portland-blue: #0b2b5c; 
-            --accent-green: #6bae47; 
+            --portland-blue: #0b2b5c;
+            --accent-green: #6bae47;
             --light-gray: #f4f4f4;
             --disabled-gray: #b0b0b0;
             --text-color: #333;
-            --card-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            --card-hover: 0 10px 20px rgba(0,0,0,0.12);
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --card-hover: 0 10px 20px rgba(0, 0, 0, 0.12);
         }
 
         * {
@@ -41,7 +42,7 @@
         /* --- Header & Navigation --- */
         header {
             background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
             padding: 15px 40px;
             display: flex;
             justify-content: space-between;
@@ -71,7 +72,7 @@
             position: relative;
             height: 350px;
             /* Se usa un degradado sobre la imagen para mejorar legibilidad del texto */
-            background-image: linear-gradient(rgba(11, 43, 92, 0.85), rgba(11, 43, 92, 0.65)), url('Imagenes/Hero_banner_small.png'); 
+            background-image: linear-gradient(rgba(11, 43, 92, 0.85), rgba(11, 43, 92, 0.65)), url('Imagenes/Hero_banner_small.png');
             background-size: cover;
             background-position: center;
             display: flex;
@@ -95,7 +96,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
+
         .hero p {
             font-size: 1.1rem;
             font-weight: 300;
@@ -104,15 +105,16 @@
         .project-logo-hero {
             height: 200px;
             margin-bottom: 20px;
-            background: rgba(255,255,255,0.95);
+            background: rgba(255, 255, 255, 0.95);
             padding: 10px;
             border-radius: 50%;
-            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         }
 
         /* --- Main Content --- */
         .container {
-            max-width: 1400px; /* Ancho amplio para que quepan las 5 tarjetas */
+            max-width: 1400px;
+            /* Ancho amplio para que quepan las 5 tarjetas */
             margin: 40px auto;
             padding: 0 30px;
         }
@@ -134,9 +136,11 @@
         .process-grid {
             display: grid;
             /* Exactamente 5 columnas de igual tamaño */
-            grid-template-columns: repeat(5, 1fr); 
-            gap: 30px; /* Espacio entre tarjetas */
-            align-items: stretch; /* Estira las tarjetas para que tengan la misma altura */
+            grid-template-columns: repeat(5, 1fr);
+            gap: 30px;
+            /* Espacio entre tarjetas */
+            align-items: stretch;
+            /* Estira las tarjetas para que tengan la misma altura */
         }
 
         /* --- Step Card --- */
@@ -149,12 +153,12 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             border-top: 5px solid var(--sap-blue);
-            
+
             /* Flexbox interno para distribuir contenido verticalmente */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            height: 100%; 
+            height: 100%;
         }
 
         .step-card:hover {
@@ -164,11 +168,13 @@
 
         /* Flechas Automáticas entre tarjetas */
         .step-card::after {
-            content: "\f061"; /* Código unicode flecha FontAwesome */
+            content: "\f061";
+            /* Código unicode flecha FontAwesome */
             font-family: "Font Awesome 6 Free";
             font-weight: 900;
             position: absolute;
-            right: -22px; /* Posición en el hueco entre tarjetas */
+            right: -22px;
+            /* Posición en el hueco entre tarjetas */
             top: 45%;
             color: #ccc;
             font-size: 1.2rem;
@@ -179,10 +185,11 @@
         .step-card:last-child::after {
             display: none;
         }
-        
+
         /* En la fase 2, el 4to elemento es el último, quitar su flecha también si no hay 5to */
         .process-grid:has(.step-card:nth-last-child(1):nth-child(4)) .step-card:nth-child(4)::after {
-             display: none; /* Soporte navegadores modernos */
+            display: none;
+            /* Soporte navegadores modernos */
         }
 
         /* --- Card Content --- */
@@ -201,7 +208,8 @@
             font-size: 1.05rem;
             margin-bottom: 15px;
             color: #333;
-            min-height: 3rem; /* Altura mínima para títulos de 2 líneas */
+            min-height: 3rem;
+            /* Altura mínima para títulos de 2 líneas */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -209,7 +217,8 @@
         }
 
         .step-action {
-            margin-top: auto; /* Empuja el botón al fondo */
+            margin-top: auto;
+            /* Empuja el botón al fondo */
             width: 100%;
         }
 
@@ -259,9 +268,9 @@
             pointer-events: none;
             box-shadow: none;
         }
-        
+
         .btn-disabled .btn-code {
-            background: rgba(0,0,0,0.05);
+            background: rgba(0, 0, 0, 0.05);
         }
 
         /* --- Footer --- */
@@ -277,225 +286,311 @@
             font-size: 0.9rem;
             opacity: 0.8;
         }
-/* Estenedor del Chat Flotante */
-    #floatingChat {
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        transform: translateY(30px) scale(0.95);
-        opacity: 0;
-        pointer-events: none;
-        position: fixed; bottom: 100px; right: 24px; z-index: 50;
-    }
-    #floatingChat.active {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-        pointer-events: auto;
-    }
-    .chat-window { height: 650px; width: 480px; max-width: 95vw; }
-    
-    /* Estilos de las burbujas y contenido renderizado */
-    .chat-bubble-content h3 { font-size: 1.1rem; font-weight: 700; color: #0f172a; border-left: 4px solid #3b82f6; padding-left: 8px; margin: 1rem 0 0.5rem; }
-    .chat-bubble-content code { background: #f1f5f9; padding: 2px 5px; border-radius: 4px; font-family: monospace; color: #2563eb; }
-    
-    /* Animación de escritura */
-    .typing-dot { width: 6px; height: 6px; background: #3b82f6; border-radius: 50%; display: inline-block; animation: typing 1.4s infinite ease-in-out; }
-    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes typing { 0%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-5px); } }
 
-    /* Animación del botón circular */
-    .pulse-animation { animation: pulse 2s infinite; }
-    @keyframes pulse {
-        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
-        70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
-        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
-    }
-#chatLabel {
-    pointer-events: none; /* Evita que interfiera con clics */
-    box-shadow: -4px 4px 10px rgba(0,0,0,0.2);
-    border: 1px solid rgba(255,255,255,0.1);
-}
+        /* Estenedor del Chat Flotante */
+        #floatingChat {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(30px) scale(0.95);
+            opacity: 0;
+            pointer-events: none;
+            position: fixed;
+            bottom: 100px;
+            right: 24px;
+            z-index: 50;
+        }
 
-/* Estado cuando el chat está abierto (ocultar etiqueta) */
-#chatLabel.hidden-label {
-    opacity: 0;
-    transform: translateX(20px);
-    pointer-events: none;
-}
-    
-    /* Estilos para tablas dentro del chat */
-.chat-bubble-content table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 10px 0;
-    font-size: 0.85rem;
-    background: white;
-}
+        #floatingChat.active {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
 
-.chat-bubble-content th {
-    background-color: #f1f5f9;
-    color: #003366;
-    font-weight: 700;
-    padding: 8px;
-    border: 1px solid #e2e8f0;
-}
+        .chat-window {
+            height: 650px;
+            width: 480px;
+            max-width: 95vw;
+        }
 
-.chat-bubble-content td {
-    padding: 8px;
-    border: 1px solid #e2e8f0;
-}
+        /* Estilos de las burbujas y contenido renderizado */
+        .chat-bubble-content h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0f172a;
+            border-left: 4px solid #3b82f6;
+            padding-left: 8px;
+            margin: 1rem 0 0.5rem;
+        }
 
-.chat-bubble-content tr:nth-child(even) {
-    background-color: #f8fafc;
-}
+        .chat-bubble-content code {
+            background: #f1f5f9;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #2563eb;
+        }
 
-/* Espacio superior para el icono de PDF y manejo de tablas */
-.chat-bubble-content {
-    overflow-x: auto;
-    padding-top: 32px !important; 
-    position: relative;
-}
+        /* Animación de escritura */
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #3b82f6;
+            border-radius: 50%;
+            display: inline-block;
+            animation: typing 1.4s infinite ease-in-out;
+        }
 
-/* Estilo del botón PDF dentro de la burbuja */
-.pdf-export-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    color: #ef4444; /* Rojo */
-    opacity: 0.6;
-    transition: all 0.2s;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.1rem;
-    z-index: 20;
-}
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
 
-.pdf-export-btn:hover {
-    opacity: 1;
-    transform: scale(1.1);
-}
-/* Estilo forzado para el botón de soporte */
-.support-btn {
-    display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
-    background-color: #003366 !important; /* Azul Portland */
-    color: white !important;
-    padding: 10px 20px !important;
-    border-radius: 9999px !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-    text-decoration: none !important;
-    margin-top: 12px !important;
-    border: none !important;
-    cursor: pointer !important;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-    transition: all 0.2s ease !important;
-}
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
 
-.support-btn:hover {
-    background-color: #004080 !important;
-    transform: translateY(-1px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
-}
+        @keyframes typing {
 
-.support-container {
-    margin-top: 15px;
-    padding: 15px;
-    background-color: #f0f7ff;
-    border: 1px dashed #003366;
-    border-radius: 12px;
-    text-align: center;
-}
-/* Estilo para listas numeradas (Pasos del Proceso) */
-.chat-bubble-content ol {
-    counter-reset: step-counter;
-    list-style-type: none;
-    padding-left: 0;
-    margin-top: 15px;
-}
+            0%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
 
-.chat-bubble-content ol li {
-    position: relative;
-    margin-bottom: 12px;
-    padding: 10px 15px 10px 45px;
-    background: #f8fafc;
-    border-left: 4px solid #003366;
-    border-radius: 4px 8px 8px 4px;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.02);
-}
+            40% {
+                transform: translateY(-5px);
+            }
+        }
 
-/* Burbuja del número del paso */
-.chat-bubble-content ol li::before {
-    content: counter(step-counter);
-    counter-increment: step-counter;
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #003366;
-    color: white;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: bold;
-}
+        /* Animación del botón circular */
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
 
-/* Estilo para listas con viñetas (Puntos clave) */
-.chat-bubble-content ul {
-    list-style-type: none;
-    padding-left: 0;
-}
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
+            }
 
-.chat-bubble-content ul li::before {
-    content: "•";
-    color: #6bae47; /* Verde Portland */
-    font-weight: bold;
-    display: inline-block; 
-    width: 1em;
-    margin-left: 5px;
-}
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+            }
+        }
+
+        #chatLabel {
+            pointer-events: none;
+            /* Evita que interfiera con clics */
+            box-shadow: -4px 4px 10px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Estado cuando el chat está abierto (ocultar etiqueta) */
+        #chatLabel.hidden-label {
+            opacity: 0;
+            transform: translateX(20px);
+            pointer-events: none;
+        }
+
+        /* Estilos para tablas dentro del chat */
+        .chat-bubble-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 0.85rem;
+            background: white;
+        }
+
+        .chat-bubble-content th {
+            background-color: #f1f5f9;
+            color: #003366;
+            font-weight: 700;
+            padding: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .chat-bubble-content td {
+            padding: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .chat-bubble-content tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Espacio superior para el icono de PDF y manejo de tablas */
+        .chat-bubble-content {
+            overflow-x: auto;
+            padding-top: 32px !important;
+            position: relative;
+        }
+
+        /* Estilo del botón PDF dentro de la burbuja */
+        .pdf-export-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            color: #ef4444;
+            /* Rojo */
+            opacity: 0.6;
+            transition: all 0.2s;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            z-index: 20;
+        }
+
+        .pdf-export-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* Estilo forzado para el botón de soporte */
+        .support-btn {
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            background-color: #003366 !important;
+            /* Azul Portland */
+            color: white !important;
+            padding: 10px 20px !important;
+            border-radius: 9999px !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            text-decoration: none !important;
+            margin-top: 12px !important;
+            border: none !important;
+            cursor: pointer !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .support-btn:hover {
+            background-color: #004080 !important;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .support-container {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f0f7ff;
+            border: 1px dashed #003366;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        /* Estilo para listas numeradas (Pasos del Proceso) */
+        .chat-bubble-content ol {
+            counter-reset: step-counter;
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 15px;
+        }
+
+        .chat-bubble-content ol li {
+            position: relative;
+            margin-bottom: 12px;
+            padding: 10px 15px 10px 45px;
+            background: #f8fafc;
+            border-left: 4px solid #003366;
+            border-radius: 4px 8px 8px 4px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.02);
+        }
+
+        /* Burbuja del número del paso */
+        .chat-bubble-content ol li::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #003366;
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* Estilo para listas con viñetas (Puntos clave) */
+        .chat-bubble-content ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .chat-bubble-content ul li::before {
+            content: "•";
+            color: #6bae47;
+            /* Verde Portland */
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: 5px;
+        }
+
         /* --- Responsive Design --- */
         /* Ajuste para pantallas medianas (Tablets) */
         @media (max-width: 1200px) {
             .process-grid {
-                grid-template-columns: repeat(3, 1fr); /* Bajar a 3 columnas */
+                grid-template-columns: repeat(3, 1fr);
+                /* Bajar a 3 columnas */
                 gap: 20px;
             }
+
             .step-card::after {
-                display: none; /* Ocultar flechas en layout no lineal */
+                display: none;
+                /* Ocultar flechas en layout no lineal */
             }
         }
 
         /* Ajuste para móviles */
         @media (max-width: 768px) {
             .process-grid {
-                grid-template-columns: 1fr; /* 1 columna */
+                grid-template-columns: 1fr;
+                /* 1 columna */
             }
+
             .hero {
                 height: 300px;
             }
+
             header {
                 flex-direction: column;
                 gap: 10px;
             }
+
             .logo-container {
                 margin-bottom: 5px;
             }
         }
-        
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
+
 <body>
 
     <!-- Header -->
@@ -521,10 +616,10 @@
         <!-- FASE 1: Aprovisionamiento -->
         <div class="phase-section">
             <h2 class="phase-title">Proceso de Aprovisionamiento</h2>
-            
+
             <!-- Grid de 5 Columnas -->
             <div class="process-grid">
-                
+
                 <!-- Paso 1 -->
                 <div class="step-card">
                     <div class="icon-box"><i class="fa-solid fa-ship"></i></div>
@@ -591,9 +686,9 @@
         <!-- FASE 2: Ventas -->
         <div class="phase-section">
             <h2 class="phase-title">Proceso de Venta y Distribución </h2>
-            
+
             <div class="process-grid">
-                
+
                 <!-- Paso 1 -->
                 <div class="step-card" style="border-top-color: var(--accent-green);">
                     <div class="icon-box"><i class="fa-solid fa-file-contract"></i></div>
@@ -641,7 +736,7 @@
                         </a>
                     </div>
                 </div>
-                
+
                 <!-- El espacio 5 queda vacío automáticamente para mantener la estructura de grilla -->
 
             </div>
@@ -651,7 +746,7 @@
         <!-- FASE 3: Procesos Contables -->
         <div class="phase-section">
             <h2 class="phase-title">Registros Contables</h2>
-            
+
             <div class="process-grid">
                 <!-- Paso 3.1 -->
                 <div class="step-card">
@@ -663,7 +758,7 @@
                             <span class="btn-code">NORMAS</span>
                         </a>
                     </div>
-                </div>    
+                </div>
                 <!-- Paso 3.2 -->
                 <div class="step-card">
                     <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
@@ -686,7 +781,7 @@
                         </a>
                     </div>
                 </div>
-                 <!-- Paso 3.4 -->
+                <!-- Paso 3.4 -->
                 <div class="step-card">
                     <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
                     <div class="step-title">SALDOS PENDIENTES<br> (Contabilidad) </div>
@@ -696,8 +791,8 @@
                             <span class="btn-code">F-30</span>
                         </a>
                     </div>
-                </div>                                        
-                  <!-- Paso 3.5 -->
+                </div>
+                <!-- Paso 3.5 -->
                 <div class="step-card">
                     <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
                     <div class="step-title">FONDOS POR RENDIR<br> (Contabilidad) </div>
@@ -708,7 +803,7 @@
                         </a>
                     </div>
                 </div>
-                  <!-- Paso 3.6 -->
+                <!-- Paso 3.6 -->
                 <div class="step-card">
                     <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
                     <div class="step-title">SOLICITUD DE ANTICIPO<br> (Contabilidad) </div>
@@ -718,8 +813,8 @@
                             <span class="btn-code">F-47</span>
                         </a>
                     </div>
-                </div>         
-                  <!-- Paso 3.7 -->
+                </div>
+                <!-- Paso 3.7 -->
                 <div class="step-card">
                     <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
                     <div class="step-title">PAGOS A ACREEDORES<br> (Contabilidad) </div>
@@ -729,8 +824,8 @@
                             <span class="btn-code">F-51</span>
                         </a>
                     </div>
-                </div>  
-                  <!-- Paso 3.7 -->
+                </div>
+                <!-- Paso 3.7 -->
                 <div class="step-card">
                     <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
                     <div class="step-title">PAGO CONFIRMING<br> (Contabilidad) </div>
@@ -741,7 +836,7 @@
                         </a>
                     </div>
                 </div>
-                  <!-- Paso 3.8 -->
+                <!-- Paso 3.8 -->
                 <div class="step-card">
                     <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
                     <div class="step-title">FONDOS POR RENDIR<br> (Contabilidad) </div>
@@ -752,7 +847,7 @@
                         </a>
                     </div>
                 </div>
-                  <!-- Paso 3.9 -->
+                <!-- Paso 3.9 -->
                 <div class="step-card">
                     <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
                     <div class="step-title">LETRAS DE CAMBIO<br> (Contabilidad) </div>
@@ -763,7 +858,7 @@
                         </a>
                     </div>
                 </div>
-                  <!-- Paso 3.10 -->
+                <!-- Paso 3.10 -->
                 <div class="step-card">
                     <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
                     <div class="step-title">FACTURAS Y ND MANUALES<br> (Contabilidad) </div>
@@ -773,8 +868,8 @@
                             <span class="btn-code">FB60</span>
                         </a>
                     </div>
-                </div>                                                                                                           
-                  <!-- Paso 3.10 -->
+                </div>
+                <!-- Paso 3.10 -->
                 <div class="step-card">
                     <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
                     <div class="step-title">NOTAS DE CREDITO MANUALES<br> (Contabilidad) </div>
@@ -784,8 +879,8 @@
                             <span class="btn-code">FB65</span>
                         </a>
                     </div>
-                </div>             
-                  <!-- Paso 3.11 -->
+                </div>
+                <!-- Paso 3.11 -->
                 <div class="step-card">
                     <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
                     <div class="step-title">CUENTAS DE MAYOR<br> (Contabilidad) </div>
@@ -806,7 +901,7 @@
                             <span class="btn-code">MIRO</span>
                         </a>
                     </div>
-                </div>    
+                </div>
                 <!-- Paso 3.13 -->
                 <div class="step-card">
                     <div class="icon-box"><i class="fa-solid fa-file-invoice"></i></div>
@@ -817,7 +912,7 @@
                             <span class="btn-code">MIRO</span>
                         </a>
                     </div>
-                </div>                       
+                </div>
                 <!-- El espacio 5 queda vacío automáticamente para mantener la estructura de grilla -->
 
             </div>
@@ -825,9 +920,9 @@
         <!-- FASE 4: Otros Procesos -->
         <div class="phase-section">
             <h2 class="phase-title">Otros Procesos Clave</h2>
-            
+
             <div class="process-grid">
-            
+
                 <!-- Paso 4.1 -->
                 <div class="step-card">
                     <div class="icon-box"><i class="fa-solid fa-industry"></i></div>
@@ -872,7 +967,7 @@
                         </a>
                     </div>
                 </div>
-          
+
                 <!-- Paso 4.4 -->
                 <div class="step-card" style="border-top-color: var(--accent-green);">
                     <div class="icon-box"><i class="fa-solid fa-user-tie"></i></div>
@@ -905,7 +1000,7 @@
                             <span class="btn-code">MM01</span>
                         </a>
                     </div>
-                </div>                
+                </div>
                 <!-- Paso 4.2 -->
                 <div class="step-card" style="border-top-color: var(--accent-green);">
                     <div class="icon-box"><i class="fa-solid fa-credit-card"></i></div>
@@ -922,42 +1017,58 @@
             </div>
         </div>
 
-    <div id="floatingChat">
-    <div class="chat-window bg-white rounded-[2.5rem] shadow-2xl border border-slate-200 flex flex-col overflow-hidden">
-        <div class="bg-[#003366] p-5 text-white flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-11 h-11 bg-blue-500 rounded-full flex items-center justify-center"><i class="fas fa-robot"></i></div>
-                <div><h4 class="font-bold text-sm">Asistente IA de Portland</h4></div>
+        <div id="floatingChat">
+            <div
+                class="chat-window bg-white rounded-[2.5rem] shadow-2xl border border-slate-200 flex flex-col overflow-hidden">
+                <div class="bg-[#003366] p-5 text-white flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-11 h-11 bg-blue-500 rounded-full flex items-center justify-center"><i
+                                class="fas fa-robot"></i></div>
+                        <div>
+                            <h4 class="font-bold text-sm">Asistente IA de Portland</h4>
+                        </div>
+                    </div>
+                    <div class="flex space-x-1">
+                        <button onclick="clearChat()" class="p-2 hover:bg-white/10 rounded-xl"><i
+                                class="fas fa-eraser text-xs"></i></button>
+                        <button onclick="toggleChat()" class="p-2 hover:bg-white/10 rounded-xl"><i
+                                class="fas fa-times"></i></button>
+                    </div>
+                </div>
+
+                <div id="chatBox" class="flex-grow overflow-y-auto p-6 space-y-6 bg-slate-50/50" style="height: 400px;">
+                </div>
+
+                <div id="typingIndicator" class="hidden px-6 py-2">
+                    <div class="flex space-x-2 bg-white border p-2.5 w-20 justify-center rounded-full">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-white border-t">
+                    <form id="chatForm" class="flex items-center space-x-3">
+                        <input type="text" id="userInput" placeholder="Escribe tu consulta..."
+                            class="flex-grow p-4 bg-slate-100 rounded-[1.5rem] focus:outline-none text-sm">
+                        <button type="submit"
+                            class="bg-[#003366] text-white w-12 h-12 rounded-2xl hover:bg-blue-800 transition-all"><i
+                                class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
             </div>
-            <div class="flex space-x-1">
-                <button onclick="clearChat()" class="p-2 hover:bg-white/10 rounded-xl"><i class="fas fa-eraser text-xs"></i></button>
-                <button onclick="toggleChat()" class="p-2 hover:bg-white/10 rounded-xl"><i class="fas fa-times"></i></button>
-            </div>
         </div>
 
-        <div id="chatBox" class="flex-grow overflow-y-auto p-6 space-y-6 bg-slate-50/50" style="height: 400px;"></div>
-
-        <div id="typingIndicator" class="hidden px-6 py-2">
-            <div class="flex space-x-2 bg-white border p-2.5 w-20 justify-center rounded-full"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>
+        <div id="chatButtonContainer" class="fixed bottom-6 right-6 flex items-center z-50">
+            <span id="chatLabel"
+                class="bg-[#003366] text-white px-4 py-2 rounded-l-full mr-[-20px] pr-8 shadow-lg text-sm font-medium transition-all duration-300 transform translate-x-0 opacity-100">
+                Pregúntale al Asistente
+            </span>
+            <button id="chatToggleBtn" onclick="toggleChat()"
+                class="w-16 h-16 bg-[#003366] text-white rounded-full shadow-2xl flex items-center justify-center pulse-animation relative z-10">
+                <i class="fas fa-comment-dots text-2xl" id="toggleIcon"></i>
+            </button>
         </div>
-
-        <div class="p-4 bg-white border-t">
-            <form id="chatForm" class="flex items-center space-x-3">
-                <input type="text" id="userInput" placeholder="Escribe tu consulta..." class="flex-grow p-4 bg-slate-100 rounded-[1.5rem] focus:outline-none text-sm">
-                <button type="submit" class="bg-[#003366] text-white w-12 h-12 rounded-2xl hover:bg-blue-800 transition-all"><i class="fas fa-paper-plane"></i></button>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div id="chatButtonContainer" class="fixed bottom-6 right-6 flex items-center z-50">
-    <span id="chatLabel" class="bg-[#003366] text-white px-4 py-2 rounded-l-full mr-[-20px] pr-8 shadow-lg text-sm font-medium transition-all duration-300 transform translate-x-0 opacity-100">
-        Pregúntale al Asistente
-    </span>
-    <button id="chatToggleBtn" onclick="toggleChat()" class="w-16 h-16 bg-[#003366] text-white rounded-full shadow-2xl flex items-center justify-center pulse-animation relative z-10">
-        <i class="fas fa-comment-dots text-2xl" id="toggleIcon"></i>
-    </button>
-</div>
 
     </div>
     <!-- Footer -->
@@ -968,43 +1079,43 @@
 
     <!-- SCRIPT DE FUNCIONALIDAD -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            
+        document.addEventListener('DOMContentLoaded', function () {
+
             // --- CONFIGURACIÓN DE ESTADO DE MANUALES ---
             // Cambia 'existe: true' a 'false' para deshabilitar botones.
             const configuracionManuales = {
                 "ME21N": { archivo: "Manuales/MAN-MM-01_Creacion_de_Pedido_de_Compra.pdf", existe: true },
                 "ME29N": { archivo: "Manuales/MAN-MM-03_Liberacion_de_Pedidos_de_Compra.pdf", existe: true },
-                "MIGO":  { archivo: "Manuales/MAN-MM-06_Registro_de_Entrada_de_Mercancias.pdf", existe: true }, // Ejemplo: Pendiente
-                "MAQ":  { archivo: "Manuales/MAN-MM-04_Gestion_de_Maquila_Envasado.pdf", existe: true },
-                "REVMAQ":  { archivo: "Manuales/MAN-MM-05_Reversa_del_Proceso_de_Maquila.pdf", existe: true },              
-                "MIRO":  { archivo: "Manuales/MAN-MM-09_Registro_de_Facturas_de_Proveedor.pdf", existe: true },
-                "F110":  { archivo: "Manuales/MAN-FI-08_Pagos_a_Proveedores.pdf", existe: true },                
-                "VA01":  { archivo: "Manuales/MAN-SD-01_Gestion_de_Pedidos_de_Venta.pdf", existe: true },
+                "MIGO": { archivo: "Manuales/MAN-MM-06_Registro_de_Entrada_de_Mercancias.pdf", existe: true }, // Ejemplo: Pendiente
+                "MAQ": { archivo: "Manuales/MAN-MM-04_Gestion_de_Maquila_Envasado.pdf", existe: true },
+                "REVMAQ": { archivo: "Manuales/MAN-MM-05_Reversa_del_Proceso_de_Maquila.pdf", existe: true },
+                "MIRO": { archivo: "Manuales/MAN-MM-09_Registro_de_Facturas_de_Proveedor.pdf", existe: true },
+                "F110": { archivo: "Manuales/MAN-FI-08_Pagos_a_Proveedores.pdf", existe: true },
+                "VA01": { archivo: "Manuales/MAN-SD-01_Gestion_de_Pedidos_de_Venta.pdf", existe: true },
                 "VL01N": { archivo: "Manuales/MAN-SD-02_Expedicion_de_Salida_de_Mercaderia.pdf", existe: true },
-                "VF01":  { archivo: "Manuales/MAN-SD-03_Emision_de_Factura_de_Cliente.pdf", existe: true }, // Ejemplo: Pendiente
-                "F28":  { archivo: "Manuales/MAN-FI-10_Contabilizacion_de_Pagos_Recibidos.pdf", existe: true },
-                "BP1":  { archivo: "Manuales/MAN-MD-BP-02_Creacion_de_BP_Proveedor.pdf", existe: true },
-                "BP2":  { archivo: "Manuales/MAN-MD-BP-01_Creacion_de_BP_Cliente.pdf", existe: true },
-                "BP3":  { archivo: "Manuales/MAN-MD-BP-03_Gestion_de_Credito_del_Business_Partner.pdf", existe: true },                
-                "INV":  { archivo: "Manuales/MAN-MM-08_Gestion_y_Toma_de_Inventario_Fisico.pdf", existe: true },   
-                "MM01":  { archivo: "Manuales/MAN-MD-MAT-01_Gestion_y_Creacion_de_Materiales.pdf", existe: true },  
-                "EST":  { archivo: "Manuales/MAN-FI-00_Estandares_de_Registros_Contables.pdf", existe: true },
-                "F-29":  { archivo: "Manuales/MAN-FI-11_Contabilizacion_de_Anticipos_de_Clientes.pdf", existe: true }, 
-                "F-28":  { archivo: "Manuales/MAN-FI-10_Contabilizacion_de_Pagos_Recibidos.pdf", existe: true }, 
-                "F-30":  { archivo: "Manuales/MAN-FI-12_Contabilizacion_de_Saldos_Pendientes.pdf", existe: true }, 
-                "F-47":  { archivo: "Manuales/MAN-FI-04_Solicitud_de_Anticipo_a_Proveedores.pdf", existe: true }, 
-                "F-51":  { archivo: "Manuales/MAN-FI-05_Contabilizacion_con_Compensacion_para_Acreedores.pdf", existe: true }, 
-                "F-53":  { archivo: "Manuales/MAN-FI-07_Contabilizacion_de_Pagos_a_Acreedores.pdf", existe: true }, 
-                "FB70":  { archivo: "Manuales/MAN-FI-15_Contabilizacion_de_Fondos_por_Rendir.pdf", existe: true }, 
-                "F-36":  { archivo: "Manuales/MAN-FI-09_Registro_y_Canje_de_Letras_de_Cambio.pdf", existe: true }, 
-                "FB60":  { archivo: "Manuales/MAN-FI-01_Facturas_y_Notas_de_Debito_Manuales_de_Proveedor.pdf", existe: true }, 
-                "FB65":  { archivo: "Manuales/MAN-FI-02_Notas_de_Credito_Manuales_de_Proveedor.pdf", existe: true }, 
-                "FB50":  { archivo: "Manuales/MAN-FI-16_Contabilizacion_en_Cuentas_de_Mayor.pdf", existe: true }, 
-                "NC-AJUSTE":  { archivo: "Manuales/MAN-MM-10_Notas_de_Credito_y_Ajustes_de_Precio_a_Proveedores.pdf", existe: true }, 
-                "DIF-MIGO-MIRO":  { archivo: "Manuales/MAN-MM-11_Gestion_de_Diferencias_en_la_Recepcion.pdf", existe: true }, 
-                "TRASPASO":  { archivo: "Manuales/MAN-MM-07_Traspaso_entre_Almacenes.pdf", existe: true }, 
-                
+                "VF01": { archivo: "Manuales/MAN-SD-03_Emision_de_Factura_de_Cliente.pdf", existe: true }, // Ejemplo: Pendiente
+                "F28": { archivo: "Manuales/MAN-FI-10_Contabilizacion_de_Pagos_Recibidos.pdf", existe: true },
+                "BP1": { archivo: "Manuales/MAN-MD-BP-02_Creacion_de_BP_Proveedor.pdf", existe: true },
+                "BP2": { archivo: "Manuales/MAN-MD-BP-01_Creacion_de_BP_Cliente.pdf", existe: true },
+                "BP3": { archivo: "Manuales/MAN-MD-BP-03_Gestion_de_Credito_del_Business_Partner.pdf", existe: true },
+                "INV": { archivo: "Manuales/MAN-MM-08_Gestion_y_Toma_de_Inventario_Fisico.pdf", existe: true },
+                "MM01": { archivo: "Manuales/MAN-MD-MAT-01_Gestion_y_Creacion_de_Materiales.pdf", existe: true },
+                "EST": { archivo: "Manuales/MAN-FI-00_Estandares_de_Registros_Contables.pdf", existe: true },
+                "F-29": { archivo: "Manuales/MAN-FI-11_Contabilizacion_de_Anticipos_de_Clientes.pdf", existe: true },
+                "F-28": { archivo: "Manuales/MAN-FI-10_Contabilizacion_de_Pagos_Recibidos.pdf", existe: true },
+                "F-30": { archivo: "Manuales/MAN-FI-12_Contabilizacion_de_Saldos_Pendientes.pdf", existe: true },
+                "F-47": { archivo: "Manuales/MAN-FI-04_Solicitud_de_Anticipo_a_Proveedores.pdf", existe: true },
+                "F-51": { archivo: "Manuales/MAN-FI-05_Contabilizacion_con_Compensacion_para_Acreedores.pdf", existe: true },
+                "F-53": { archivo: "Manuales/MAN-FI-07_Contabilizacion_de_Pagos_a_Acreedores.pdf", existe: true },
+                "FB70": { archivo: "Manuales/MAN-FI-15_Contabilizacion_de_Fondos_por_Rendir.pdf", existe: true },
+                "F-36": { archivo: "Manuales/MAN-FI-09_Registro_y_Canje_de_Letras_de_Cambio.pdf", existe: true },
+                "FB60": { archivo: "Manuales/MAN-FI-01_Facturas_y_Notas_de_Debito_Manuales_de_Proveedor.pdf", existe: true },
+                "FB65": { archivo: "Manuales/MAN-FI-02_Notas_de_Credito_Manuales_de_Proveedor.pdf", existe: true },
+                "FB50": { archivo: "Manuales/MAN-FI-16_Contabilizacion_en_Cuentas_de_Mayor.pdf", existe: true },
+                "NC-AJUSTE": { archivo: "Manuales/MAN-MM-10_Notas_de_Credito_y_Ajustes_de_Precio_a_Proveedores.pdf", existe: true },
+                "DIF-MIGO-MIRO": { archivo: "Manuales/MAN-MM-11_Gestion_de_Diferencias_en_la_Recepcion.pdf", existe: true },
+                "TRASPASO": { archivo: "Manuales/MAN-MM-07_Traspaso_entre_Almacenes.pdf", existe: true },
+
             };
 
             const botones = document.querySelectorAll('.btn-manual');
@@ -1023,10 +1134,10 @@
                         boton.href = "javascript:void(0)";
                         boton.removeAttribute('target');
                         boton.title = "Documentación en proceso";
-                        
+
                         // Modificar visualmente el botón si está deshabilitado
                         const iconSpan = boton.querySelector('.btn-text');
-                        if(iconSpan) iconSpan.innerHTML = '<i class="fa-solid fa-lock"></i> Pendiente';
+                        if (iconSpan) iconSpan.innerHTML = '<i class="fa-solid fa-lock"></i> Pendiente';
                     }
                 }
             });
@@ -1034,10 +1145,12 @@
     </script>
 
     <script>
-        const openRouterKey = "REPLACE_ME_WITH_API_KEY";
-        const modelID = "deepseek/deepseek-v4.1-flash-1017";
-//        const modelID = "nex-agi/deepseek-v3.1-nex-n1:free";
-//        const manualURL = "https://garfiohook.github.io/Manuales_SAP/Manuales/Manual_de_Usuario_Consolidado.pdf";
+        // URL del Cloudflare Worker Proxy
+        const PROXY_URL = "https://sap-chatbot-proxy.pjypl.workers.dev";
+        const modelID = "deepseek/deepseek-v4.1-flash-1017"; // Verificado funcional ✅
+        //        const modelID = "google/gemma-4-31b-it:free"; // Alternativa (puede estar rate-limited)
+        //        const modelID = "nex-agi/deepseek-v3.1-nex-n1:free";
+        //        const manualURL = "https://garfiohook.github.io/Manuales_SAP/Manuales/Manual_de_Usuario_Consolidado.pdf";
         const supportEmail = "gsalinas@pjportland.cl";
 
         let systemPrompt = ""; // Se llenará mediante fetch
@@ -1138,133 +1251,154 @@
             }
         }
 
-function addMessage(text, role, save = true) {
-    const chatBox = document.getElementById('chatBox');
-    const wrapper = document.createElement('div');
-    wrapper.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} mb-4 animate-fade-in`;
+        function addMessage(text, role, save = true) {
+            const chatBox = document.getElementById('chatBox');
+            const wrapper = document.createElement('div');
+            wrapper.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} mb-4 animate-fade-in`;
 
-    const bubble = document.createElement('div');
-    // Mantenemos 'relative' para posicionar el botón de PDF arriba a la derecha
-    bubble.className = `p-4 rounded-2xl max-w-[85%] shadow-sm relative ${
-        role === 'user' 
-        ? 'bg-[#003366] text-white rounded-tr-none' 
-        : 'bg-white border border-gray-200 text-gray-800 rounded-tl-none chat-bubble-content'
-    }`;
+            const bubble = document.createElement('div');
+            // Mantenemos 'relative' para posicionar el botón de PDF arriba a la derecha
+            bubble.className = `p-4 rounded-2xl max-w-[85%] shadow-sm relative ${role === 'user'
+                ? 'bg-[#003366] text-white rounded-tr-none'
+                : 'bg-white border border-gray-200 text-gray-800 rounded-tl-none chat-bubble-content'
+                }`;
 
-    if (role === 'assistant') {
-        // --- 1. REINCORPORACIÓN DEL BOTÓN PDF ---
-        const pdfBtn = document.createElement('button');
-        pdfBtn.className = "pdf-export-btn";
-        pdfBtn.innerHTML = '<i class="fas fa-file-pdf"></i>';
-        // Usamos una función anónima para pasar el 'text' original que contiene el Markdown
-        pdfBtn.onclick = (e) => {
-            e.stopPropagation(); // Evita que otros eventos interfieran
-            exportToPDF(text);
-        };
-        bubble.appendChild(pdfBtn);
+            if (role === 'assistant') {
+                // --- 1. REINCORPORACIÓN DEL BOTÓN PDF ---
+                const pdfBtn = document.createElement('button');
+                pdfBtn.className = "pdf-export-btn";
+                pdfBtn.innerHTML = '<i class="fas fa-file-pdf"></i>';
+                // Usamos una función anónima para pasar el 'text' original que contiene el Markdown
+                pdfBtn.onclick = (e) => {
+                    e.stopPropagation(); // Evita que otros eventos interfieran
+                    exportToPDF(text);
+                };
+                bubble.appendChild(pdfBtn);
 
-        // --- 2. RENDERIZADO DE CONTENIDO (Markdown + Soporte) ---
-        const contentDiv = document.createElement('div');
-        let htmlContent = marked.parse(text);
-        
-        // Lógica de detección para el botón de soporte por correo
-        const noInfoKeywords = ["no tengo información", "no se encuentra documentado", "Enviar consulta a soporte", "Si tienes dudas"];
-        if (noInfoKeywords.some(k => text.toLowerCase().includes(k.toLowerCase()))) {
-            const lastUserMsg = conversationHistory.filter(m => m.role === 'user').pop()?.content || "";
-            const safeQuestion = lastUserMsg.replace(/'/g, "\\'").replace(/"/g, "&quot;");
-            htmlContent += `
+                // --- 2. RENDERIZADO DE CONTENIDO (Markdown + Soporte) ---
+                const contentDiv = document.createElement('div');
+                let htmlContent = marked.parse(text);
+
+                // Lógica de detección para el botón de soporte por correo
+                const noInfoKeywords = ["no tengo información", "no se encuentra documentado", "Enviar consulta a soporte", "Si tienes dudas"];
+                if (noInfoKeywords.some(k => text.toLowerCase().includes(k.toLowerCase()))) {
+                    const lastUserMsg = conversationHistory.filter(m => m.role === 'user').pop()?.content || "";
+                    const safeQuestion = lastUserMsg.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+                    htmlContent += `
                 <div class="support-container" style="margin-top: 15px; padding: 15px; background-color: #f0f7ff; border: 1px dashed #003366; border-radius: 12px; text-align: center;">
                     <p style="font-size: 11px; color: #003366; margin-bottom: 8px; font-weight: bold;">¿Deseas soporte adicional?</p>
                     <button onclick="sendToSupport('${safeQuestion}')" class="support-btn">
                         <i class="fas fa-envelope mr-2"></i> Enviar consulta a gsalinas@pjportland.cl
                     </button>
                 </div>`;
+                }
+
+                contentDiv.innerHTML = htmlContent;
+                bubble.appendChild(contentDiv);
+            } else {
+                bubble.textContent = text;
+            }
+
+            wrapper.appendChild(bubble);
+            chatBox.appendChild(wrapper);
+
+            // --- 3. CORRECCIÓN DEL SCROLL (Lectura desde el inicio) ---
+            // Si es un mensaje corto del usuario, hacemos scroll al final.
+            // Si es una respuesta larga de la IA, el scroll se queda quieto para permitir leer el inicio.
+            if (role === 'user') {
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } else {
+                // Solo hacemos un pequeño ajuste para asegurar que el mensaje sea visible,
+                // pero NO forzamos el scroll al final de la tabla/texto largo.
+                wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            if (save) {
+                conversationHistory.push({ role, content: text });
+                sessionStorage.setItem('portland_chat_session', JSON.stringify(conversationHistory));
+            }
         }
-        
-        contentDiv.innerHTML = htmlContent;
-        bubble.appendChild(contentDiv);
-    } else {
-        bubble.textContent = text;
-    }
 
-    wrapper.appendChild(bubble);
-    chatBox.appendChild(wrapper);
-    
-    // --- 3. CORRECCIÓN DEL SCROLL (Lectura desde el inicio) ---
-    // Si es un mensaje corto del usuario, hacemos scroll al final.
-    // Si es una respuesta larga de la IA, el scroll se queda quieto para permitir leer el inicio.
-    if (role === 'user') {
-        chatBox.scrollTop = chatBox.scrollHeight;
-    } else {
-        // Solo hacemos un pequeño ajuste para asegurar que el mensaje sea visible,
-        // pero NO forzamos el scroll al final de la tabla/texto largo.
-        wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+        /**
+         * Función auxiliar para abrir Outlook con la pregunta precargada
+         */
+        function sendToSupport(userQuestion) {
+            const email = "gsalinas@pjportland.cl";
+            const subject = "Pregunta SAP";
 
-    if (save) {
-        conversationHistory.push({ role, content: text });
-        sessionStorage.setItem('portland_chat_session', JSON.stringify(conversationHistory));
-    }
-}
+            // Limpieza de texto para evitar errores en el enlace mailto
+            const cleanQuestion = userQuestion.replace(/[\r\n]+/g, " ").trim();
+            const body = `Hola Soporte,\n\nTengo la siguiente duda respecto a los procesos SAP:\n\n"${cleanQuestion}"\n\nQuedo atento a sus comentarios.`;
 
-/**
- * Función auxiliar para abrir Outlook con la pregunta precargada
- */
-function sendToSupport(userQuestion) {
-    const email = "gsalinas@pjportland.cl";
-    const subject = "Pregunta SAP";
-    
-    // Limpieza de texto para evitar errores en el enlace mailto
-    const cleanQuestion = userQuestion.replace(/[\r\n]+/g, " ").trim();
-    const body = `Hola Soporte,\n\nTengo la siguiente duda respecto a los procesos SAP:\n\n"${cleanQuestion}"\n\nQuedo atento a sus comentarios.`;
-    
-    // Generar link y redireccionar
-    const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailtoLink;
-}
+            // Generar link y redireccionar
+            const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+        }
 
-// Función auxiliar para gestionar el envío a Outlook
-function sendToSupport(userQuestion) {
-    const email = "gsalinas@pjportland.cl";
-    const subject = "Pregunta SAP";
-    
-    // Limpiamos la pregunta de saltos de línea extra o caracteres que bloquean el mailto
-    const cleanQuestion = userQuestion
-        .replace(/[\r\n]+/g, " ") // Quita saltos de línea
-        .trim();
+        // Función auxiliar para gestionar el envío a Outlook
+        function sendToSupport(userQuestion) {
+            const email = "gsalinas@pjportland.cl";
+            const subject = "Pregunta SAP";
 
-    const body = `Hola Soporte,\n\nTengo la siguiente duda respecto a los procesos SAP:\n\n"${cleanQuestion}"\n\nQuedo atento a sus comentarios.`;
-    
-    // Usamos el constructor de URLSearchParams para asegurar una codificación perfecta
-    const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
-    window.location.href = mailtoLink;
-}
+            // Limpiamos la pregunta de saltos de línea extra o caracteres que bloquean el mailto
+            const cleanQuestion = userQuestion
+                .replace(/[\r\n]+/g, " ") // Quita saltos de línea
+                .trim();
+
+            const body = `Hola Soporte,\n\nTengo la siguiente duda respecto a los procesos SAP:\n\n"${cleanQuestion}"\n\nQuedo atento a sus comentarios.`;
+
+            // Usamos el constructor de URLSearchParams para asegurar una codificación perfecta
+            const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+            window.location.href = mailtoLink;
+        }
 
         async function callOpenRouter() {
-            const url = "https://openrouter.ai/api/v1/chat/completions";
             const payload = {
                 model: modelID,
                 messages: conversationHistory,
-                temperature: 0.1
+                temperature: 0.1,
+                max_tokens: 1500
             };
 
             try {
-                const response = await fetch(url, {
+                const response = await fetch(PROXY_URL, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${openRouterKey}`,
-                        'HTTP-Referer': window.location.origin,
-                        'X-Title': 'Portland SAP Assistant'
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(payload)
                 });
 
+                // Manejo de errores HTTP
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    const errorMsg = errorData?.error?.message || '';
+                    if (response.status === 403) {
+                        return "🚫 Acceso no autorizado (403): Este dominio no tiene permisos para comunicarse con el asistente de IA.";
+                    } else if (response.status === 429) {
+                        return "⚠️ El servicio de IA está temporalmente saturado. Por favor, espera unos segundos y vuelve a intentarlo.";
+                    } else if (response.status === 401) {
+                        return "❌ Error de autenticación en el proxy con el servicio de IA. Contacta al administrador.";
+                    } else if (response.status === 402) {
+                        return "❌ La cuenta del servicio de IA no tiene créditos suficientes. Contacta al administrador.";
+                    } else if (response.status === 500 || response.status === 502) {
+                        return "❌ Error en el servidor proxy de IA (500/502). Por favor, contacta al administrador o intenta más tarde.";
+                    } else {
+                        return `❌ Error del servicio (${response.status})${errorMsg ? ': ' + errorMsg : '. Por favor, intenta de nuevo.'}`;
+                    }
+                }
+
                 const data = await response.json();
-                return data.choices?.[0]?.message?.content || "Error en respuesta.";
+                const content = data.choices?.[0]?.message?.content;
+                if (!content) {
+                    console.error('Respuesta inesperada de la API:', data);
+                    return "No se pudo obtener una respuesta. Por favor, intenta de nuevo.";
+                }
+                return content;
             } catch (e) {
-                return "Error de red con el asistente de IA.";
+                console.error('Error de red al conectar con el proxy:', e);
+                return "⚠️ No se pudo conectar con el asistente de IA. Verifica tu conexión a internet o la configuración del proxy.";
             }
         }
 
@@ -1291,24 +1425,24 @@ function sendToSupport(userQuestion) {
             const userQuestion = conversationHistory[conversationHistory.length - 2].content;
             const subject = encodeURIComponent("SOPORTE SAP PORTLAND: Duda no resuelta por Manual");
             const body = encodeURIComponent(`Equipo de Proyecto,\n\nSe requiere soporte para el siguiente caso:\n\nUsuario: ${userName}\nConsulta: ${userQuestion}\n\nNota: Consulta generada desde el Portal de Capacitación.`);
-            
+
             window.location.href = `mailto:${supportEmail}?subject=${subject}&body=${body}`;
             btn.parentElement.innerHTML = '<p class="text-blue-600 font-bold text-center py-2 text-xs"><i class="fas fa-check-circle mr-2"></i> Mail preparado con éxito.</p>';
         }
 
-function exportToPDF(text) {
-    // 1. Crear el contenedor virtual
-    const element = document.createElement('div');
-    const contentHtml = marked.parse(text);
-    
-    // 2. Aplicar estilos de reseteo total al contenedor
-    // Importante: padding: 0 y margin: 0 para que html2pdf empiece en el tope
-    element.style.width = '190mm'; // Ancho A4 aproximado
-    element.style.margin = '0';
-    element.style.padding = '0';
-    element.style.backgroundColor = 'white';
+        function exportToPDF(text) {
+            // 1. Crear el contenedor virtual
+            const element = document.createElement('div');
+            const contentHtml = marked.parse(text);
 
-    element.innerHTML = `
+            // 2. Aplicar estilos de reseteo total al contenedor
+            // Importante: padding: 0 y margin: 0 para que html2pdf empiece en el tope
+            element.style.width = '190mm'; // Ancho A4 aproximado
+            element.style.margin = '0';
+            element.style.padding = '0';
+            element.style.backgroundColor = 'white';
+
+            element.innerHTML = `
         <div style="padding: 20px; font-family: 'Segoe UI', Arial, sans-serif; color: #333;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #003366; padding-bottom: 10px; margin-bottom: 20px;">
                 <div>
@@ -1354,28 +1488,28 @@ function exportToPDF(text) {
         </div>
     `;
 
-    // 3. Configuración CLAVE para eliminar los saltos iniciales
-    const opt = {
-        margin: [10, 10, 10, 10],
-        filename: 'Guia_Proceso_Portland.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { 
-            scale: 2, 
-            useCORS: true,
-            scrollY: 0, // FUERZA a empezar en el tope del elemento, no del scroll del chat
-            scrollX: 0,
-            windowHeight: element.scrollHeight, // Limita el alto al contenido real
-            y: 0 // Asegura coordenada Y inicial cero
-        },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: ['css', 'legacy'] }
-    };
+            // 3. Configuración CLAVE para eliminar los saltos iniciales
+            const opt = {
+                margin: [10, 10, 10, 10],
+                filename: 'Guia_Proceso_Portland.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    scrollY: 0, // FUERZA a empezar en el tope del elemento, no del scroll del chat
+                    scrollX: 0,
+                    windowHeight: element.scrollHeight, // Limita el alto al contenido real
+                    y: 0 // Asegura coordenada Y inicial cero
+                },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: ['css', 'legacy'] }
+            };
 
-    // 4. Ejecutar (sin añadir al body para evitar interferencias de scroll)
-    html2pdf().set(opt).from(element).save();
-}
+            // 4. Ejecutar (sin añadir al body para evitar interferencias de scroll)
+            html2pdf().set(opt).from(element).save();
+        }
         function clearChat() {
-            if(confirm("¿Estás seguro de que deseas borrar todo el historial de esta sesión?")) {
+            if (confirm("¿Estás seguro de que deseas borrar todo el historial de esta sesión?")) {
                 sessionStorage.removeItem('portland_chat_session');
                 conversationHistory = [{ role: "system", content: systemPrompt }];
                 chatBox.innerHTML = '';
@@ -1385,7 +1519,8 @@ function exportToPDF(text) {
 
         // Inicialización
         window.onload = loadSession;
-</script>
+    </script>
 
 </body>
+
 </html>
