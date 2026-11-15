@@ -512,11 +512,24 @@ async function initChat(){
   else{hist=[{role:'system',content:systemPrompt}];addMsg('¡Hola! 👋 Soy el asistente SAP del **Grupo Portland**. Pregúntame sobre cualquier transacción, campo o proceso y te guío paso a paso.','assistant',false);}
 }
 async function callAI(){
+  // Pide la respuesta y, si el modelo se corta por límite de largo, solicita la continuación (hasta 3 veces)
+  let full='';
+  for(let i=0;i<4;i++){
+    const msgs=full?[...hist,{role:'assistant',content:full},{role:'user',content:'Continúa exactamente donde quedaste, sin repetir lo anterior ni agregar introducción.'}]:hist;
+    const r=await callOnce(msgs);
+    if(r.err) return full?full+'\n\n'+r.err:r.err;
+    full+=(full&&!/\s$/.test(full)?'':'')+r.text;
+    if(r.finish!=='length') break;
+  }
+  return full;
+}
+async function callOnce(messages){
   try{
-    const r=await fetch(PROXY_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MODEL,messages:hist,temperature:.1,max_tokens:1500})});
-    if(!r.ok){const m={403:'🚫 Este dominio no tiene permiso para usar el asistente. Debe abrirse desde el sitio publicado.',429:'⚠️ El servicio está saturado. Intenta de nuevo en unos segundos.',401:'❌ Error de autenticación en el proxy. Contacta al administrador.',402:'❌ La cuenta del servicio de IA no tiene créditos.'};return m[r.status]||`❌ Error del servicio (${r.status}).`;}
-    const d=await r.json();return d.choices?.[0]?.message?.content||'No se obtuvo respuesta. Intenta de nuevo.';
-  }catch(e){return '⚠️ No se pudo conectar con el asistente. Revisa tu conexión a internet.';}
+    const r=await fetch(PROXY_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MODEL,messages,temperature:.1,max_tokens:20000})});
+    if(!r.ok){const m={403:'🚫 Este dominio no tiene permiso para usar el asistente. Debe abrirse desde el sitio publicado.',429:'⚠️ El servicio está saturado. Intenta de nuevo en unos segundos.',401:'❌ Error de autenticación en el proxy. Contacta al administrador.',402:'❌ La cuenta del servicio de IA no tiene créditos.'};return {err:m[r.status]||`❌ Error del servicio (${r.status}).`};}
+    const d=await r.json(),c=d.choices?.[0];
+    return c?.message?.content?{text:c.message.content,finish:c.finish_reason}:{err:'No se obtuvo respuesta. Intenta de nuevo.'};
+  }catch(e){return {err:'⚠️ No se pudo conectar con el asistente. Revisa tu conexión a internet.'};}
 }
 async function send(text){
   text=(text||'').trim();if(!text)return;
