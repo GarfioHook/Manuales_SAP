@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 :root{
   --navy:#0b2b5c;--navy-2:#071d40;--navy-3:#0f3a78;--ink:#0f1b2d;--muted:#5b6b82;--line:#e3e8f0;
@@ -168,6 +169,10 @@ main{flex:1;min-width:0;height:100vh;overflow-y:auto}
 .m.b table{border-collapse:collapse;font-size:13px;width:100%}
 .m.b th,.m.b td{border:1px solid var(--line);padding:6px 8px;text-align:left}
 .m.b th{background:var(--bg)}
+.m-acts{display:flex;gap:6px;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
+.m-acts button{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--muted);padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:#fff;transition:.15s}
+.m-acts button:hover{color:var(--navy);border-color:#c4d0e2;background:var(--bg)}
+.m-acts button.ok{color:var(--green-2);border-color:#cfe8c0;background:#f0f8ec}
 .typing{display:flex;gap:5px;padding:16px}
 .typing i{width:7px;height:7px;border-radius:50%;background:#9fb0c8;animation:bl 1.2s infinite}
 .typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
@@ -369,11 +374,13 @@ const gurl=g=>g+(SOC?('?soc='+SOC):'');
 const VIEWS={inicio:'Inicio',procesos:'Diagramas de proceso',biblioteca:'Manuales y simulador',asistente:'Asistente virtual'};
 
 /* ============ NAV ============ */
-function go(v){
+const curView=()=>($$('.view').find(s=>s.classList.contains('on'))||{id:'v-inicio'}).id.slice(2);
+function go(v,push=true){
+  if(push&&v===curView()&&!history.state?.m) push=false;
   $$('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
   $$('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+v));
   $('#vTitle').textContent=VIEWS[v]; $('#fab').style.display=v==='asistente'?'none':'';
-  $('#main').scrollTop=0; if(location.hash!=='#'+v) history.replaceState(null,'','#'+v);
+  $('#main').scrollTop=0; if(push) history.pushState({v},'','#'+v);
   if(v==='asistente') setTimeout(()=>$('#inp').focus(),50);
 }
 document.addEventListener('click',e=>{const g=e.target.closest('[data-go]'); if(g) go(g.dataset.go);});
@@ -439,21 +446,33 @@ function openStep(fid,i){
   $('#drH').innerHTML=`<button class="ib" onclick="closeD()"><i class="fa-solid fa-xmark"></i></button><small>${f.t}${f.seq?' · Paso '+(i+1):''}</small><h4>${t}</h4><p><i class="fa-regular fa-user"></i> ${area} · <span class="mono">${tx}</span> · <span class="mono">${fam}</span></p>`;
   $('#drB').innerHTML=(g.length?g.map(card).join(''):'<p class="empty">Aún no hay material para este paso.</p>')+
    (f.seq&&i<f.steps.length-1?`<button class="btn" style="background:var(--bg);border:1px solid var(--line);justify-content:center" onclick="openStep('${fid}',${i+1})">Siguiente paso: ${f.steps[i+1][1]} <i class="fa-solid fa-arrow-right"></i></button>`:'');
+  if(!$('#drawer').classList.contains('on')) history.pushState({v:curView(),m:'drawer'},'',location.hash);
   $('#drawer').classList.add('on');$('#scrim').classList.add('on');
 }
-function closeD(){$('#drawer').classList.remove('on');if(!$('#viewer').classList.contains('on'))$('#scrim').classList.remove('on');}
+function hideD(){$('#drawer').classList.remove('on');if(!$('#viewer').classList.contains('on'))$('#scrim').classList.remove('on');}
+function closeD(){if($('#drawer').classList.contains('on')&&history.state?.m==='drawer')history.back();else hideD();}
 
 /* ============ VISOR ============ */
 function openV(src,kind,title,code){
   const url=kind==='sim'?gurl(src):src;
   $('#vwT').textContent=title;$('#vwK').textContent=kind==='sim'?('Simulador · '+code+(SOC?' · '+SOC:'')):('Manual · '+code);
-  $('#vwF').src=url;$('#vwOpen').href=url;$('#viewer').classList.add('on');$('#scrim').classList.add('on');
+  const old=$('#vwF'),f=document.createElement('iframe');f.id='vwF';f.title='Visor';f.src=url;old.replaceWith(f);
+  $('#vwOpen').href=url;
+  history.pushState({v:curView(),m:'viewer',d:$('#drawer').classList.contains('on')},'',location.hash);
+  $('#viewer').classList.add('on');$('#scrim').classList.add('on');
 }
-function closeV(){$('#viewer').classList.remove('on');$('#vwF').src='about:blank';if(!$('#drawer').classList.contains('on'))$('#scrim').classList.remove('on');}
+function hideV(){$('#viewer').classList.remove('on');const old=$('#vwF'),f=document.createElement('iframe');f.id='vwF';f.title='Visor';old.replaceWith(f);if(!$('#drawer').classList.contains('on'))$('#scrim').classList.remove('on');}
+function closeV(){if($('#viewer').classList.contains('on')&&history.state?.m==='viewer')history.back();else hideV();}
 $('#vwX').onclick=closeV;
-$('#scrim').onclick=()=>{closeV();closeD();};
+$('#scrim').onclick=()=>{if($('#viewer').classList.contains('on'))closeV();else closeD();};
+window.addEventListener('popstate',e=>{
+  const s=e.state||{};
+  if(s.m!=='viewer'&&$('#viewer').classList.contains('on'))hideV();
+  if(s.m!=='drawer'&&!(s.m==='viewer'&&s.d)&&$('#drawer').classList.contains('on'))hideD();
+  const v=s.v||location.hash.slice(1)||'inicio'; if(VIEWS[v]&&v!==curView())go(v,false);
+});
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closeV();closeD();}
+  if(e.key==='Escape'){if($('#viewer').classList.contains('on'))closeV();else closeD();}
   if(e.key==='/'&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA'){e.preventDefault();$('#q').focus();}
 });
 
@@ -474,15 +493,22 @@ const SUGG=['¿Cómo creo un pedido de compra en ME21N?','¿Qué clase de movimi
 $('#sugg').innerHTML=SUGG.map(s=>`<button>${s}</button>`).join('');
 $$('#sugg button').forEach(b=>b.onclick=()=>send(b.textContent));
 const render=t=>window.marked?marked.parse(t):esc(t).replace(/\n/g,'<br>');
-function addMsg(t,who,save=true){
+function addMsg(t,who,save=true,q=null){
   const el=document.createElement('div');el.className='m '+(who==='user'?'u':'b');
-  el.innerHTML=who==='user'?esc(t):render(t);$('#msgs').appendChild(el);$('#msgs').scrollTop=1e9;
+  el.innerHTML=who==='user'?esc(t):render(t);
+  if(who!=='user'&&q){
+    el._md=t;el._q=q;
+    const a=document.createElement('div');a.className='m-acts';
+    a.innerHTML='<button data-a="copy"><i class="fa-regular fa-copy"></i> Copiar</button><button data-a="pdf"><i class="fa-regular fa-file-pdf"></i> Exportar guía PDF</button>';
+    a.onclick=e=>{const b=e.target.closest('button');if(!b)return;b.dataset.a==='copy'?copyMsg(el,b):exportPDF(el,b);};
+    el.appendChild(a);
+  }$('#msgs').appendChild(el);$('#msgs').scrollTop=1e9;
   if(save){try{sessionStorage.setItem('portland_chat_session',JSON.stringify(hist));}catch(e){}}
 }
 async function initChat(){
   try{const r=await fetch('system_prompt.txt?v='+Date.now());if(r.ok)systemPrompt=await r.text();}catch(e){}
   let saved=null;try{saved=JSON.parse(sessionStorage.getItem('portland_chat_session'));}catch(e){}
-  if(saved&&saved.length>1){hist=saved;hist.slice(1).forEach(m=>addMsg(m.content,m.role,false));}
+  if(saved&&saved.length>1){hist=saved;hist.slice(1).forEach((m,i,arr)=>addMsg(m.content,m.role,false,m.role==='assistant'?(arr[i-1]?.content||'Consulta SAP'):null));}
   else{hist=[{role:'system',content:systemPrompt}];addMsg('¡Hola! 👋 Soy el asistente SAP del **Grupo Portland**. Pregúntame sobre cualquier transacción, campo o proceso y te guío paso a paso.','assistant',false);}
 }
 async function callAI(){
@@ -497,9 +523,9 @@ async function send(text){
   if($('#v-asistente').classList.contains('on')===false)go('asistente');
   lastQ=text;addMsg(text,'user');hist.push({role:'user',content:text});$('#inp').value='';autosize();
   const t=document.createElement('div');t.className='m b typing';t.innerHTML='<i></i><i></i><i></i>';$('#msgs').appendChild(t);$('#msgs').scrollTop=1e9;
-  const ans=await callAI();t.remove();hist.push({role:'assistant',content:ans});addMsg(ans,'assistant');
+  const ans=await callAI();t.remove();hist.push({role:'assistant',content:ans});addMsg(ans,'assistant',true,text);
 }
-function askAbout(tx,titulo){closeV();closeD();send(`Explícame el proceso "${titulo}" (transacción ${tx}): pasos principales, campos clave y errores frecuentes.`);}
+function askAbout(tx,titulo){hideV();hideD();send(`Explícame el proceso "${titulo}" (transacción ${tx}): pasos principales, campos clave y errores frecuentes.`);}
 $('#form').onsubmit=e=>{e.preventDefault();send($('#inp').value);};
 const autosize=()=>{const i=$('#inp');i.style.height='auto';i.style.height=Math.min(i.scrollHeight,140)+'px';};
 $('#inp').addEventListener('input',autosize);
@@ -508,6 +534,53 @@ $('#clearBtn').onclick=()=>{hist=[{role:'system',content:systemPrompt}];$('#msgs
 const mail=()=>{const q=lastQ||'(escribe aquí tu consulta)';location.href=`mailto:${SUPPORT}?subject=${encodeURIComponent('Pregunta SAP')}&body=${encodeURIComponent('Hola Soporte,\n\nTengo la siguiente duda respecto a los procesos SAP:\n\n"'+q+'"\n\nQuedo atento a sus comentarios.')}`;};
 $('#mailBtn').onclick=mail;$('#mailBtn2').onclick=mail;
 
+/* ============ COPIAR / EXPORTAR ============ */
+async function copyMsg(el,btn){
+  const html=render(el._md), plain=el.cloneNode(true);plain.querySelector('.m-acts')?.remove();
+  try{
+    if(window.ClipboardItem) await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([plain.innerText],{type:'text/plain'})})]);
+    else await navigator.clipboard.writeText(plain.innerText);
+  }catch(e){const ta=document.createElement('textarea');ta.value=plain.innerText;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();}
+  btn.classList.add('ok');btn.innerHTML='<i class="fa-solid fa-check"></i> Copiado';
+  setTimeout(()=>{btn.classList.remove('ok');btn.innerHTML='<i class="fa-regular fa-copy"></i> Copiar';},1800);
+}
+function exportPDF(el,btn){
+  if(!window.html2pdf){toast('No se pudo cargar el generador de PDF. Revisa tu conexión.');return;}
+  const fecha=new Date().toLocaleDateString('es-CL',{day:'2-digit',month:'long',year:'numeric'});
+  const socTxt=SOC?$('#soc').selectedOptions[0].text:'General';
+  const titulo=el._q.length>110?el._q.slice(0,107)+'…':el._q;
+  const logo=new URL('Imagenes/Logo_Portland.png',location.href).href;
+  const doc=document.createElement('div');
+  doc.innerHTML=`<style>
+   .g{font-family:'Plus Jakarta Sans',Arial,sans-serif;color:#0f1b2d;font-size:11.5pt;line-height:1.55;width:180mm}
+   .g .hd{display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #6bae47;padding-bottom:10px}
+   .g .hd img{height:38px}.g .hd .r{text-align:right;font-size:9pt;color:#5b6b82}
+   .g .band{background:#0b2b5c;color:#fff;border-radius:8px;padding:16px 18px;margin:16px 0 18px}
+   .g .band small{font-size:8.5pt;letter-spacing:.08em;text-transform:uppercase;color:#a9c1e4;font-weight:700}
+   .g .band h1{font-size:15pt;margin:4px 0 0;line-height:1.3;color:#fff}
+   .g .meta{display:flex;gap:18px;font-size:9pt;color:#5b6b82;margin-bottom:14px}
+   .g h1,.g h2,.g h3{color:#0b2b5c;page-break-after:avoid}.g .bd h1,.g .bd h2{font-size:13pt;margin:14px 0 6px}.g .bd h3{font-size:12pt;margin:12px 0 4px}
+   .g p{margin:0 0 8px}.g ul,.g ol{margin:0 0 8px 20px}.g li{margin-bottom:3px;page-break-inside:avoid}
+   .g code{font-family:'JetBrains Mono',monospace;background:#eef6fc;color:#0a6aa0;padding:1px 4px;border-radius:4px;font-size:10pt}
+   .g table{border-collapse:collapse;width:100%;margin:8px 0;font-size:10pt;page-break-inside:avoid}.g th,.g td{border:1px solid #d5dde9;padding:5px 7px;text-align:left}.g th{background:#eef2f8}
+   .g blockquote{border-left:3px solid #6bae47;background:#f3f8ef;margin:8px 0;padding:8px 12px}
+   .g .ft{margin-top:22px;border-top:1px solid #e3e8f0;padding-top:8px;font-size:8.5pt;color:#8a97ab}
+  </style>
+  <div class="g">
+   <div class="hd"><img src="${logo}" crossorigin="anonymous"><div class="r"><b style="color:#0b2b5c">Guía personalizada SAP S/4HANA</b><br>Academia SAP · Grupo Portland</div></div>
+   <div class="band"><small>Consulta</small><h1>${esc(titulo)}</h1></div>
+   <div class="meta"><span><b>Fecha:</b> ${fecha}</span><span><b>Sociedad:</b> ${esc(socTxt)}</span></div>
+   <div class="bd">${render(el._md)}</div>
+   <div class="ft">Documento generado por el Asistente Virtual SAP de Grupo Portland. Contenido referencial: valide con los manuales oficiales MAN-XX o con el equipo de soporte SAP antes de contabilizar.</div>
+  </div>`;
+  const name='Guia_SAP_'+norm(titulo).replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'').slice(0,50)+'.pdf';
+  btn.disabled=true;const prev=btn.innerHTML;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Generando…';
+  html2pdf().set({margin:[14,14,14,14],filename:name,image:{type:'jpeg',quality:.96},html2canvas:{scale:2,useCORS:true},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy']}})
+   .from(doc).save().then(()=>{btn.innerHTML='<i class="fa-solid fa-check"></i> Descargado';btn.classList.add('ok');})
+   .catch(()=>{toast('No se pudo generar el PDF.');btn.innerHTML=prev;})
+   .finally(()=>setTimeout(()=>{btn.disabled=false;btn.classList.remove('ok');btn.innerHTML=prev;},2000));
+}
+
 /* ============ UTIL ============ */
 let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),1800);}
 
@@ -515,7 +588,7 @@ let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on
 $('#cLib').textContent=DATA.length;$('#cProc').textContent=FLOWS.length;
 $('#sMan').textContent=new Set(DATA.map(d=>d.familia)).size;$('#sSim').textContent=DATA.filter(d=>d.estado!=='politica').length;$('#sFlows').textContent=FLOWS.length;
 renderLib();renderFlows();initChat();
-const h=location.hash.slice(1);if(VIEWS[h])go(h);
+const h=location.hash.slice(1);history.replaceState({v:VIEWS[h]?h:'inicio'},'',location.hash||'#inicio');if(VIEWS[h])go(h,false);
 </script>
 </body>
 </html>
