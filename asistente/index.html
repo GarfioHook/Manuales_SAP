@@ -17,9 +17,9 @@
 
     <header>
         <div class="logo-container">
-            <img src="/Manuales_SAP/Imagenes/Logo_Portland.png" alt="Grupo Portland" class="logo-img">
+            <img src="./Imagenes/Logo_Portland.png" alt="Grupo Portland" class="logo-img">
         </div>
-        <img src="/Manuales_SAP/Imagenes/Logo_Proyecto_v2.png" alt="SAP" class="logo-img sap-logo">
+        <img src="./Imagenes/Logo_Portland.png" alt="SAP" class="logo-img sap-logo">
     </header>
 
     <main class="chat-main-container">
@@ -77,7 +77,8 @@
     </footer>
 
     <script>
-        const openRouterKey = "REPLACE_ME_WITH_API_KEY";
+        // URL del Cloudflare Worker Proxy
+        const PROXY_URL = "https://sap-chatbot-proxy.pjypl.workers.dev";
         const modelID = "deepseek/deepseek-v4.1-flash-1017";
         const supportEmail = "gsalinas@pjportland.cl";
 
@@ -92,7 +93,7 @@
         // --- SISTEMA ---
         async function fetchSystemPrompt() {
             try {
-                const response = await fetch('/Manuales_SAP/system_prompt.txt?v=' + Date.now());
+                const response = await fetch('../system_prompt.txt?v=' + Date.now());
                 if (!response.ok) throw new Error("No se pudo cargar el system prompt");
                 systemPrompt = await response.text();
             } catch (error) {
@@ -184,7 +185,6 @@
 
         // --- COMUNICACIÓN API ---
         async function callOpenRouter() {
-            const url = "https://openrouter.ai/api/v1/chat/completions";
             const payload = {
                 model: modelID,
                 messages: conversationHistory,
@@ -192,21 +192,37 @@
             };
 
             try {
-                const response = await fetch(url, {
+                const response = await fetch(PROXY_URL, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${openRouterKey}`,
-                        'HTTP-Referer': window.location.origin,
-                        'X-Title': 'Portland SAP Assistant'
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(payload)
                 });
 
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    const errorMsg = errorData?.error?.message || '';
+                    if (response.status === 403) {
+                        return "🚫 Acceso no autorizado (403): Este dominio no tiene permisos para comunicarse con el asistente de IA.";
+                    } else if (response.status === 429) {
+                        return "⚠️ El servicio de IA está temporalmente saturado. Por favor, espera unos segundos y vuelve a intentarlo.";
+                    } else if (response.status === 401) {
+                        return "❌ Error de autenticación en el proxy con el servicio de IA. Contacta al administrador.";
+                    } else if (response.status === 402) {
+                        return "❌ La cuenta del servicio de IA no tiene créditos suficientes. Contacta al administrador.";
+                    } else if (response.status === 500 || response.status === 502) {
+                        return "❌ Error en el servidor proxy de IA (500/502). Por favor, contacta al administrador o intenta más tarde.";
+                    } else {
+                        return `❌ Error del servicio (${response.status})${errorMsg ? ': ' + errorMsg : '. Por favor, intenta de nuevo.'}`;
+                    }
+                }
+
                 const data = await response.json();
                 return data.choices?.[0]?.message?.content || "Lo siento, hubo un error procesando la respuesta.";
             } catch (e) {
-                return "Error de conexión con el servidor de IA.";
+                console.error('Error de conexión:', e);
+                return "⚠️ No se pudo conectar con el asistente de IA. Verifica tu conexión a internet o la configuración del proxy.";
             }
         }
 
@@ -282,7 +298,4 @@
     </script>
 </body>
 
-
 </html>
-
-
